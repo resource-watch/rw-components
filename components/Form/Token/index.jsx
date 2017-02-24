@@ -3,11 +3,11 @@ import TokenInput from 'react-tokeninput';
 import without from 'lodash/without';
 import uniq from 'lodash/uniq';
 
-import Field from '../Field';
+import FormElement from '../FormElement';
 
 import './style.scss';
 
-class Token extends Field {
+class Token extends FormElement {
   constructor(props) {
     super(props);
 
@@ -84,51 +84,20 @@ class Token extends Field {
   }
 
   render() {
-    const { options, properties, hint } = this.props;
-    const { valid, error, selected } = this.state;
-
-    // Set classes
-    const validClass = valid === true ? '-valid' : '';
-    const errorClass = valid === false ? '-error' : '';
+    const { options, properties } = this.props;
+    const { selected } = this.state;
 
     return (
-      <div className={`c-field ${validClass} ${errorClass}`}>
-        {properties.label &&
-          <label htmlFor={`select-${properties.name}`} className="label">
-            {properties.label} {properties.required && <abbr title="required">*</abbr>}
-          </label>
-        }
-
-        {hint &&
-          <p className="hint">
-            {hint}
-          </p>
-        }
-
-        <TokenInput
-          {...properties}
-          menuContent={options || []}
-          id={`select-${properties.name}`}
-          selected={selected}
-          onChange={this.triggerChange}
-          onSelect={this.triggerSelected}
-          onRemove={this.triggerRemove}
-          onInput={this.triggerInput}
-        />
-
-        {error &&
-          error.map((err, i) => {
-            if (err) {
-              return (
-                <p key={i} className="error">
-                  {err.message}
-                </p>
-              );
-            }
-            return null;
-          })
-        }
-      </div>
+      <TokenInput
+        {...properties}
+        menuContent={options || []}
+        id={`select-${properties.name}`}
+        selected={selected}
+        onChange={this.triggerChange}
+        onSelect={this.triggerSelected}
+        onRemove={this.triggerRemove}
+        onInput={this.triggerInput}
+      />
     );
   }
 }
