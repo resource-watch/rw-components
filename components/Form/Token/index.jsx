@@ -1,5 +1,5 @@
 import React from 'react';
-import TokenInput from 'react-tokeninput';
+import TokenInput, { Option } from 'react-tokeninput';
 import without from 'lodash/without';
 import uniq from 'lodash/uniq';
 
@@ -13,6 +13,8 @@ class Token extends FormElement {
 
     this.state = {
       value: this.props.properties.default,
+      items: this.props.options || [],
+      options: this.props.options || [],
       selected: this.props.properties.default.map((s) => {
         return { id: s, name: s };
       }),
@@ -70,8 +72,36 @@ class Token extends FormElement {
     this.triggerChange(selectedOptions);
   }
 
-  triggerInput() {
-    return this;
+  triggerInput(userInput) {
+    this.setState({
+      input: userInput,
+      loading: true,
+      options: []
+    });
+
+    setTimeout(() => {
+      this.filterOptions(this.state.input);
+      this.setState({
+        loading: false
+      });
+    }, 500);
+  }
+
+  filterOptions(userInput) {
+    const { items } = this.state;
+    // If the user doesn't write anything return all the options
+    if (userInput === '') {
+      return this.setState({ options: [] });
+    }
+
+    // Define a RegExp
+    const regExp = new RegExp('^' + userInput, 'i');
+
+    const filteredNames = items.filter(option =>
+      regExp.test(option.label) || regExp.test(option.value)
+    );
+
+    return this.setState({ options: filteredNames });
   }
 
   triggerChange(selected) {
@@ -83,20 +113,36 @@ class Token extends FormElement {
     });
   }
 
+  renderComboboxOptions() {
+    const { options } = this.state;
+    return options.map(option =>
+      <Option
+        key={option.value}
+        value={option.label}
+      >
+        {option.label}
+      </Option>
+    );
+  }
+
   render() {
-    const { options, properties } = this.props;
-    const { selected } = this.state;
+    const { properties } = this.props;
+    const { selected, items } = this.state;
+
+    const menuContent = items.length ?
+      this.renderComboboxOptions() : [];
 
     return (
       <TokenInput
         {...properties}
-        menuContent={options || []}
         id={`select-${properties.name}`}
+        menuContent={menuContent}
         selected={selected}
         onChange={this.triggerChange}
         onSelect={this.triggerSelected}
         onRemove={this.triggerRemove}
         onInput={this.triggerInput}
+        placeholder="Enter tokens here"
       />
     );
   }

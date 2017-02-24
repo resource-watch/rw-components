@@ -49,6 +49,7 @@ storiesOf('Form', module)
         // onChange={value => this.props.onChange({ name: value })}
         onChange={value => console.info(value)}
         validations={['required']}
+        hint="This is a hint. Should we add the possibility of adding HTML?"
         options={[
           { label: 'Cities', value: 'cities' },
           { label: 'Climate', value: 'climate' },
@@ -77,6 +78,17 @@ storiesOf('Form', module)
         // onChange={value => this.props.onChange({ name: value })}
         onChange={value => console.info(value)}
         validations={['required']}
+        options={[
+          { label: 'Cities', value: 'cities' },
+          { label: 'Climate', value: 'climate' },
+          { label: 'Energy', value: 'energy' },
+          { label: 'Forests', value: 'forests' },
+          { label: 'Food', value: 'food' },
+          { label: 'Land classification', value: 'land_classification' },
+          { label: 'Society', value: 'society' },
+          { label: 'Supply chain', value: 'supply_chain' },
+          { label: 'Water', value: 'water' }
+        ]}
         properties={{
           name: 'tags',
           label: 'Tags',
