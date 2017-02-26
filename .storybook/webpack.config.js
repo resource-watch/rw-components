@@ -1,6 +1,14 @@
 const path = require('path');
+const rootPath = process.cwd();
 
 module.exports = function(storybookBaseConfig, configType) {
+  // storybookBaseConfig.resolve = Object.assign({}, storybookBaseConfig.resolve, {
+  //   root: [
+  //     path.join(rootPath)
+  //   ],
+  //   extensions: ['', '.js', '.jsx', '.json', '.css', '.scss']
+  // });
+
 
   storybookBaseConfig.module.loaders.push({
     test: /\.css$/,

@@ -1,10 +1,12 @@
+@import "../../styles/config";
+
 .c-field {
   .label {
     font-size: 14px;
     display: block;
     position: relative;
     padding: 0 0 5px;
-    color: black;
+    color: $color-text-1;
     font-weight: 700;
   }
 
@@ -16,7 +18,7 @@
   }
 
   .error {
-    color: red;
+    color: $color-red;
     margin: 3px 0 0;
     font-size: 12px;
   }
@@ -32,7 +34,7 @@
   > input,
   > textarea {
     display: inline-block;
-    border: 1px solid #ccc;
+    border: 1px solid $border-color-1;
     box-shadow: none;
     outline: none;
     font-size: 16px;
@@ -40,9 +42,10 @@
     width: 100%;
     max-width: 400px;
     font-family: inherit;
+    color: $color-text-1;
 
     &:hover {
-      border-color: gray;
+      border-color: $border-color-2;
     }
   }
 
@@ -60,7 +63,7 @@
     > select,
     .Select-control,
     .ic-tokens {
-      border-color: green;
+      border-color: $color-green;
     }
   }
 
@@ -79,7 +82,7 @@
     > select,
     .Select-control,
     .ic-tokens {
-      border-color: red;
+      border-color: $color-red;
     }
   }
 }
