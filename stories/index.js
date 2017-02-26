@@ -4,6 +4,9 @@ import { storiesOf, action, linkTo } from '@kadira/storybook';
 // Dataset
 import DatasetForm from '../components/Dataset/Form';
 
+// Widget
+import WidgetForm from '../components/Widget/Form';
+
 // Form Elements
 import Field from '../components/Form/Field';
 import Input from '../components/Form/Input';
@@ -25,6 +28,19 @@ storiesOf('Dataset', module)
       />
     );
   })
+
+  storiesOf('Widget', module)
+    .add('Form', () => {
+      return (
+        <WidgetForm
+          api="https://api.resourcewatch.org"
+          application={['rw']}
+          authorization=""
+          dataset="89a6358e-27eb-4b9c-9f0d-befc4959f914"
+          widget="61628091-8679-4db8-bc47-851c51784f32"
+        />
+      );
+    })
 
 
 storiesOf('Form Elements', module)
