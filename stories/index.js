@@ -7,6 +7,9 @@ import DatasetForm from '../components/Dataset/Form';
 // Widget
 import WidgetForm from '../components/Widget/Form';
 
+// Layer
+import LayerForm from '../components/Layer/Form';
+
 // Form Elements
 import Field from '../components/Form/Field';
 import Input from '../components/Form/Input';
@@ -29,19 +32,31 @@ storiesOf('Dataset', module)
     );
   })
 
-  storiesOf('Widget', module)
-    .add('Form', () => {
-      return (
-        <WidgetForm
-          api="https://api.resourcewatch.org"
-          application={['rw']}
-          authorization=""
-          dataset="89a6358e-27eb-4b9c-9f0d-befc4959f914"
-          widget="61628091-8679-4db8-bc47-851c51784f32"
-        />
-      );
-    })
+storiesOf('Widget', module)
+  .add('Form', () => {
+    return (
+      <WidgetForm
+        api="https://api.resourcewatch.org"
+        application={['rw']}
+        authorization=""
+        dataset="89a6358e-27eb-4b9c-9f0d-befc4959f914"
+        widget="61628091-8679-4db8-bc47-851c51784f32"
+      />
+    );
+  })
 
+storiesOf('Layer', module)
+  .add('Form', () => {
+    return (
+      <LayerForm
+        api="https://api.resourcewatch.org"
+        application={['rw']}
+        authorization=""
+        dataset="b7bf012f-4b8b-4478-b5c9-6af3075ca1e4"
+        layer="7a46cc6f-a54d-4385-be60-46a18c437a3b"
+      />
+    );
+  })
 
 storiesOf('Form Elements', module)
   .add('Input', () => {

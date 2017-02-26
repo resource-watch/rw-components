@@ -61,7 +61,7 @@ class Navigation extends React.Component {
           <li>
             <Button
               properties={{
-                type: 'button',
+                type: 'submit',
                 name: 'commit',
                 disabled: submitting,
                 className: `-primary ${submitting ? '-disabled' : ''}`
