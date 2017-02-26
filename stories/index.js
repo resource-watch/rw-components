@@ -6,8 +6,10 @@ import Input from '../components/Form/Input';
 import Textarea from '../components/Form/Textarea';
 import Select from '../components/Form/Select';
 import Token from '../components/Form/Token';
+import CheckboxGroup from '../components/Form/CheckboxGroup';
+import RadioGroup from '../components/Form/RadioGroup';
 
-storiesOf('Form', module)
+storiesOf('Form Elements', module)
   .add('Input', () => {
     return (
       <Field
@@ -97,6 +99,52 @@ storiesOf('Form', module)
         }}
       >
         {Token}
+      </Field>
+    );
+  })
+  .add('CheckboxGroup', () => {
+    return (
+      <Field
+        // onChange={value => this.props.onChange({ name: value })}
+        onChange={value => console.info(value)}
+        validations={['required']}
+        options={[
+          { label: 'Cities', value: 'cities' },
+          { label: 'Climate', value: 'climate' },
+          { label: 'Energy', value: 'energy' },
+          { label: 'Forests', value: 'forests' }
+        ]}
+        properties={{
+          name: 'applications',
+          label: 'Applications',
+          required: true,
+          default: ['cities']
+        }}
+      >
+        {CheckboxGroup}
+      </Field>
+    );
+  })
+  .add('RadioGroup', () => {
+    return (
+      <Field
+        // onChange={value => this.props.onChange({ name: value })}
+        onChange={value => console.info(value)}
+        validations={['required']}
+        options={[
+          { label: 'Cities', value: 'cities' },
+          { label: 'Climate', value: 'climate' },
+          { label: 'Energy', value: 'energy' },
+          { label: 'Forests', value: 'forests' }
+        ]}
+        properties={{
+          name: 'applications',
+          label: 'Applications',
+          required: true,
+          default: 'cities'
+        }}
+      >
+        {RadioGroup}
       </Field>
     );
   })
