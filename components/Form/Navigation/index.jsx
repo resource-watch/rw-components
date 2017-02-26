@@ -23,7 +23,7 @@ class Navigation extends React.Component {
     e.preventDefault();
 
     // Send the step to the form
-    if (this.props.onBack) this.props.onBack(this.state.step - 1);
+    if (this.props.onBack) this.props.onBack(this.props.step - 1);
   }
 
   render() {

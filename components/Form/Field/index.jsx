@@ -29,6 +29,14 @@ class Field extends React.Component {
     });
   }
 
+  validate() {
+    this.child.triggerValidate();
+  }
+
+  isValid() {
+    return this.state.valid;
+  }
+
   render() {
     const { properties, hint } = this.props;
     const { valid, error } = this.state;
@@ -53,6 +61,7 @@ class Field extends React.Component {
 
         <this.props.children
           {...this.props}
+          ref={(c) => { if (c) this.child = c; }}
           onValid={this.onValid}
         />
 

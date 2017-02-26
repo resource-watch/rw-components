@@ -1,6 +1,9 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
 
+// Dataset
+import DatasetForm from '../components/Dataset/Form';
+
 // Form Elements
 import Field from '../components/Form/Field';
 import Input from '../components/Form/Input';
@@ -11,7 +14,17 @@ import CheckboxGroup from '../components/Form/CheckboxGroup';
 import RadioGroup from '../components/Form/RadioGroup';
 import Navigation from '../components/Form/Navigation';
 
-storiesOf('Form', module)
+storiesOf('Dataset', module)
+  .add('Form', () => {
+    return (
+      <DatasetForm
+        api="https://api.resourcewatch.org"
+        application={['rw']}
+        authorization=""
+        dataset="f3d6d6c1-3b3b-4dfc-a2a0-dcf38d258ae9"
+      />
+    );
+  })
 
 
 storiesOf('Form Elements', module)
