@@ -6,6 +6,7 @@ import Field from '../../../Form/Field';
 import Input from '../../../Form/Input';
 import Textarea from '../../../Form/Textarea';
 import Code from '../../../Form/Code';
+import Checkbox from '../../../Form/Checkbox';
 
 class Step1 extends Step {
   constructor(props) {
@@ -104,6 +105,19 @@ class Step1 extends Step {
           }}
         >
           {Code}
+        </Field>
+
+        <Field
+          ref={(c) => { if (c) this.children.push(c); }}
+          onChange={value => this.props.onChange({ default: value })}
+          option={{ label: 'Default' }}
+          properties={{
+            name: 'default',
+            label: 'Do you want to set this layer as the default one. (Only one default layer per dataset is allowed at a time)',
+            default: [this.state.form.default]
+          }}
+        >
+          {Checkbox}
         </Field>
 
 
