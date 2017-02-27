@@ -1,12 +1,19 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
 
+import './style.scss';
+
 // Dataset
 import DatasetForm from '../components/Dataset/Form';
-import DatasetTable from '../components/Dataset/Table';
+import DatasetList from '../components/Dataset/List';
+import DatasetCard from '../components/Dataset/Card';
 
 // Widget
 import WidgetForm from '../components/Widget/Form';
+import WidgetList from '../components/Widget/List';
+import WidgetCard from '../components/Widget/Card';
+import WidgetWizard from '../components/Widget/Wizard';
+
 
 // Layer
 import LayerForm from '../components/Layer/Form';
@@ -32,15 +39,26 @@ storiesOf('Dataset', module)
       />
     );
   })
-  .add('Table', () => {
+  .add('List', () => {
     return (
-      <DatasetTable
-        api="https://api.resourcewatch.org"
+      <DatasetList
         application={['rw']}
-        path="dataset"
       />
     );
   })
+  .add('Card', () => {
+    return (
+      <DatasetCard
+        dataset={{
+          name: 'Test',
+          widget: [{},{},{}],
+          layer: [{}]
+        }}
+        properties={{}}
+      />
+    );
+  })
+
 
 storiesOf('Widget', module)
   .add('Form', () => {
@@ -51,6 +69,35 @@ storiesOf('Widget', module)
         authorization=""
         dataset="89a6358e-27eb-4b9c-9f0d-befc4959f914"
         widget="61628091-8679-4db8-bc47-851c51784f32"
+      />
+    );
+  })
+  .add('List', () => {
+    return (
+      <WidgetList
+        application={['rw']}
+        dataset="d02df2f6-d80c-4274-bb6f-f062061655c4"
+      />
+    );
+  })
+  .add('Card', () => {
+    return (
+      <WidgetCard
+        widget={{
+          name: 'Test'
+        }}
+        properties={{}}
+      />
+    );
+  })
+  .add('WidgetWizard', () => {
+    return (
+      <WidgetWizard
+        api="https://api.resourcewatch.org"
+        application={['rw']}
+        authorization=""
+        dataset="89a6358e-27eb-4b9c-9f0d-befc4959f914"
+        // widget="61628091-8679-4db8-bc47-851c51784f32"
       />
     );
   })
