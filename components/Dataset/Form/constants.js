@@ -1,3 +1,8 @@
+export const APPLICATIONS = [
+  { label: 'Resource Watch', value: 'rw' },
+  { label: 'Aqueduct', value: 'aqueduct' }
+];
+
 export const TOPICS = [
   { label: 'Cities', value: 'cities' },
   { label: 'Climate', value: 'climate' },

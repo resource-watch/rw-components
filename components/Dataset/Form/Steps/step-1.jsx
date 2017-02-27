@@ -1,13 +1,14 @@
 import React from 'react';
 import './style.scss';
 
-import { TOPICS, PROVIDERS } from '../constants';
+import { APPLICATIONS, TOPICS, PROVIDERS } from '../constants';
 
 import Step from './step';
 import Field from '../../../Form/Field';
 import Input from '../../../Form/Input';
 import Select from '../../../Form/Select';
 import Token from '../../../Form/Token';
+import CheckboxGroup from '../../../Form/CheckboxGroup';
 
 class Step1 extends Step {
   constructor(props) {
@@ -65,6 +66,21 @@ class Step1 extends Step {
           }}
         >
           {Input}
+        </Field>
+
+        <Field
+          ref={(c) => { if (c) this.children.push(c); }}
+          onChange={value => this.props.onChange({ application: value })}
+          validations={['required']}
+          options={APPLICATIONS}
+          properties={{
+            name: 'application',
+            label: 'Application',
+            required: true,
+            default: this.state.form.application
+          }}
+        >
+          {CheckboxGroup}
         </Field>
 
         <Field
