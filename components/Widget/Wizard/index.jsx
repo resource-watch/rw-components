@@ -7,62 +7,31 @@ import './style.scss';
 import { STATE_DEFAULT } from './constants';
 
 import Step1 from './Steps/step-1';
+import Step2 from './Steps/step-2';
+import Step3 from './Steps/step-3';
 import Navigation from '../../Form/Navigation';
 
 class WidgetWizard extends React.Component {
   constructor(props) {
     super(props);
-    const newState = Object.assign({}, STATE_DEFAULT, {
-      dataset: props.dataset,
-      widget: props.widget,
-      form: Object.assign({}, STATE_DEFAULT.form, {
-        application: props.application,
-        authorization: props.authorization
-      })
-    });
-
-    this.state = newState;
+    this.state = STATE_DEFAULT;
 
     this.onSubmit = this.onSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
-  }
-
-  componentWillMount() {
-    if (this.state.dataset && this.state.widget) {
-      // Start the loading
-      this.setState({ loading: true });
-
-      const xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('GET', `http://api.resourcewatch.org/dataset/${this.state.dataset}/widget/${this.state.widget}?cache=${Date.now()}`);
-      xmlhttp.setRequestHeader('Content-Type', 'application/json');
-      xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
-      xmlhttp.send();
-
-      xmlhttp.onreadystatechange = () => {
-        if (xmlhttp.readyState === 4) {
-          if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-            const response = JSON.parse(xmlhttp.responseText);
-            this.setState({
-              dataset: response.data.id,
-              form: this.setFormFromParams(response.data.attributes),
-              // Stop the loading
-              loading: false
-            });
-          } else {
-            console.info('Error');
-          }
-        }
-      };
-    }
+    this.onWizardChange = this.onWizardChange.bind(this);
   }
 
   /**
    * UI EVENTS
    * - onSubmit
-   * - onChange
+   * - onWizardChange
   */
-  onSubmit(event) {
-    event.preventDefault();
+  onWizardChange(obj) {
+    const wizard = Object.assign({}, this.state.wizard, obj);
+    this.setState({ wizard }, () => console.info(this.state.wizard));
+  }
+
+  onSubmit(e) {
+    if (e) e.preventDefault();
 
     // Validate the form
     this.step.validate();
@@ -124,16 +93,15 @@ class WidgetWizard extends React.Component {
     }, 0);
   }
 
-  onChange(obj) {
-    const form = Object.assign({}, this.state.form, obj);
-    this.setState({ form }, () => console.info(this.state.form));
-  }
-
-  onBack(step) {
+  /**
+   * HELPERS
+   * - setStep
+   * - setFormFromParams
+  */
+  setStep(step) {
     this.setState({ step });
   }
 
-  // HELPERS
   setFormFromParams(params) {
     const form = Object.keys(this.state.form);
     const newForm = {};
@@ -147,16 +115,41 @@ class WidgetWizard extends React.Component {
     return newForm;
   }
 
+  /**
+   * RENDER
+  */
   render() {
     return (
       <form className="c-form" onSubmit={this.onSubmit} noValidate>
-        {this.state.loading && 'loading'}
-        {(this.state.step === 1 && !this.state.loading) &&
+        {this.state.step === 1 &&
           <Step1
             ref={(c) => { this.step = c; }}
-            onChange={value => this.onChange(value)}
-            form={this.state.form}
-            dataset={this.state.dataset}
+            wizard={this.state.wizard}
+            onChange={(value) => {
+              this.onWizardChange(value);
+              this.onSubmit();
+            }}
+          />
+        }
+
+        {this.state.step === 2 &&
+          <Step2
+            ref={(c) => { this.step = c; }}
+            wizard={this.state.wizard}
+            onChange={(value) => {
+              this.onWizardChange(value);
+              this.onSubmit();
+            }}
+          />
+        }
+
+        {this.state.step === 3 &&
+          <Step3
+            ref={(c) => { this.step = c; }}
+            wizard={this.state.wizard}
+            onChange={(value) => {
+              this.onWizardChange(value);
+            }}
           />
         }
 
@@ -165,7 +158,7 @@ class WidgetWizard extends React.Component {
             step={this.state.step}
             stepLength={this.state.stepLength}
             submitting={this.state.submitting}
-            onBack={step => this.onBack(step)}
+            onBack={step => this.setStep(step)}
           />
         }
       </form>
@@ -175,9 +168,7 @@ class WidgetWizard extends React.Component {
 
 WidgetWizard.propTypes = {
   application: React.PropTypes.array,
-  authorization: React.PropTypes.string,
-  dataset: React.PropTypes.string.isRequired,
-  widget: React.PropTypes.string
+  authorization: React.PropTypes.string
 };
 
 export default WidgetWizard;

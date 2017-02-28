@@ -3,28 +3,30 @@ import './style.scss';
 
 import Step from './step';
 import Title from '../../../UI/Title';
-import DatasetList from '../../../Dataset/List';
+import WidgetList from '../../../Widget/List';
 
-class Step1 extends Step {
+class Step2 extends Step {
   render() {
+    const { wizard } = this.props;
     return (
       <fieldset className="c-field-container">
         <Title className="-primary -huge">
-          Select a dataset
+          Select a widget
         </Title>
-        <DatasetList
+        <WidgetList
           ref={(c) => { if (c) this.children.push(c); }}
+          dataset={wizard.dataset}
+          selected={wizard.widget}
           application={['rw']}
-          selected={this.props.wizard.dataset}
-          onChange={value => this.props.onChange({ dataset: value })}
+          onChange={value => this.props.onChange({ widget: value })}
         />
       </fieldset>
     );
   }
 }
 
-Step1.propTypes = {
+Step2.propTypes = {
   wizard: React.PropTypes.object
 };
 
-export default Step1;
+export default Step2;

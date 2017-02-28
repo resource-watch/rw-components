@@ -17,7 +17,7 @@ class WidgetCard extends React.Component {
   */
 
   triggerClick(e) {
-    const widgetId = e.currentTarget.widget.id;
+    const widgetId = e.currentTarget.dataset.id;
     if (this.props.onClick) this.props.onClick(widgetId);
   }
 

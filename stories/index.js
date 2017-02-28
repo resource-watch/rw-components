@@ -93,11 +93,7 @@ storiesOf('Widget', module)
   .add('WidgetWizard', () => {
     return (
       <WidgetWizard
-        api="https://api.resourcewatch.org"
         application={['rw']}
-        authorization=""
-        dataset="89a6358e-27eb-4b9c-9f0d-befc4959f914"
-        // widget="61628091-8679-4db8-bc47-851c51784f32"
       />
     );
   })
