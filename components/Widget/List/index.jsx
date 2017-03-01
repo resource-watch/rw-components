@@ -33,7 +33,7 @@ class WidgetList extends React.Component {
   */
   getWidgets() {
     const { dataset, application } = this.props;
-    const url = `https://api.resourcewatch.org/dataset/${dataset}/widget?app=${application.join(',')}&includes=widget&page[size]=${Date.now()}`;
+    const url = `https://api.resourcewatch.org/dataset/${dataset.id}/widget?app=${application.join(',')}&includes=widget&page[size]=${Date.now()}`;
 
     fetch(new Request(url))
       .then((response) => {
@@ -118,7 +118,7 @@ class WidgetList extends React.Component {
 
 WidgetList.propTypes = {
   application: React.PropTypes.array.isRequired,
-  dataset: React.PropTypes.string.isRequired,
+  dataset: React.PropTypes.object.isRequired,
   selected: React.PropTypes.string,
   onChange: React.PropTypes.func
 };

@@ -20,9 +20,8 @@ class DatasetCard extends React.Component {
    * - triggerClick
   */
 
-  triggerClick(e) {
-    const datasetId = e.currentTarget.dataset.id;
-    if (this.props.onClick) this.props.onClick(datasetId);
+  triggerClick() {
+    if (this.props.onClick) this.props.onClick(this.props.dataset);
   }
 
   render() {

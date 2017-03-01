@@ -14,7 +14,7 @@ class DatasetList extends React.Component {
     this.state = {
       datasets: [],
       loading: true,
-      selected: props.selected,
+      selected: props.selected || {},
       valid: false
     };
 
@@ -92,7 +92,7 @@ class DatasetList extends React.Component {
                   dataset={dataset}
                   properties={{
                     'data-id': dataset.id,
-                    className: (dataset.id === selected) ? '-selected' : ''
+                    className: (dataset.id === selected.id) ? '-selected' : ''
                   }}
                   onClick={this.triggerClick}
                 />
@@ -107,7 +107,7 @@ class DatasetList extends React.Component {
 
 DatasetList.propTypes = {
   application: React.PropTypes.array.isRequired,
-  selected: React.PropTypes.string,
+  selected: React.PropTypes.object,
   onChange: React.PropTypes.func
 };
 

@@ -1,5 +1,5 @@
 export const STATE_DEFAULT = {
-  step: 1,
+  step: 4,
   stepLength: 5,
   submitting: false,
   loading: false,
@@ -8,7 +8,9 @@ export const STATE_DEFAULT = {
   wizard: {
     authorization: '',
     // STEP 1
-    dataset: '', // Required
+    dataset: {
+      id: 'd02df2f6-d80c-4274-bb6f-f062061655c4' // Required
+    },
     widget: '', // Optional
 
     // STEP 2

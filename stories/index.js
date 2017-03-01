@@ -35,7 +35,9 @@ storiesOf('Dataset', module)
         api="https://api.resourcewatch.org"
         application={['rw']}
         authorization=""
-        dataset="f3d6d6c1-3b3b-4dfc-a2a0-dcf38d258ae9"
+        dataset={{
+          id: "f3d6d6c1-3b3b-4dfc-a2a0-dcf38d258ae9"
+        }}
       />
     );
   })
@@ -76,7 +78,9 @@ storiesOf('Widget', module)
     return (
       <WidgetList
         application={['rw']}
-        dataset="d02df2f6-d80c-4274-bb6f-f062061655c4"
+        dataset={{
+          id: "d02df2f6-d80c-4274-bb6f-f062061655c4"
+        }}
       />
     );
   })
