@@ -9,6 +9,8 @@ import { STATE_DEFAULT } from './constants';
 import Step1 from './Steps/step-1';
 import Step2 from './Steps/step-2';
 import Step3 from './Steps/step-3';
+import Step4 from './Steps/step-4';
+import Step5 from './Steps/step-5';
 import Navigation from '../../Form/Navigation';
 
 class WidgetWizard extends React.Component {
@@ -145,6 +147,26 @@ class WidgetWizard extends React.Component {
 
         {this.state.step === 3 &&
           <Step3
+            ref={(c) => { this.step = c; }}
+            wizard={this.state.wizard}
+            onChange={(value) => {
+              this.onWizardChange(value);
+            }}
+          />
+        }
+
+        {this.state.step === 4 &&
+          <Step4
+            ref={(c) => { this.step = c; }}
+            wizard={this.state.wizard}
+            onChange={(value) => {
+              this.onWizardChange(value);
+            }}
+          />
+        }
+
+        {this.state.step === 5 &&
+          <Step5
             ref={(c) => { this.step = c; }}
             wizard={this.state.wizard}
             onChange={(value) => {
