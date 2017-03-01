@@ -10,8 +10,8 @@ class Step2 extends Step {
     const { wizard } = this.props;
     return (
       <fieldset className="c-field-container">
-        <Title className="-primary -huge">
-          Select a widget
+        <Title className="-primary -big">
+          Select a widget or create a new one
         </Title>
         <WidgetList
           ref={(c) => { if (c) this.children.push(c); }}

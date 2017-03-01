@@ -12,7 +12,24 @@ export const STATE_DEFAULT = {
     widget: '', // Optional
 
     // STEP 2
-    metadata: { },
+    metadata: {
+      technical_title: '',
+      title: '',
+      subtitle: '',
+      source: '',
+      functions: '',
+      geographic_coverage: '',
+      spatial_resolution: '',
+      date_of_content: '',
+      frequency_of_updates: '',
+      cautions: '',
+      license: '',
+      license_link: '',
+      overview: '',
+      why: '',
+      citation: '',
+      other: ''
+    },
 
     // STEP 3
     filters: [

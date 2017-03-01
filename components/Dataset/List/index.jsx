@@ -81,7 +81,7 @@ class DatasetList extends React.Component {
         {this.state.loading &&
           <Spinner className="-light" isLoading={this.state.loading} />
         }
-        {this.state.datasets.length &&
+        {!!this.state.datasets.length &&
           <ul className="list">
             {this.state.datasets.map(dataset =>
               <li

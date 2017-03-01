@@ -9,7 +9,7 @@ class Step1 extends Step {
   render() {
     return (
       <fieldset className="c-field-container">
-        <Title className="-primary -huge">
+        <Title className="-primary -big">
           Select a dataset
         </Title>
         <DatasetList

@@ -12,6 +12,11 @@
     font-weight: $font-weight-bold;
   }
 
+  &.-big {
+    font-size: rem(32px);
+    font-weight: $font-weight-light;
+  }
+
   &.-huge {
     font-size: rem(48px);
     font-weight: $font-weight-light;
