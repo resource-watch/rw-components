@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/resource-watch/rw-components#readme",
   "dependencies": {
+    "bluebird": "^3.4.7",
     "brace": "^0.10.0",
     "lodash": "^4.17.4",
     "normalize.css": "^5.0.0",
@@ -29,7 +30,8 @@
     "react-ace": "^4.1.6",
     "react-dom": "^15.4.1",
     "react-select": "^1.0.0-rc.3",
-    "react-tokeninput": "^2.2.2"
+    "react-tokeninput": "^2.2.2",
+    "whatwg-fetch": "^2.0.2"
   },
   "devDependencies": {
     "@kadira/storybook": "^2.21.0",
