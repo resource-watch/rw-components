@@ -4,6 +4,7 @@ import find from 'lodash/find';
 import Field from '../../Form/Field';
 import Select from '../../Form/Select';
 import Input from '../../Form/Input';
+import Button from '../../UI/Button';
 
 import './style.scss';
 
@@ -13,7 +14,7 @@ const defaults = {
     columnType: '',
     values: null
   },
-  filters: []
+  filters: {}
 };
 
 class DatasetFilterItem extends React.Component {
@@ -21,21 +22,37 @@ class DatasetFilterItem extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = defaults;
+    this.state = {
+      selected: props.selected || defaults.selected,
+      filters: props.filters || defaults.filters
+    };
 
+    // BINDINGS
     this.triggerChangeSelected = this.triggerChangeSelected.bind(this);
     this.triggerChangeFilters = this.triggerChangeFilters.bind(this);
+    this.triggerDeleteFilters = this.triggerDeleteFilters.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      selected: nextProps.selected || defaults.selected,
+      filters: nextProps.filters || defaults.filters
+    });
   }
 
   /**
    * UI EVENTS
    * - triggerChangeSelected
    * - triggerChangeFilters
+   * - triggerDeleteFilters
   */
   triggerChangeSelected(value) {
-    const selected = find(this.props.columns, { columnName: value }) || defaults;
+    const selected = find(this.props.columns, { columnName: value });
 
-    this.setState({ selected }, () => {
+    this.setState({
+      selected: selected || defaults,
+      filters: (selected) ? this.state.filters : {}
+    }, () => {
       if (this.props.onChange) this.props.onChange(this.state);
     });
   }
@@ -48,42 +65,53 @@ class DatasetFilterItem extends React.Component {
     });
   }
 
+  triggerDeleteFilters() {
+    if (this.props.onDelete) this.props.onDelete();
+  }
+
+  /**
+   * RENDER
+  */
   render() {
-    const { selected } = this.state;
+    const { selected, filters } = this.state;
     const { columns } = this.props;
 
     return (
       <div className="c-datasets-filter-item">
         <div className="column">
           <Field
-            options={columns.map(column => {
+            options={columns.map((column) => {
               return {
                 label: column.columnName,
                 value: column.columnName
-              }
+              };
             })}
             properties={{
               name: 'column',
               label: 'Column',
-              default: ''
+              default: filters.column
             }}
             onChange={this.triggerChangeSelected}
           >
             {Select}
           </Field>
         </div>
-        {selected.columnType === 'number' &&
+        {(selected.columnType === 'number' || selected.columnType === 'date') &&
           <div className="filters">
             <Field
               properties={{
-                type: 'number',
+                type: selected.columnType,
                 name: 'min',
                 label: 'Min',
                 min: selected.values.min,
                 max: selected.values.max,
-                default: ''
+                default: filters.min
               }}
-              onChange={value => this.triggerChangeFilters({ min: value })}
+              onChange={value => this.triggerChangeFilters({
+                column: selected.columnName,
+                min: value,
+                text: null
+              })}
             >
               {Input}
             </Field>
@@ -95,13 +123,56 @@ class DatasetFilterItem extends React.Component {
                 label: 'Max',
                 min: selected.values.min,
                 max: selected.values.max,
-                default: ''
+                default: filters.max
               }}
-              onChange={value => this.triggerChangeFilters({ max: value })}
+              onChange={value => this.triggerChangeFilters({
+                column: selected.columnName,
+                max: value,
+                text: null
+              })}
             >
               {Input}
             </Field>
           </div>
+        }
+
+        {selected.columnType === 'string' &&
+          <div className="filters">
+            <Field
+              options={selected.values.map((value) => {
+                return {
+                  label: value,
+                  value
+                };
+              })}
+              properties={{
+                name: 'text',
+                label: 'Text',
+                default: filters.text
+              }}
+              onChange={value => this.triggerChangeFilters({
+                column: selected.columnName,
+                text: value,
+                min: null,
+                max: null
+              })}
+            >
+              {Select}
+            </Field>
+
+          </div>
+        }
+
+        {this.props.filterId !== 0 &&
+          <Button
+            properties={{
+              type: 'button',
+              className: '-primary'
+            }}
+            onClick={this.triggerDeleteFilters}
+          >
+            ×
+          </Button>
         }
 
       </div>
@@ -110,8 +181,12 @@ class DatasetFilterItem extends React.Component {
 }
 
 DatasetFilterItem.propTypes = {
+  filterId: React.PropTypes.number.isRequired,
+  selected: React.PropTypes.object,
+  filters: React.PropTypes.object,
   columns: React.PropTypes.array.isRequired,
-  onChange: React.PropTypes.func
+  onChange: React.PropTypes.func,
+  onDelete: React.PropTypes.func
 };
 
 export default DatasetFilterItem;
