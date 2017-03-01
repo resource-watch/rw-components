@@ -54,9 +54,7 @@ class Field extends React.Component {
         }
 
         {hint &&
-          <p className="hint">
-            {hint}
-          </p>
+          <p className="hint" dangerouslySetInnerHTML={{ __html: hint }} />
         }
 
         <this.props.children

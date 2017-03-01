@@ -36,10 +36,10 @@ class DatasetCard extends React.Component {
         <div className="header">
           <h3>{dataset.name}</h3>
         </div>
-        <div className="info">
+        {/* <div className="info">
           <p>{dataset.layer.length} layers</p>
           <p>{dataset.widget.length} widgets</p>
-        </div>
+        </div> */}
       </div>
     );
   }

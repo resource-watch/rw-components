@@ -1,6 +1,7 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 
+import Spinner from '../../UI/Spinner';
 import WidgetCard from '../Card';
 
 import './style.scss';
@@ -12,7 +13,8 @@ class WidgetList extends React.Component {
 
     this.state = {
       widgets: [],
-      selected: ''
+      loading: true,
+      selected: props.selected
     };
 
     // BINDINGS
@@ -26,6 +28,8 @@ class WidgetList extends React.Component {
   /**
    * HELPERS
    * - getWidgets
+   * - validate
+   * - isValid
   */
   getWidgets() {
     const { dataset, application } = this.props;
@@ -43,47 +47,70 @@ class WidgetList extends React.Component {
           })
         ), 'name');
 
-        this.setState({ widgets });
+        this.setState({ widgets, loading: false });
       })
       .catch(() => {
-        this.setState({ message: 'Error loading datasets' });
+        this.setState({ message: 'Error loading datasets', loading: false });
       });
+  }
+
+  validate() {
+    const valid = true;
+    this.setState({ valid });
+  }
+
+  isValid() {
+    return this.state.valid;
   }
 
 
   /**
    * UI EVENTS
    * - triggerClick
+   * - triggerNewClick
   */
-  triggerClick(id) {
-    console.info(id);
+  triggerClick(selected) {
+    this.setState({ selected }, () => {
+      if (this.props.onChange) this.props.onChange(this.state.selected);
+    });
   }
 
   render() {
+    const { selected } = this.state;
+
     return (
       <div className="c-widgets-list">
-        {this.state.widgets.length &&
-          <ul className="list">
-            {this.state.widgets.map(widget =>
-              <li
-                key={widget.id}
-                className="list-item"
-              >
-                <WidgetCard
-                  widget={widget}
-                  properties={{
-                    'data-id': widget.id
-                  }}
-                  onClick={this.triggerClick}
-                />
-              </li>
-            )}
-          </ul>
+        {this.state.loading &&
+          <Spinner className="-light" isLoading={this.state.loading} />
         }
-
-        {!this.state.widgets.length &&
-          <p>Loading ...</p>
-        }
+        <ul className="list">
+          {this.state.widgets.map(widget =>
+            <li
+              key={widget.id}
+              className="list-item"
+            >
+              <WidgetCard
+                widget={widget}
+                properties={{
+                  'data-id': widget.id,
+                  className: (widget.id === selected) ? '-selected' : ''
+                }}
+                onClick={this.triggerClick}
+              />
+            </li>
+          )}
+          <li
+            className="list-item"
+          >
+            <WidgetCard
+              widget={{
+                name: 'New'
+              }}
+              properties={{}}
+              onClick={this.triggerClick}
+            />
+          </li>
+        </ul>
       </div>
     );
   }
@@ -91,7 +118,9 @@ class WidgetList extends React.Component {
 
 WidgetList.propTypes = {
   application: React.PropTypes.array.isRequired,
-  dataset: React.PropTypes.string.isRequired
+  dataset: React.PropTypes.string.isRequired,
+  selected: React.PropTypes.string,
+  onChange: React.PropTypes.func
 };
 
 export default WidgetList;

@@ -1,6 +1,7 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 
+import Spinner from '../../UI/Spinner';
 import DatasetCard from '../Card';
 
 import './style.scss';
@@ -12,7 +13,9 @@ class DatasetList extends React.Component {
 
     this.state = {
       datasets: [],
-      selected: ''
+      loading: true,
+      selected: props.selected,
+      valid: false
     };
 
     // BINDINGS
@@ -26,6 +29,8 @@ class DatasetList extends React.Component {
   /**
    * HELPERS
    * - getDatasets
+   * - validate
+   * - isValid
   */
   getDatasets() {
     const { application } = this.props;
@@ -42,11 +47,20 @@ class DatasetList extends React.Component {
             id: dataset.id
           })
         ), 'name');
-        this.setState({ datasets });
+        this.setState({ datasets, loading: false });
       })
       .catch(() => {
-        this.setState({ message: 'Error loading datasets' });
+        this.setState({ message: 'Error loading datasets', loading: false });
       });
+  }
+
+  validate() {
+    const valid = !!this.state.selected;
+    this.setState({ valid });
+  }
+
+  isValid() {
+    return this.state.valid;
   }
 
 
@@ -54,14 +68,20 @@ class DatasetList extends React.Component {
    * UI EVENTS
    * - triggerClick
   */
-  triggerClick(id) {
-    console.info(id);
+  triggerClick(selected) {
+    this.setState({ selected }, () => {
+      if (this.props.onChange) this.props.onChange(this.state.selected);
+    });
   }
 
   render() {
+    const { selected } = this.state;
     return (
       <div className="c-datasets-list">
-        {this.state.datasets.length &&
+        {this.state.loading &&
+          <Spinner className="-light" isLoading={this.state.loading} />
+        }
+        {!!this.state.datasets.length &&
           <ul className="list">
             {this.state.datasets.map(dataset =>
               <li
@@ -71,7 +91,8 @@ class DatasetList extends React.Component {
                 <DatasetCard
                   dataset={dataset}
                   properties={{
-                    'data-id': dataset.id
+                    'data-id': dataset.id,
+                    className: (dataset.id === selected) ? '-selected' : ''
                   }}
                   onClick={this.triggerClick}
                 />
@@ -79,17 +100,15 @@ class DatasetList extends React.Component {
             )}
           </ul>
         }
-
-        {!this.state.datasets.length &&
-          <p>Loading ...</p>
-        }
       </div>
     );
   }
 }
 
 DatasetList.propTypes = {
-  application: React.PropTypes.array.isRequired
+  application: React.PropTypes.array.isRequired,
+  selected: React.PropTypes.string,
+  onChange: React.PropTypes.func
 };
 
 export default DatasetList;
