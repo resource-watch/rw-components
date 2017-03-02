@@ -50,11 +50,18 @@ export default class DatasetService {
         });
         Promise.all(promises).then((results) => {
           const filters = _.map(filteredFields, (field, index) => {
-            return {
+            const filterResult = {
               columnName: field.columnName,
-              columnType: field.columnType,
-              values: results[index]
+              columnType: field.columnType
             };
+            if (field.columnType === 'number' || field.columnType === 'date') {
+              filterResult.properties = results[index];
+            } else {
+              filterResult.properties = {
+                values: results[index]
+              };
+            }
+            return filterResult;
           });
           resolve(filters);
         });
