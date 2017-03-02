@@ -1,5 +1,4 @@
 import React from 'react';
-import findIndex from 'lodash/findIndex';
 
 import DatasetService from '../../../services/DatasetService';
 import DatasetFilterItem from '../FilterItem';
@@ -73,8 +72,9 @@ class DatasetFilter extends React.Component {
     const filters = [].concat(this.state.filters);
     filters.splice(index, 1);
 
-    this.setState({ filters }, () => {
-      console.info(this.state.filters);
+    // This is a piece of shit, we need to improve it
+    this.setState({ filters: [] }, () => {
+      this.setState({ filters });
     });
   }
 
@@ -83,7 +83,7 @@ class DatasetFilter extends React.Component {
   */
   render() {
     const { columns, filters, loading } = this.state;
-    console.log(filters);
+
     return (
       <div className="c-datasets-filter">
         {loading &&
@@ -91,11 +91,11 @@ class DatasetFilter extends React.Component {
         }
         <div className="list">
           {!!columns.length &&
-            this.state.filters.map((filter, i) => {
+            filters.map((filter, i) => {
               return (
                 <DatasetFilterItem
                   key={i}
-                  filterId={i}
+                  index={i}
                   columns={columns}
                   filters={filter.filters}
                   selected={filter.selected}

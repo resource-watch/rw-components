@@ -67,6 +67,7 @@ export const STATE_DEFAULT = {
   stepLength: 2,
   submitting: false,
   loading: false,
+  dataset: {},
   form: {
     authorization: '',
     // STEP 1
