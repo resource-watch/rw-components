@@ -94,7 +94,7 @@ storiesOf('Widget', module)
       />
     );
   })
-  .add('WidgetWizard', () => {
+  .add('Wizard', () => {
     return (
       <WidgetWizard
         application={['rw']}

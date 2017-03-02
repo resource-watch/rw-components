@@ -72,8 +72,9 @@ class DatasetFilter extends React.Component {
     const filters = [].concat(this.state.filters);
     filters.splice(index, 1);
 
-    this.setState({ filters }, () => {
-      console.info(this.state.filters);
+    // This is a piece of shit, we need to improve it
+    this.setState({ filters: [] }, () => {
+      this.setState({ filters });
     });
   }
 

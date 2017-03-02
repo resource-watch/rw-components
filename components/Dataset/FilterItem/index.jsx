@@ -89,8 +89,7 @@ class DatasetFilterItem extends React.Component {
             properties={{
               name: 'column',
               label: 'Column',
-              value: filters.columnName,
-              default: ''
+              default: filters.columnName
             }}
             onChange={this.triggerChangeSelected}
           >
@@ -106,7 +105,7 @@ class DatasetFilterItem extends React.Component {
                 label: 'Min',
                 min: selected.values.min,
                 max: selected.values.max,
-                default: ''
+                default: (filters.values) ? filters.values.min : ''
               }}
               onChange={value => this.triggerChangeFilters({
                 columnName: selected.columnName,
@@ -126,7 +125,7 @@ class DatasetFilterItem extends React.Component {
                 label: 'Max',
                 min: selected.values.min,
                 max: selected.values.max,
-                default: ''
+                default: (filters.values) ? filters.values.max : ''
               }}
               onChange={value => this.triggerChangeFilters({
                 columnName: selected.columnName,
@@ -153,7 +152,7 @@ class DatasetFilterItem extends React.Component {
               properties={{
                 name: 'text',
                 label: 'Text',
-                default: ''
+                default: (filters.values) ? filters.values[0] : ''
               }}
               onChange={value => this.triggerChangeFilters({
                 columnName: selected.columnName,
