@@ -26,6 +26,10 @@ export default class DatasetService {
     this.opts = options;
   }
 
+  /**
+   * Get dataset info
+   * @returns {Promise}
+   */
   fetchData() {
     return new Promise((resolve) => {
       fetch(`${this.opts.apiURL}/dataset/${this.datasetId}`)
@@ -34,6 +38,10 @@ export default class DatasetService {
     });
   }
 
+  /**
+   *  Get max and min or values depending on field type
+   *  @returns {Promise}
+   */
   getFilter(fieldData) {
     return new Promise((resolve) => {
       if (fieldData.columnType === 'number' || fieldData.columnType === 'date') {
