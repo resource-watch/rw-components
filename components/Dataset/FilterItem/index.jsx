@@ -12,7 +12,7 @@ const defaults = {
   selected: {
     columnName: '',
     columnType: '',
-    values: null
+    properties: {}
   },
   filters: {}
 };
@@ -103,14 +103,14 @@ class DatasetFilterItem extends React.Component {
                 type: selected.columnType,
                 name: 'min',
                 label: 'Min',
-                min: selected.values.min,
-                max: selected.values.max,
-                default: (filters.values) ? filters.values.min : ''
+                min: selected.properties.min,
+                max: selected.properties.max,
+                default: (filters.properties) ? filters.properties.min : ''
               }}
               onChange={value => this.triggerChangeFilters({
                 columnName: selected.columnName,
                 columnType: selected.columnType,
-                values: Object.assign({}, filters.values, {
+                properties: Object.assign({}, filters.properties, {
                   min: value
                 })
               })}
@@ -123,14 +123,14 @@ class DatasetFilterItem extends React.Component {
                 type: 'number',
                 name: 'max',
                 label: 'Max',
-                min: selected.values.min,
-                max: selected.values.max,
-                default: (filters.values) ? filters.values.max : ''
+                min: selected.properties.min,
+                max: selected.properties.max,
+                default: (filters.properties) ? filters.properties.max : ''
               }}
               onChange={value => this.triggerChangeFilters({
                 columnName: selected.columnName,
                 columnType: selected.columnType,
-                values: Object.assign({}, filters.values, {
+                properties: Object.assign({}, filters.properties, {
                   max: value
                 })
               })}
@@ -143,7 +143,7 @@ class DatasetFilterItem extends React.Component {
         {selected.columnType === 'string' &&
           <div className="filters">
             <Field
-              options={selected.values.map((value) => {
+              options={selected.properties.values.map((value) => {
                 return {
                   label: value,
                   value
@@ -152,12 +152,14 @@ class DatasetFilterItem extends React.Component {
               properties={{
                 name: 'text',
                 label: 'Text',
-                default: (filters.values) ? filters.values[0] : ''
+                default: (filters.properties) ? filters.properties.values[0] : ''
               }}
               onChange={value => this.triggerChangeFilters({
                 columnName: selected.columnName,
                 columnType: selected.columnType,
-                values: [value]
+                properties: {
+                  values: [value]
+                }
               })}
             >
               {Select}
