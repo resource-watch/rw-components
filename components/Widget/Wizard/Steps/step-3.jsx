@@ -256,7 +256,8 @@ class Step3 extends Step {
 }
 
 Step3.propTypes = {
-  wizard: React.PropTypes.object
+  wizard: React.PropTypes.object,
+  onChange: React.PropTypes.func
 };
 
 export default Step3;

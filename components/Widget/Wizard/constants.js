@@ -38,14 +38,11 @@ export const STATE_DEFAULT = {
       // {
       //   name: 'createdAt',
       //   type: 'date',
-      //   max: Date.now(),
-      //   min: null
-      // }, {
-      //   name: '',
-      //   type: '',
-      //   max: 100,
-      //   min: 0
-      // }
+      //   properties: [{
+      //    max: Date.now(),
+      //    min: null
+      //   }]
+      // }, ...
     ],
 
     // STEP 4
