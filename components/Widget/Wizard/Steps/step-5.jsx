@@ -3,6 +3,7 @@ import './style.scss';
 
 import Step from './step';
 import Title from '../../../UI/Title';
+import WidgetPreview from '../../Preview';
 
 class Step5 extends Step {
   render() {
@@ -11,7 +12,9 @@ class Step5 extends Step {
         <Title className="-primary -big">
           Preview
         </Title>
-
+        <WidgetPreview
+          wizard={this.props.wizard}
+        />
       </fieldset>
     );
   }

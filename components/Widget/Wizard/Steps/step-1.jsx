@@ -24,7 +24,8 @@ class Step1 extends Step {
 }
 
 Step1.propTypes = {
-  wizard: React.PropTypes.object
+  wizard: React.PropTypes.object,
+  onChange: React.PropTypes.func
 };
 
 export default Step1;

@@ -36,6 +36,8 @@ class DatasetFilter extends React.Component {
         this.setState({
           loading: false,
           columns: data
+        }, () => {
+          if (this.props.onChangeColumns) this.props.onChangeColumns(this.state.columns);
         });
       })
       .then((err) => {
@@ -51,11 +53,11 @@ class DatasetFilter extends React.Component {
    * - triggerDeleteFilters
   */
   triggerChangeFilters(obj, i) {
-    const filters = this.state.filters.slice(0);
+    const filters = [].concat(this.state.filters);
     filters[i] = obj;
 
     this.setState({ filters }, () => {
-      console.info(this.state.filters);
+      if (this.props.onChangeFilters) this.props.onChangeFilters(this.state.filters);
     });
   }
 
@@ -64,7 +66,7 @@ class DatasetFilter extends React.Component {
     filters.push({});
 
     this.setState({ filters }, () => {
-      console.info(this.state.filters);
+      if (this.props.onChangeFilters) this.props.onChangeFilters(this.state.filters);
     });
   }
 
@@ -74,7 +76,9 @@ class DatasetFilter extends React.Component {
 
     // This is a piece of shit, we need to improve it
     this.setState({ filters: [] }, () => {
-      this.setState({ filters });
+      this.setState({ filters }, () => {
+        if (this.props.onChangeFilters) this.props.onChangeFilters(this.state.filters);
+      });
     });
   }
 
@@ -123,7 +127,9 @@ class DatasetFilter extends React.Component {
 }
 
 DatasetFilter.propTypes = {
-  dataset: React.PropTypes.object.isRequired
+  dataset: React.PropTypes.object.isRequired,
+  onChangeColumns: React.PropTypes.func,
+  onChangeFilters: React.PropTypes.func
 };
 
 export default DatasetFilter;
