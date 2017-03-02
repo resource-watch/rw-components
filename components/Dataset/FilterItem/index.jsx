@@ -89,7 +89,8 @@ class DatasetFilterItem extends React.Component {
             properties={{
               name: 'column',
               label: 'Column',
-              default: filters.column
+              value: filters.columnName,
+              default: ''
             }}
             onChange={this.triggerChangeSelected}
           >
@@ -105,12 +106,14 @@ class DatasetFilterItem extends React.Component {
                 label: 'Min',
                 min: selected.values.min,
                 max: selected.values.max,
-                default: filters.min
+                default: ''
               }}
               onChange={value => this.triggerChangeFilters({
-                column: selected.columnName,
-                min: value,
-                text: null
+                columnName: selected.columnName,
+                columnType: selected.columnType,
+                values: Object.assign({}, filters.values, {
+                  min: value
+                })
               })}
             >
               {Input}
@@ -123,12 +126,14 @@ class DatasetFilterItem extends React.Component {
                 label: 'Max',
                 min: selected.values.min,
                 max: selected.values.max,
-                default: filters.max
+                default: ''
               }}
               onChange={value => this.triggerChangeFilters({
-                column: selected.columnName,
-                max: value,
-                text: null
+                columnName: selected.columnName,
+                columnType: selected.columnType,
+                values: Object.assign({}, filters.values, {
+                  max: value
+                })
               })}
             >
               {Input}
@@ -148,13 +153,12 @@ class DatasetFilterItem extends React.Component {
               properties={{
                 name: 'text',
                 label: 'Text',
-                default: filters.text
+                default: ''
               }}
               onChange={value => this.triggerChangeFilters({
-                column: selected.columnName,
-                text: value,
-                min: null,
-                max: null
+                columnName: selected.columnName,
+                columnType: selected.columnType,
+                values: [value]
               })}
             >
               {Select}
@@ -163,7 +167,7 @@ class DatasetFilterItem extends React.Component {
           </div>
         }
 
-        {this.props.filterId !== 0 &&
+        {this.props.index !== 0 &&
           <Button
             properties={{
               type: 'button',
@@ -181,7 +185,7 @@ class DatasetFilterItem extends React.Component {
 }
 
 DatasetFilterItem.propTypes = {
-  filterId: React.PropTypes.number.isRequired,
+  index: React.PropTypes.number.isRequired,
   selected: React.PropTypes.object,
   filters: React.PropTypes.object,
   columns: React.PropTypes.array.isRequired,
