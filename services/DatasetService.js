@@ -34,6 +34,22 @@ export default class DatasetService {
     });
   }
 
+  getFilter(fieldData) {
+    return new Promise((resolve) => {
+      if (fieldData.columnType === 'number' || fieldData.columnType === 'date') {
+        this.getMinAndMax(fieldData.columnName, fieldData.tableName).then((data) => {
+          fieldData.properties = data;
+          resolve(fieldData);
+        });
+      } else {
+        this.getValues(fieldData.columnName, fieldData.tableName).then((data) => {
+          fieldData.properties = data;
+          resolve(fieldData);
+        });
+      }
+    });
+  }
+
   getFilters() {
     return new Promise((resolve) => {
       this.getFields().then((fieldsData) => {
