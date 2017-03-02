@@ -11,6 +11,7 @@ class Step5 extends Step {
         <Title className="-primary -big">
           Preview
         </Title>
+
       </fieldset>
     );
   }
