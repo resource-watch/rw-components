@@ -17,7 +17,8 @@ class DatasetFilter extends React.Component {
     this.state = {
       loading: true,
       columns: [],
-      filters: [{}]
+      filters: [{}], // We need to create an empty object to render the first one
+      query: getQueryByFilters(props.dataset.tableName)
     };
 
     // DatasetService
@@ -39,6 +40,7 @@ class DatasetFilter extends React.Component {
           columns: data
         }, () => {
           if (this.props.onChangeColumns) this.props.onChangeColumns(this.state.columns);
+          if (this.props.onChangeQuery) this.props.onChangeQuery(this.state.query);
         });
       })
       .then((err) => {
@@ -56,29 +58,35 @@ class DatasetFilter extends React.Component {
   triggerChangeFilters(obj, i) {
     const filters = [].concat(this.state.filters);
     filters[i] = obj;
+    const query = getQueryByFilters(this.props.dataset.tableName, filters);
 
-    this.setState({ filters }, () => {
+    this.setState({ filters, query }, () => {
       if (this.props.onChangeFilters) this.props.onChangeFilters(this.state.filters);
+      if (this.props.onChangeQuery) this.props.onChangeQuery(this.state.query);
     });
   }
 
   triggerNewFilter() {
     const filters = [].concat(this.state.filters);
     filters.push({});
+    const query = getQueryByFilters(this.props.dataset.tableName, filters);
 
-    this.setState({ filters }, () => {
+    this.setState({ filters, query }, () => {
       if (this.props.onChangeFilters) this.props.onChangeFilters(this.state.filters);
+      if (this.props.onChangeQuery) this.props.onChangeQuery(this.state.query);
     });
   }
 
   triggerDeleteFilters(index) {
     const filters = [].concat(this.state.filters);
     filters.splice(index, 1);
+    const query = getQueryByFilters(this.props.dataset.tableName, filters);
 
     // This is a piece of shit, we need to improve it
     this.setState({ filters: [] }, () => {
-      this.setState({ filters }, () => {
+      this.setState({ filters, query }, () => {
         if (this.props.onChangeFilters) this.props.onChangeFilters(this.state.filters);
+        if (this.props.onChangeQuery) this.props.onChangeQuery(this.state.query);
       });
     });
   }
@@ -87,7 +95,7 @@ class DatasetFilter extends React.Component {
    * RENDER
   */
   render() {
-    const { columns, filters, loading } = this.state;
+    const { columns, filters, query, loading } = this.state;
 
     return (
       <div className="c-datasets-filter">
@@ -123,7 +131,7 @@ class DatasetFilter extends React.Component {
           </Button>
         </div>
         <div className="actions">
-          <pre>{getQueryByFilters(this.props.dataset.tableName, filters)}</pre>
+          <pre>{query}</pre>
         </div>
       </div>
     );
@@ -133,7 +141,8 @@ class DatasetFilter extends React.Component {
 DatasetFilter.propTypes = {
   dataset: React.PropTypes.object.isRequired,
   onChangeColumns: React.PropTypes.func,
-  onChangeFilters: React.PropTypes.func
+  onChangeFilters: React.PropTypes.func,
+  onChangeQuery: React.PropTypes.func
 };
 
 export default DatasetFilter;
