@@ -20,6 +20,12 @@ class FormElement extends React.Component {
     this.triggerValidate = this.triggerValidate.bind(this);
   }
 
+  componentDidMount() {
+    if (this.state.value && this.state.value.length) {
+      this.triggerValidate();
+    }
+  }
+
   triggerValidate() {
     const { validations } = this.props;
     const { value } = this.state;
