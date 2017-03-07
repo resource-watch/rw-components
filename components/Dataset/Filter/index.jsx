@@ -122,8 +122,8 @@ class DatasetFilter extends React.Component {
             Add new
           </Button>
         </div>
-        <div className="list">
-          <h2>{getQueryByFilters(this.props.dataset.tableName, filters)}</h2>
+        <div className="actions">
+          <pre>{getQueryByFilters(this.props.dataset.tableName, filters)}</pre>
         </div>
       </div>
     );

@@ -3,29 +3,77 @@ class Validator {
     // Validations
     this.validations = {
       required: {
-        regex: /.*\S.*/,
-        message: 'The field is required'
+        validate(value) {
+          const regex = /.*\S.*/;
+          return regex.test(value || '');
+        },
+        message() {
+          return 'The field is required';
+        }
       },
 
       email: {
-        regex: /\S+@\S+\.\S+/,
-        message: 'The field should be an email'
+        validate(value) {
+          const regex = /\S+@\S+\.\S+/;
+          return regex.test(value || '');
+        },
+        message() {
+          return 'The field should be an email';
+        }
       },
 
       url: {
-        regex: /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/,
-        message: 'The field should be an url: http://example.com'
+        validate(value) {
+          const regex = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
+          return regex.test(value || '');
+        },
+        message() {
+          return 'The field should be an url: http://example.com';
+        }
+      },
+
+      min: {
+        validate(value, condition) {
+          return parseFloat(value) >= parseFloat(condition);
+        },
+        message(condition) {
+          return `The field should be greater than ${condition}`;
+        }
+      },
+
+      max: {
+        validate(value, condition) {
+          return parseFloat(value) <= parseFloat(condition);
+        },
+        message(condition) {
+          return `The field should be lower than ${condition}`;
+        }
       }
+
     };
   }
 
   validate(validations, value) {
     return validations.map((validation) => {
-      const valid = this.validations[validation].regex.test(value || '');
+      let valid;
+      let message = '';
+
+      if (typeof validation === 'string') {
+        const validObj = this.validations[validation];
+        valid = validObj.validate(value);
+        message = validObj.message();
+      }
+
+      if (typeof validation === 'object') {
+        const validObj = this.validations[validation.type];
+        valid = validObj.validate(value, validation.condition);
+        message = validObj.message(validation.condition);
+      }
+
       return {
         valid,
         error: (!valid) ? {
-          message: this.validations[validation].message
+          message
         } : null
       };
     });

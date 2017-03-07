@@ -99,6 +99,15 @@ class DatasetFilterItem extends React.Component {
         {(selected.columnType === 'number' || selected.columnType === 'date') &&
           <div className="filters">
             <Field
+              validations={[{
+                type: 'min',
+                condition: selected.properties.min
+              }, {
+                type: 'max',
+                condition: (filters.properties && filters.properties.max) ?
+                  filters.properties.max :
+                  selected.properties.max
+              }]}
               properties={{
                 type: selected.columnType,
                 name: 'min',
@@ -119,6 +128,15 @@ class DatasetFilterItem extends React.Component {
             </Field>
 
             <Field
+              validations={[{
+                type: 'min',
+                condition: (filters.properties && filters.properties.min) ?
+                  filters.properties.min :
+                  selected.properties.min
+              }, {
+                type: 'max',
+                condition: selected.properties.max
+              }]}
               properties={{
                 type: 'number',
                 name: 'max',
