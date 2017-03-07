@@ -9,7 +9,8 @@ export const STATE_DEFAULT = {
     authorization: '',
     // STEP 1
     dataset: {
-      id: 'd02df2f6-d80c-4274-bb6f-f062061655c4' // Required
+      id: 'd02df2f6-d80c-4274-bb6f-f062061655c4', // Required
+      tableName: 'estimated_co2_emission_filtered'
     },
     widget: '', // Optional
 

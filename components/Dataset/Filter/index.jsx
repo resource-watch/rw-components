@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DatasetService from '../../../services/DatasetService';
+import { getQueryByFilters } from '../../../utils/queryUtils';
 import DatasetFilterItem from '../FilterItem';
 import Spinner from '../../UI/Spinner';
 import Button from '../../UI/Button';
@@ -120,6 +121,9 @@ class DatasetFilter extends React.Component {
           >
             Add new
           </Button>
+        </div>
+        <div className="list">
+          <h2>{getQueryByFilters(this.props.dataset.tableName, filters)}</h2>
         </div>
       </div>
     );
