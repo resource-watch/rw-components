@@ -12,7 +12,14 @@ class SelectInput extends FormElement {
    * - triggerChange
   */
   triggerChange(selected) {
-    const value = (selected) ? selected.value : null;
+    let value;
+
+    if (Array.isArray(selected)) {
+      value = (selected) ? selected.map(s => s.value) : null;
+    } else {
+      value = (selected) ? selected.value : null;
+    }
+
     this.setState({ value }, () => {
       // Trigger validation
       this.triggerValidate();

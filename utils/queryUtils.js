@@ -20,8 +20,10 @@ export function getQueryByFilters(tableName, arr = []) {
       return `${min}${(min && max) ? ' AND ' : ''}${max}`;
     }
 
+    const values = `'${filter.properties.values.join("','")}'`;
+
     // Check that it's a string column
-    return `${filter.columnName} IN (${filter.properties.values.join(', ')})`;
+    return `${filter.columnName} IN (${values})`;
   })).join(' AND ');
 
   const where = (filtersQuery.length) ? `WHERE ${filtersQuery}` : '';

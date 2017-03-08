@@ -170,13 +170,14 @@ class DatasetFilterItem extends React.Component {
               properties={{
                 name: 'text',
                 label: 'Text',
-                default: (filters.properties) ? filters.properties.values[0] : ''
+                multi: true,
+                default: (filters.properties) ? filters.properties.values : ''
               }}
               onChange={value => this.triggerChangeFilters({
                 columnName: selected.columnName,
                 columnType: selected.columnType,
                 properties: {
-                  values: [value]
+                  values: value
                 }
               })}
             >

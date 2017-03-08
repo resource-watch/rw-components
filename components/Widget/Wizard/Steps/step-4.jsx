@@ -11,21 +11,11 @@ class Step4 extends Step {
     super(props);
 
     // BINDINGS
-    this.triggerChangeColumns = this.triggerChangeColumns.bind(this);
-    this.triggerChangeFilters = this.triggerChangeFilters.bind(this);
-    this.triggerChangeQuery = this.triggerChangeQuery.bind(this);
+    this.triggerChange = this.triggerChange.bind(this);
   }
 
-  triggerChangeColumns(columns) {
-    this.props.onChange({ columns });
-  }
-
-  triggerChangeFilters(obj) {
-    this.props.onChange({ filters: obj.map(o => o.filters) });
-  }
-
-  triggerChangeQuery(query) {
-    this.props.onChange({ query });
+  triggerChange(obj) {
+    this.props.onChange(obj);
   }
 
   render() {
@@ -37,9 +27,7 @@ class Step4 extends Step {
         </Title>
         <DatasetFilter
           dataset={wizard.dataset}
-          onChangeColumns={this.triggerChangeColumns}
-          onChangeFilters={this.triggerChangeFilters}
-          onChangeQuery={this.triggerChangeQuery}
+          onChange={this.triggerChange}
         />
 
       </fieldset>

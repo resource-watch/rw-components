@@ -30,6 +30,7 @@ class DatasetFilter extends React.Component {
     this.triggerChangeFilters = this.triggerChangeFilters.bind(this);
     this.triggerNewFilter = this.triggerNewFilter.bind(this);
     this.triggerDeleteFilters = this.triggerDeleteFilters.bind(this);
+    this.triggerFetchFilteredData = this.triggerFetchFilteredData.bind(this);
   }
 
   componentWillMount() {
@@ -39,11 +40,15 @@ class DatasetFilter extends React.Component {
           loading: false,
           columns: data
         }, () => {
-          if (this.props.onChangeColumns) this.props.onChangeColumns(this.state.columns);
-          if (this.props.onChangeQuery) this.props.onChangeQuery(this.state.query);
+          if (this.props.onChange) {
+            this.props.onChange({
+              query: this.state.query,
+              columns: this.state.columns
+            });
+          }
         });
       })
-      .then((err) => {
+      .catch((err) => {
         console.error(err);
         this.setState({ loading: false });
       });
@@ -54,6 +59,7 @@ class DatasetFilter extends React.Component {
    * - triggerChangeFilters
    * - triggerNewFilter
    * - triggerDeleteFilters
+   * - triggerFetchFilteredData
   */
   triggerChangeFilters(obj, i) {
     const filters = [].concat(this.state.filters);
@@ -61,8 +67,12 @@ class DatasetFilter extends React.Component {
     const query = getQueryByFilters(this.props.dataset.tableName, filters);
 
     this.setState({ filters, query }, () => {
-      if (this.props.onChangeFilters) this.props.onChangeFilters(this.state.filters);
-      if (this.props.onChangeQuery) this.props.onChangeQuery(this.state.query);
+      if (this.props.onChange) {
+        this.props.onChange({
+          query: this.state.query,
+          filters: this.state.filters
+        });
+      }
     });
   }
 
@@ -72,8 +82,12 @@ class DatasetFilter extends React.Component {
     const query = getQueryByFilters(this.props.dataset.tableName, filters);
 
     this.setState({ filters, query }, () => {
-      if (this.props.onChangeFilters) this.props.onChangeFilters(this.state.filters);
-      if (this.props.onChangeQuery) this.props.onChangeQuery(this.state.query);
+      if (this.props.onChange) {
+        this.props.onChange({
+          query: this.state.query,
+          filters: this.state.filters
+        });
+      }
     });
   }
 
@@ -85,10 +99,24 @@ class DatasetFilter extends React.Component {
     // This is a piece of shit, we need to improve it
     this.setState({ filters: [] }, () => {
       this.setState({ filters, query }, () => {
-        if (this.props.onChangeFilters) this.props.onChangeFilters(this.state.filters);
-        if (this.props.onChangeQuery) this.props.onChangeQuery(this.state.query);
+        if (this.props.onChange) {
+          this.props.onChange({
+            query: this.state.query,
+            filters: this.state.filters
+          });
+        }
       });
     });
+  }
+
+  triggerFetchFilteredData(e) {
+    this.datasetService.fetchFilteredData(this.state.query)
+      .then((data) => {
+        console.info(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   /**
@@ -104,19 +132,17 @@ class DatasetFilter extends React.Component {
         }
         <div className="list">
           {!!columns.length &&
-            filters.map((filter, i) => {
-              return (
-                <DatasetFilterItem
-                  key={i}
-                  index={i}
-                  columns={columns}
-                  filters={filter.filters}
-                  selected={filter.selected}
-                  onChange={value => this.triggerChangeFilters(value, i)}
-                  onDelete={() => this.triggerDeleteFilters(i)}
-                />
-              );
-            })
+            filters.map((filter, i) =>
+              <DatasetFilterItem
+                key={i}
+                index={i}
+                columns={columns}
+                filters={filter.filters}
+                selected={filter.selected}
+                onChange={value => this.triggerChangeFilters(value, i)}
+                onDelete={() => this.triggerDeleteFilters(i)}
+              />
+            )
           }
         </div>
         <div className="actions">
@@ -129,6 +155,15 @@ class DatasetFilter extends React.Component {
           >
             Add new
           </Button>
+          <Button
+            properties={{
+              type: 'button',
+              className: '-primary'
+            }}
+            onClick={this.triggerFetchFilteredData}
+          >
+            Preview
+          </Button>
         </div>
         <div className="actions">
           <pre>{query}</pre>
@@ -140,9 +175,9 @@ class DatasetFilter extends React.Component {
 
 DatasetFilter.propTypes = {
   dataset: React.PropTypes.object.isRequired,
-  onChangeColumns: React.PropTypes.func,
-  onChangeFilters: React.PropTypes.func,
-  onChangeQuery: React.PropTypes.func
+  onChange: React.PropTypes.func,
+  onChange: React.PropTypes.func,
+  onChange: React.PropTypes.func
 };
 
 export default DatasetFilter;

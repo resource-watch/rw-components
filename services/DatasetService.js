@@ -33,10 +33,23 @@ export default class DatasetService {
   fetchData() {
     return new Promise((resolve) => {
       fetch(`${this.opts.apiURL}/dataset/${this.datasetId}`)
-        .then((response) => response.json())
-        .then((jsonData) => resolve(jsonData.data));
+        .then(response => response.json())
+        .then(jsonData => resolve(jsonData.data));
     });
   }
+
+  /**
+   * Get filtered data
+   * @returns {Promise}
+   */
+  fetchFilteredData(query) {
+    return new Promise((resolve) => {
+      fetch(`${this.opts.apiURL}/query/${this.datasetId}?sql=${query}`)
+        .then(response => response.json())
+        .then(jsonData => resolve(jsonData.data));
+    });
+  }
+
 
   /**
    *  Get max and min or values depending on field type
@@ -68,9 +81,8 @@ export default class DatasetService {
         const promises = _.map(filteredFields, (field) => {
           if (field.columnType === 'number' || field.columnType === 'date') {
             return this.getMinAndMax(field.columnName, fieldsData.tableName);
-          } else {
-            return this.getValues(field.columnName, fieldsData.tableName);
           }
+          return this.getValues(field.columnName, fieldsData.tableName);
         });
         Promise.all(promises).then((results) => {
           const filters = _.map(filteredFields, (field, index) => {
@@ -96,16 +108,14 @@ export default class DatasetService {
   getFields() {
     return new Promise((resolve) => {
       fetch(`${this.opts.apiURL}/fields/${this.datasetId}`)
-        .then((response) => response.json())
+        .then(response => response.json())
         .then((jsonData) => {
           const parsedData = {
             tableName: jsonData.tableName,
-            fields: _.map(jsonData.fields, (value, key) => {
-              return {
-                columnName: key,
-                columnType: value.type
-              };
-            })
+            fields: _.map(jsonData.fields, (value, key) => ({
+              columnName: key,
+              columnType: value.type
+            }))
           };
           resolve(parsedData);
         });
@@ -120,8 +130,8 @@ export default class DatasetService {
     const query = `SELECT Min(${columnName}) AS min, Max(${columnName}) AS max FROM ${table}`;
     return new Promise((resolve) => {
       fetch(`https://api.resourcewatch.org/query/${this.datasetId}?sql=${query}`)
-        .then((response) => response.json())
-        .then((jsonData) => resolve(jsonData.data[0]));
+        .then(response => response.json())
+        .then(jsonData => resolve(jsonData.data[0]));
     });
   }
 
@@ -134,14 +144,11 @@ export default class DatasetService {
     const query = `SELECT ${columnName} FROM ${table} ${uniqQueryPart} ORDER BY ${columnName}`;
     return new Promise((resolve) => {
       fetch(`https://api.resourcewatch.org/query/${this.datasetId}?sql=${query}`)
-        .then((response) => response.json())
+        .then(response => response.json())
         .then((jsonData) => {
-          const parsedData = _.map(jsonData.data, (data) => {
-            return data[columnName];
-          });
+          const parsedData = _.map(jsonData.data, data => data[columnName]);
           resolve(parsedData);
         });
     });
   }
-
-};
+}
