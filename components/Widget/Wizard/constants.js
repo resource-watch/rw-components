@@ -9,11 +9,13 @@ export const STATE_DEFAULT = {
     authorization: '',
     // STEP 1
     dataset: {
-      id: 'd02df2f6-d80c-4274-bb6f-f062061655c4' // Required
+      id: 'd02df2f6-d80c-4274-bb6f-f062061655c4', // Required
+      tableName: 'estimated_co2_emission_filtered'
     },
+    // STEP 2
     widget: '', // Optional
 
-    // STEP 2
+    // STEP 3
     metadata: {
       technical_title: '',
       title: '',
@@ -33,7 +35,7 @@ export const STATE_DEFAULT = {
       other: ''
     },
 
-    // STEP 3
+    // STEP 4
     filters: [
       // {
       //   name: 'createdAt',
@@ -45,10 +47,11 @@ export const STATE_DEFAULT = {
       // }, ...
     ],
 
-    // STEP 4
     columns: [
       // '', '', ''
     ],
+
+    // STEP 5
     chart: '', // bar, pie, line
 
     // FORM SUBMIT

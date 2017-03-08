@@ -13,6 +13,7 @@ class Step4 extends Step {
     // BINDINGS
     this.triggerChangeColumns = this.triggerChangeColumns.bind(this);
     this.triggerChangeFilters = this.triggerChangeFilters.bind(this);
+    this.triggerChangeQuery = this.triggerChangeQuery.bind(this);
   }
 
   triggerChangeColumns(columns) {
@@ -21,6 +22,10 @@ class Step4 extends Step {
 
   triggerChangeFilters(obj) {
     this.props.onChange({ filters: obj.map(o => o.filters) });
+  }
+
+  triggerChangeQuery(query) {
+    this.props.onChange({ query });
   }
 
   render() {
@@ -34,6 +39,7 @@ class Step4 extends Step {
           dataset={wizard.dataset}
           onChangeColumns={this.triggerChangeColumns}
           onChangeFilters={this.triggerChangeFilters}
+          onChangeQuery={this.triggerChangeQuery}
         />
 
       </fieldset>

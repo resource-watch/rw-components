@@ -25,6 +25,8 @@
     "bluebird": "^3.4.7",
     "bourbon": "^4.3.3",
     "brace": "^0.10.0",
+    "classnames": "^2.2.5",
+    "jiminy": "^0.1.1",
     "lodash": "^4.17.4",
     "normalize.css": "^5.0.0",
     "react": "^15.4.1",
@@ -32,8 +34,8 @@
     "react-dom": "^15.4.1",
     "react-select": "^1.0.0-rc.3",
     "react-tokeninput": "^2.2.2",
-    "whatwg-fetch": "^2.0.2",
-    "susy": "^2.2.12"
+    "susy": "^2.2.12",
+    "whatwg-fetch": "^2.0.2"
   },
   "devDependencies": {
     "@kadira/storybook": "^2.21.0",

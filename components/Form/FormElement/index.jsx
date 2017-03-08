@@ -1,4 +1,5 @@
 import React from 'react';
+import isEqual from 'lodash/isEqual';
 
 import Validator from './Validator';
 
@@ -19,6 +20,19 @@ class FormElement extends React.Component {
     this.triggerChange = this.triggerChange.bind(this);
     this.triggerValidate = this.triggerValidate.bind(this);
   }
+
+  componentDidMount() {
+    if (this.state.value && this.state.value.length) {
+      this.triggerValidate();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps, this.props)) {
+      this.triggerValidate();
+    }
+  }
+
 
   triggerValidate() {
     const { validations } = this.props;
