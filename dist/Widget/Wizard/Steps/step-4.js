@@ -43,6 +43,7 @@ var Step4 = function (_Step) {
 
     _this.triggerChangeColumns = _this.triggerChangeColumns.bind(_this);
     _this.triggerChangeFilters = _this.triggerChangeFilters.bind(_this);
+    _this.triggerChangeQuery = _this.triggerChangeQuery.bind(_this);
     return _this;
   }
 
@@ -57,6 +58,11 @@ var Step4 = function (_Step) {
       this.props.onChange({ filters: obj.map(function (o) {
           return o.filters;
         }) });
+    }
+  }, {
+    key: 'triggerChangeQuery',
+    value: function triggerChangeQuery(query) {
+      this.props.onChange({ query: query });
     }
   }, {
     key: 'render',
@@ -74,7 +80,8 @@ var Step4 = function (_Step) {
         _react2.default.createElement(_Filter2.default, {
           dataset: wizard.dataset,
           onChangeColumns: this.triggerChangeColumns,
-          onChangeFilters: this.triggerChangeFilters
+          onChangeFilters: this.triggerChangeFilters,
+          onChangeQuery: this.triggerChangeQuery
         })
       );
     }

@@ -162,6 +162,13 @@ var DatasetFilterItem = function (_React$Component) {
           _react2.default.createElement(
             _Field2.default,
             {
+              validations: [{
+                type: 'min',
+                condition: selected.properties.min
+              }, {
+                type: 'max',
+                condition: filters.properties && filters.properties.max ? filters.properties.max : selected.properties.max
+              }],
               properties: {
                 type: selected.columnType,
                 name: 'min',
@@ -185,6 +192,13 @@ var DatasetFilterItem = function (_React$Component) {
           _react2.default.createElement(
             _Field2.default,
             {
+              validations: [{
+                type: 'min',
+                condition: filters.properties && filters.properties.min ? filters.properties.min : selected.properties.min
+              }, {
+                type: 'max',
+                condition: selected.properties.max
+              }],
               properties: {
                 type: 'number',
                 name: 'max',

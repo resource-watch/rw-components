@@ -10,6 +10,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _isEqual = require('lodash/isEqual');
+
+var _isEqual2 = _interopRequireDefault(_isEqual);
+
 var _Validator = require('./Validator');
 
 var _Validator2 = _interopRequireDefault(_Validator);
@@ -46,6 +50,20 @@ var FormElement = function (_React$Component) {
   }
 
   _createClass(FormElement, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      if (this.state.value && this.state.value.length) {
+        this.triggerValidate();
+      }
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      if (!(0, _isEqual2.default)(prevProps, this.props)) {
+        this.triggerValidate();
+      }
+    }
+  }, {
     key: 'triggerValidate',
     value: function triggerValidate() {
       var _this2 = this;
