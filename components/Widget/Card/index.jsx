@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './style.scss';
-
 class WidgetCard extends React.Component {
 
   constructor(props) {

@@ -6,9 +6,6 @@ import DatasetFilterItem from '../FilterItem';
 import Spinner from '../../UI/Spinner';
 import Button from '../../UI/Button';
 
-
-import './style.scss';
-
 class DatasetFilter extends React.Component {
 
   constructor(props) {

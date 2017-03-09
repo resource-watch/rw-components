@@ -8,8 +8,6 @@ import Select from '../../Form/Select';
 import Spinner from '../../UI/Spinner';
 import DatasetService from '../../../services/DatasetService';
 
-import './style.scss';
-
 class WidgetPreview extends React.Component {
 
   constructor(props) {

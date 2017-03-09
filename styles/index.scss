@@ -1,0 +1,35 @@
+// Reset
+@import "~normalize.css/normalize.css";
+
+// Common files
+@import "./config";
+@import "./base";
+
+// Components
+// UI
+@import "./components/ui/button";
+@import "./components/ui/icon";
+@import "./components/ui/spinner";
+@import "./components/ui/title";
+
+
+// Form
+@import "./components/form/form";
+@import "./components/form/field";
+@import "./components/form/field-container";
+@import "./components/form/field-buttons";
+@import "./components/form/checkbox";
+@import "./components/form/radio";
+@import "./components/form/select";
+@import "./components/form/token";
+
+
+// Datasets
+@import "./components/datasets-card";
+@import "./components/datasets-filter";
+@import "./components/datasets-filter-item";
+@import "./components/datasets-list";
+
+// Widgets
+@import "./components/widgets-card";
+@import "./components/widgets-list";

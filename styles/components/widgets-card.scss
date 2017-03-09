@@ -1,12 +1,10 @@
-@import "styles/config";
-$gutter: 16px;
-.c-datasets-card {
+.c-widgets-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  padding: 8px;
-  // border: 1px solid $border-color-1;
+  padding: 16px;
+  border: 1px solid $border-color-1;
   cursor: pointer;
 
   &:hover {
@@ -20,7 +18,7 @@ $gutter: 16px;
   h3 {
     font-size: 16px;
     color: $color-secondary;
-    margin: 0;
+    margin: 0 0 8px;
   }
 
   p {

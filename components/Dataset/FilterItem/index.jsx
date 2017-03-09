@@ -6,8 +6,6 @@ import Select from '../../Form/Select';
 import Input from '../../Form/Input';
 import Button from '../../UI/Button';
 
-import './style.scss';
-
 const defaults = {
   selected: {
     columnName: '',

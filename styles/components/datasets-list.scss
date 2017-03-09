@@ -1,8 +1,6 @@
-@import "styles/config";
-
-.c-widgets-list {
+.c-datasets-list {
   .list {
-    display: flex;
+    // display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
     padding: 0;
@@ -11,8 +9,7 @@
 
     .list-item {
       display: flex;
-      width: 25%;
-      padding: 10px;
+      flex-direction: column;
     }
   }
 }

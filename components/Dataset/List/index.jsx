@@ -4,8 +4,6 @@ import sortBy from 'lodash/sortBy';
 import Spinner from '../../UI/Spinner';
 import DatasetCard from '../Card';
 
-import './style.scss';
-
 class DatasetList extends React.Component {
 
   constructor(props) {

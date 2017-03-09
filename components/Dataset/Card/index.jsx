@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './style.scss';
-
 class DatasetCard extends React.Component {
 
   constructor(props) {

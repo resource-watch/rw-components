@@ -5,8 +5,6 @@ import uniq from 'lodash/uniq';
 
 import FormElement from '../FormElement';
 
-import './style.scss';
-
 class Token extends FormElement {
   constructor(props) {
     super(props);

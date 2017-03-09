@@ -2,8 +2,6 @@ import React from 'react';
 
 import FormElement from '../FormElement';
 
-import './style.scss';
-
 class CheckboxGroup extends FormElement {
 
   constructor(props) {

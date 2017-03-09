@@ -1,9 +1,6 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import './style.scss';
-
-
 import { STATE_DEFAULT } from './constants';
 
 import Step1 from './Steps/step-1';

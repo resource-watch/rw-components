@@ -1,8 +1,5 @@
 import React from 'react';
 
-// Styles
-import './style.scss';
-
 class Field extends React.Component {
 
   constructor(props) {

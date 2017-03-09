@@ -2,9 +2,6 @@ import React from 'react';
 import Select from 'react-select';
 import FormElement from '../FormElement';
 
-// Styles
-import './style.scss';
-
 class SelectInput extends FormElement {
 
   /**

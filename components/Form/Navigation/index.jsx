@@ -2,8 +2,6 @@ import React from 'react';
 
 import Button from '../../UI/Button';
 
-import './style.scss';
-
 class Navigation extends React.Component {
   constructor(props) {
     super(props);

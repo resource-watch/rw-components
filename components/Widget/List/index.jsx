@@ -4,8 +4,6 @@ import sortBy from 'lodash/sortBy';
 import Spinner from '../../UI/Spinner';
 import WidgetCard from '../Card';
 
-import './style.scss';
-
 class WidgetList extends React.Component {
 
   constructor(props) {

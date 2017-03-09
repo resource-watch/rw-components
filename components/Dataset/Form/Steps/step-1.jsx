@@ -1,5 +1,4 @@
 import React from 'react';
-import './style.scss';
 
 import { APPLICATIONS, TOPICS, PROVIDERS } from '../constants';
 

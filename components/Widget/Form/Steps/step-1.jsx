@@ -1,5 +1,4 @@
 import React from 'react';
-import './style.scss';
 
 import Step from './step';
 import Field from '../../../Form/Field';

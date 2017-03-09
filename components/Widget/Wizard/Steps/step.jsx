@@ -1,5 +1,4 @@
 import React from 'react';
-import './style.scss';
 
 import { PROVIDER_DICTIONARY } from '../constants';
 
