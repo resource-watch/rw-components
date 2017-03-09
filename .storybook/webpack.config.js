@@ -9,6 +9,10 @@ module.exports = function(storybookBaseConfig, configType) {
   //   extensions: ['', '.js', '.jsx', '.json', '.css', '.scss']
   // });
 
+  storybookBaseConfig.module.loaders.push({
+    test: /\.json$/,
+    loader: 'json'
+  });
 
   storybookBaseConfig.module.loaders.push({
     test: /\.css$/,
