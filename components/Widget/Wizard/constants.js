@@ -1,5 +1,5 @@
 export const STATE_DEFAULT = {
-  step: 5,
+  step: 1,
   stepLength: 5,
   submitting: false,
   loading: false,
@@ -9,8 +9,8 @@ export const STATE_DEFAULT = {
     authorization: '',
     // STEP 1
     dataset: {
-      id: 'd02df2f6-d80c-4274-bb6f-f062061655c4', // Required
-      tableName: 'estimated_co2_emission_filtered'
+      // id: 'd02df2f6-d80c-4274-bb6f-f062061655c4', // Required
+      // tableName: 'estimated_co2_emission_filtered'
     },
     // STEP 2
     widget: '', // Optional
@@ -35,65 +35,67 @@ export const STATE_DEFAULT = {
       other: ''
     },
 
-    query: 'SELECT * FROM estimated_co2_emission_filtered WHERE iso3 IN (\'ARG\',\'BRA\',\'COL\',\'PER\',\'VEN\')',
+    query: '', // 'SELECT * FROM estimated_co2_emission_filtered WHERE iso3 IN (\'ARG\',\'BRA\',\'COL\',\'PER\',\'VEN\')'
 
     // STEP 4
-    filters: [{
-      selected: {},
-      filters: {
-        columnName: 'iso3',
-        columnType: 'string',
-        properties: {
-          values: [
-            'ARG',
-            'BRA',
-            'COL',
-            'PER',
-            'VEN'
-          ]
-        }
-      }
-    }],
+    filters: [
+      // {
+      // selected: {},
+      // filters: {
+      //   columnName: 'iso3',
+      //   columnType: 'string',
+      //   properties: {
+      //     values: [
+      //       'ARG',
+      //       'BRA',
+      //       'COL',
+      //       'PER',
+      //       'VEN'
+      //     ]
+      //   }
+      // }
+      // }
+    ],
 
     columns: [
-      {
-        columnName: 'cartodb_id',
-        columnType: 'number',
-        properties: {
-          min: 1,
-          max: 209
-        }
-      },
-      {
-        columnName: 'rank',
-        columnType: 'number',
-        properties: {
-          min: 1,
-          max: 209
-        }
-      },
-      {
-        columnName: 'iso3',
-        columnType: 'string',
-        properties: {
-          values: []
-        }
-      },
-      {
-        columnName: 'total',
-        columnType: 'number',
-        properties: {
-          min: 0,
-          max: 5.4430915E9
-        }
-      },
-      {
-        columnName: 'country',
-        columnType: 'string',
-        properties: {
-          values: []
-        }
-      }
+      // {
+      //   columnName: 'cartodb_id',
+      //   columnType: 'number',
+      //   properties: {
+      //     min: 1,
+      //     max: 209
+      //   }
+      // },
+      // {
+      //   columnName: 'rank',
+      //   columnType: 'number',
+      //   properties: {
+      //     min: 1,
+      //     max: 209
+      //   }
+      // },
+      // {
+      //   columnName: 'iso3',
+      //   columnType: 'string',
+      //   properties: {
+      //     values: []
+      //   }
+      // },
+      // {
+      //   columnName: 'total',
+      //   columnType: 'number',
+      //   properties: {
+      //     min: 0,
+      //     max: 5.4430915E9
+      //   }
+      // },
+      // {
+      //   columnName: 'country',
+      //   columnType: 'string',
+      //   properties: {
+      //     values: []
+      //   }
+      // }
     ],
 
     // STEP 5

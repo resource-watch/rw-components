@@ -4,7 +4,6 @@ import Jiminy from 'jiminy';
 import { chartConfig } from './constants';
 import { getQueryByFilters } from '../../../utils/queries';
 import { getParsedConfig } from '../../../utils/widgets';
-import bar from '../../../utils/widgets/bar.json';
 
 import Field from '../../Form/Field';
 import Select from '../../Form/Select';
@@ -189,7 +188,7 @@ class WidgetPreview extends React.Component {
           }
 
           <VegaChart
-            data={getParsedConfig(bar, parsedConfig)}
+            data={getParsedConfig(selected.type, parsedConfig)}
           />
         </fieldset>
       </div>
