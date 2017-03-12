@@ -37,6 +37,7 @@
     "react-select": "^1.0.0-rc.3",
     "react-tokeninput": "^2.2.2",
     "susy": "^2.2.12",
+    "vega": "2.5.2",
     "whatwg-fetch": "^2.0.2"
   },
   "devDependencies": {

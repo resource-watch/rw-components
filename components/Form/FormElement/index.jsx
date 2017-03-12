@@ -1,5 +1,6 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
+import pick from 'lodash/pick';
 
 import Validator from './Validator';
 
@@ -27,8 +28,23 @@ class FormElement extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const hasValue = Object.prototype.hasOwnProperty.call(nextProps.properties, 'value');
+    const isNew = nextProps.properties.value !== this.state.value;
+    if (hasValue && isNew) {
+      this.setState({
+        value: nextProps.properties.value
+      }, () => {
+        this.triggerValidate();
+      });
+    }
+  }
+
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps, this.props)) {
+    const prevPropsParsed = pick(prevProps, ['properties', 'validations']);
+    const currentPropsParsed = pick(this.props, ['properties', 'validations']);
+
+    if (!isEqual(prevPropsParsed, currentPropsParsed)) {
       this.triggerValidate();
     }
   }

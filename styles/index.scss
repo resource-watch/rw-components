@@ -25,11 +25,12 @@
 
 
 // Datasets
-@import "./components/datasets-card";
-@import "./components/datasets-filter";
-@import "./components/datasets-filter-item";
-@import "./components/datasets-list";
+@import "./components/dataset/card";
+@import "./components/dataset/filter";
+@import "./components/dataset/filter-item";
+@import "./components/dataset/list";
 
 // Widgets
-@import "./components/widgets-card";
-@import "./components/widgets-list";
+@import "./components/widget/card";
+@import "./components/widget/list";
+@import "./components/widget/chart";

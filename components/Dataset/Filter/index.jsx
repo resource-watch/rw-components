@@ -1,7 +1,7 @@
 import React from 'react';
 
 import DatasetService from '../../../services/DatasetService';
-import { getQueryByFilters } from '../../../utils/queryUtils';
+import { getQueryByFilters } from '../../../utils/queries';
 import DatasetFilterItem from '../FilterItem';
 import Spinner from '../../UI/Spinner';
 import Button from '../../UI/Button';
@@ -172,8 +172,6 @@ class DatasetFilter extends React.Component {
 
 DatasetFilter.propTypes = {
   dataset: React.PropTypes.object.isRequired,
-  onChange: React.PropTypes.func,
-  onChange: React.PropTypes.func,
   onChange: React.PropTypes.func
 };
 

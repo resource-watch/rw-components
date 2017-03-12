@@ -2,10 +2,14 @@ import React from 'react';
 
 import Jiminy from 'jiminy';
 import { chartConfig } from './constants';
+import { getQueryByFilters } from '../../../utils/queries';
+import { getParsedConfig } from '../../../utils/widgets';
+import bar from '../../../utils/widgets/bar.json';
 
 import Field from '../../Form/Field';
 import Select from '../../Form/Select';
 import Spinner from '../../UI/Spinner';
+import VegaChart from '../VegaChart';
 import DatasetService from '../../../services/DatasetService';
 
 class WidgetPreview extends React.Component {
@@ -15,11 +19,21 @@ class WidgetPreview extends React.Component {
 
     this.state = {
       loading: true,
-      graphsTypes: [],
+
+      // Options
+      chartOptions: [],
+      xOptions: [],
+      yOptions: [],
+
+      // Config
+      parsedConfig: {},
+
+      // Selected
       selected: {
-        columns: [],
         type: '',
-        graphConfig: {}
+        xAxis: '',
+        yAxis: '',
+        chartConfig: {}
       }
     };
 
@@ -39,7 +53,7 @@ class WidgetPreview extends React.Component {
           loading: false,
           data
         }, () => {
-          this.getGraphTypes();
+          this.getChartOptions();
         });
       })
       .catch((err) => {
@@ -51,110 +65,132 @@ class WidgetPreview extends React.Component {
 
   /**
    * HELPERS
-   * - getGraphTypes
+   * - getChartOptions
+   * - getChartData
+   * - getAxisOptions
   */
-  getGraphTypes() {
+  getChartOptions() {
     /* Finally, you instantiate Jiminy with both the objects */
-    const jiminy = new Jiminy(this.state.data, chartConfig);
+    this.jiminy = new Jiminy(this.state.data, chartConfig);
 
-    /* You can get recommendations: what graphsTypes you can build with the data: */
-    const graphsTypes = jiminy.recommendation(this.state.selected.columns);
-    console.log(graphsTypes);
-    console.log(this.state.selected.columns);
+    /* You can get recommendations: what chartOptions you can build with the data: */
     this.setState({
-      graphsTypes
+      chartOptions: this.jiminy.recommendation(this.state.selected.columns)
     });
-    // /*
-    //   Returns:
-    //   [
-    //     'bar',
-    //     'pie'
-    //   ]
-    //  */
-    //
-    // /* You can ask for the possible graphsTypes which must use (only) some columns: */
-    // jiminy.recommendation(['city']);
-    // /*
-    //   Returns:
-    //   [
-    //     'pie'
-    //   ]
-    //  */
-    //
-    // /* If you already know which graph you want, you can ask Jiminy to give you
-    //  * the columns necessary to build it: */
-    // jiminy.columns('bar'); /* Returns the choices for the first column */
-    // /*
-    //   Returns:
-    //   [
-    //     'city',
-    //     'country',
-    //     'population'
-    //   ]
-    //  */
-    //
-    // jiminy.columns('bar', 'country'); /* And for the second */
-    // /*
-    //   Returns:
-    //   [
-    //     'population'
-    //   ]
-    //  */
   }
 
+  getChartData() {
+    const { selected } = this.state;
+    const { wizard } = this.props;
+    const columns = [];
+
+    if (selected.xAxis) columns.push({ key: 'x', value: selected.xAxis });
+    if (selected.yAxis) columns.push({ key: 'y', value: selected.yAxis });
+
+    const sql = getQueryByFilters(wizard.dataset.tableName, wizard.filters, columns);
+
+    const parsedConfig = {
+      data: [{
+        url: `https://api.resourcewatch.org/query/${wizard.dataset.id}?sql=${sql}`,
+        name: 'table',
+        format: {
+          type: 'json',
+          property: 'data'
+        }
+      }]
+    };
+
+    this.setState({ parsedConfig });
+  }
+
+  getAxisOptions() {
+    const { selected } = this.state;
+    this.setState({
+      xOptions: (selected.type) ? this.jiminy.columns(selected.type, selected.yAxis) : [],
+      yOptions: (selected.type) ? this.jiminy.columns(selected.type, selected.xAxis) : []
+    }, () => {
+      this.getChartData();
+    });
+  }
 
   /**
    * UI EVENTS
    * - triggerChangeSelected
   */
   triggerChangeSelected(obj) {
-    const selected = Object.assign({}, this.state.selected, obj);
-    console.log(selected);
+    // If type doesn't exist let's clear the selects
+    const objParsed = (Object.prototype.hasOwnProperty.call(obj, 'type')) ?
+      Object.assign({}, obj, { xAxis: null, yAxis: null }) :
+      obj;
+    const selected = Object.assign({}, this.state.selected, objParsed);
     this.setState({ selected }, () => {
-      this.getGraphTypes();
+      this.getAxisOptions();
     });
   }
 
 
   render() {
-    const { columns } = this.props.wizard;
-
-    const { loading, graphsTypes } = this.state;
+    const { selected, loading, chartOptions, xOptions, yOptions, parsedConfig } = this.state;
     return (
       <div className="c-widgets-preview">
 
         <Spinner className="-light" isLoading={loading} />
 
         <fieldset className="c-field-container">
-          <Field
-            options={columns.map(column =>
-              ({ label: column.columnName, value: column.columnName })
-            )}
-            properties={{
-              name: 'column',
-              label: 'Columns',
-              multi: true,
-              default: ''
-            }}
-            onChange={value => this.triggerChangeSelected({ columns: value })}
-          >
-            {Select}
-          </Field>
-          {!!graphsTypes.length &&
+          {!!chartOptions.length &&
             <Field
-              options={graphsTypes.map(graphType =>
+              options={chartOptions.map(graphType =>
                 ({ label: graphType, value: graphType })
               )}
               properties={{
                 name: 'type',
-                label: 'Graph types',
-                default: ''
+                label: 'Chart type',
+                default: '',
+                value: selected.type
               }}
               onChange={value => this.triggerChangeSelected({ type: value })}
             >
               {Select}
             </Field>
           }
+
+          {!!xOptions.length &&
+            <Field
+              options={xOptions.map(xOption =>
+                ({ label: xOption, value: xOption })
+              )}
+              properties={{
+                name: 'xAxis',
+                label: 'X axis',
+                default: '',
+                value: selected.xAxis
+              }}
+              onChange={value => this.triggerChangeSelected({ xAxis: value })}
+            >
+              {Select}
+            </Field>
+          }
+
+          {!!yOptions.length &&
+            <Field
+              options={yOptions.map(yOption =>
+                ({ label: yOption, value: yOption })
+              )}
+              properties={{
+                name: 'yAxis',
+                label: 'Y axis',
+                default: '',
+                value: selected.yAxis
+              }}
+              onChange={value => this.triggerChangeSelected({ yAxis: value })}
+            >
+              {Select}
+            </Field>
+          }
+
+          <VegaChart
+            data={getParsedConfig(bar, parsedConfig)}
+          />
         </fieldset>
       </div>
     );

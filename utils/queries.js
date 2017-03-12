@@ -4,8 +4,8 @@ import compact from 'lodash/compact';
  * @param  {Array} filters
  * @return {String}
  */
-export function getQueryByFilters(tableName, arr = []) {
-  const filtersQuery = compact(arr.map((element) => {
+export function getQueryByFilters(tableName, arrFilters = [], arrColumns = []) {
+  const filtersQuery = compact(arrFilters.map((element) => {
     const filter = element.filters;
     // Check that there is a filter present
     if (!filter || !filter.columnType || !filter.columnName) {
@@ -26,6 +26,8 @@ export function getQueryByFilters(tableName, arr = []) {
     return `${filter.columnName} IN (${values})`;
   })).join(' AND ');
 
+  const columns = (arrColumns.length) ? arrColumns.map(column => `${column.value} as ${column.key}`).join(', ') : '*';
   const where = (filtersQuery.length) ? `WHERE ${filtersQuery}` : '';
-  return `SELECT * FROM ${tableName} ${where}`;
+
+  return `SELECT ${columns} FROM ${tableName} ${where}`;
 }
