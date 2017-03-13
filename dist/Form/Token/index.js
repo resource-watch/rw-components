@@ -28,8 +28,6 @@ var _FormElement2 = require('../FormElement');
 
 var _FormElement3 = _interopRequireDefault(_FormElement2);
 
-require('./style.scss');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
