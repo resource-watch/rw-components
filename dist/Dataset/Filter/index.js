@@ -14,7 +14,7 @@ var _DatasetService = require('../../../services/DatasetService');
 
 var _DatasetService2 = _interopRequireDefault(_DatasetService);
 
-var _queryUtils = require('../../../utils/queryUtils');
+var _queries = require('../../../utils/queries');
 
 var _FilterItem = require('../FilterItem');
 
@@ -27,8 +27,6 @@ var _Spinner2 = _interopRequireDefault(_Spinner);
 var _Button = require('../../UI/Button');
 
 var _Button2 = _interopRequireDefault(_Button);
-
-require('./style.scss');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50,7 +48,7 @@ var DatasetFilter = function (_React$Component) {
       loading: true,
       columns: [],
       filters: [{}], // We need to create an empty object to render the first one
-      query: (0, _queryUtils.getQueryByFilters)(props.dataset.tableName)
+      query: (0, _queries.getQueryByFilters)(props.dataset.tableName)
     };
 
     // DatasetService
@@ -62,6 +60,7 @@ var DatasetFilter = function (_React$Component) {
     _this.triggerChangeFilters = _this.triggerChangeFilters.bind(_this);
     _this.triggerNewFilter = _this.triggerNewFilter.bind(_this);
     _this.triggerDeleteFilters = _this.triggerDeleteFilters.bind(_this);
+    _this.triggerFetchFilteredData = _this.triggerFetchFilteredData.bind(_this);
     return _this;
   }
 
@@ -75,10 +74,14 @@ var DatasetFilter = function (_React$Component) {
           loading: false,
           columns: data
         }, function () {
-          if (_this2.props.onChangeColumns) _this2.props.onChangeColumns(_this2.state.columns);
-          if (_this2.props.onChangeQuery) _this2.props.onChangeQuery(_this2.state.query);
+          if (_this2.props.onChange) {
+            _this2.props.onChange({
+              query: _this2.state.query,
+              columns: _this2.state.columns
+            });
+          }
         });
-      }).then(function (err) {
+      }).catch(function (err) {
         console.error(err);
         _this2.setState({ loading: false });
       });
@@ -89,6 +92,7 @@ var DatasetFilter = function (_React$Component) {
      * - triggerChangeFilters
      * - triggerNewFilter
      * - triggerDeleteFilters
+     * - triggerFetchFilteredData
     */
 
   }, {
@@ -98,11 +102,15 @@ var DatasetFilter = function (_React$Component) {
 
       var filters = [].concat(this.state.filters);
       filters[i] = obj;
-      var query = (0, _queryUtils.getQueryByFilters)(this.props.dataset.tableName, filters);
+      var query = (0, _queries.getQueryByFilters)(this.props.dataset.tableName, filters);
 
       this.setState({ filters: filters, query: query }, function () {
-        if (_this3.props.onChangeFilters) _this3.props.onChangeFilters(_this3.state.filters);
-        if (_this3.props.onChangeQuery) _this3.props.onChangeQuery(_this3.state.query);
+        if (_this3.props.onChange) {
+          _this3.props.onChange({
+            query: _this3.state.query,
+            filters: _this3.state.filters
+          });
+        }
       });
     }
   }, {
@@ -112,11 +120,15 @@ var DatasetFilter = function (_React$Component) {
 
       var filters = [].concat(this.state.filters);
       filters.push({});
-      var query = (0, _queryUtils.getQueryByFilters)(this.props.dataset.tableName, filters);
+      var query = (0, _queries.getQueryByFilters)(this.props.dataset.tableName, filters);
 
       this.setState({ filters: filters, query: query }, function () {
-        if (_this4.props.onChangeFilters) _this4.props.onChangeFilters(_this4.state.filters);
-        if (_this4.props.onChangeQuery) _this4.props.onChangeQuery(_this4.state.query);
+        if (_this4.props.onChange) {
+          _this4.props.onChange({
+            query: _this4.state.query,
+            filters: _this4.state.filters
+          });
+        }
       });
     }
   }, {
@@ -126,14 +138,27 @@ var DatasetFilter = function (_React$Component) {
 
       var filters = [].concat(this.state.filters);
       filters.splice(index, 1);
-      var query = (0, _queryUtils.getQueryByFilters)(this.props.dataset.tableName, filters);
+      var query = (0, _queries.getQueryByFilters)(this.props.dataset.tableName, filters);
 
       // This is a piece of shit, we need to improve it
       this.setState({ filters: [] }, function () {
         _this5.setState({ filters: filters, query: query }, function () {
-          if (_this5.props.onChangeFilters) _this5.props.onChangeFilters(_this5.state.filters);
-          if (_this5.props.onChangeQuery) _this5.props.onChangeQuery(_this5.state.query);
+          if (_this5.props.onChange) {
+            _this5.props.onChange({
+              query: _this5.state.query,
+              filters: _this5.state.filters
+            });
+          }
         });
+      });
+    }
+  }, {
+    key: 'triggerFetchFilteredData',
+    value: function triggerFetchFilteredData(e) {
+      this.datasetService.fetchFilteredData(this.state.query).then(function (data) {
+        console.info(data);
+      }).catch(function (err) {
+        console.error(err);
       });
     }
 
@@ -189,6 +214,17 @@ var DatasetFilter = function (_React$Component) {
               onClick: this.triggerNewFilter
             },
             'Add new'
+          ),
+          _react2.default.createElement(
+            _Button2.default,
+            {
+              properties: {
+                type: 'button',
+                className: '-primary'
+              },
+              onClick: this.triggerFetchFilteredData
+            },
+            'Preview'
           )
         ),
         _react2.default.createElement(
@@ -209,9 +245,7 @@ var DatasetFilter = function (_React$Component) {
 
 DatasetFilter.propTypes = {
   dataset: _react2.default.PropTypes.object.isRequired,
-  onChangeColumns: _react2.default.PropTypes.func,
-  onChangeFilters: _react2.default.PropTypes.func,
-  onChangeQuery: _react2.default.PropTypes.func
+  onChange: _react2.default.PropTypes.func
 };
 
 exports.default = DatasetFilter;

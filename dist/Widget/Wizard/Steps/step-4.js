@@ -10,8 +10,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-require('./style.scss');
-
 var _step = require('./step');
 
 var _step2 = _interopRequireDefault(_step);
@@ -41,28 +39,14 @@ var Step4 = function (_Step) {
     // BINDINGS
     var _this = _possibleConstructorReturn(this, (Step4.__proto__ || Object.getPrototypeOf(Step4)).call(this, props));
 
-    _this.triggerChangeColumns = _this.triggerChangeColumns.bind(_this);
-    _this.triggerChangeFilters = _this.triggerChangeFilters.bind(_this);
-    _this.triggerChangeQuery = _this.triggerChangeQuery.bind(_this);
+    _this.triggerChange = _this.triggerChange.bind(_this);
     return _this;
   }
 
   _createClass(Step4, [{
-    key: 'triggerChangeColumns',
-    value: function triggerChangeColumns(columns) {
-      this.props.onChange({ columns: columns });
-    }
-  }, {
-    key: 'triggerChangeFilters',
-    value: function triggerChangeFilters(obj) {
-      this.props.onChange({ filters: obj.map(function (o) {
-          return o.filters;
-        }) });
-    }
-  }, {
-    key: 'triggerChangeQuery',
-    value: function triggerChangeQuery(query) {
-      this.props.onChange({ query: query });
+    key: 'triggerChange',
+    value: function triggerChange(obj) {
+      this.props.onChange(obj);
     }
   }, {
     key: 'render',
@@ -79,9 +63,7 @@ var Step4 = function (_Step) {
         ),
         _react2.default.createElement(_Filter2.default, {
           dataset: wizard.dataset,
-          onChangeColumns: this.triggerChangeColumns,
-          onChangeFilters: this.triggerChangeFilters,
-          onChangeQuery: this.triggerChangeQuery
+          onChange: this.triggerChange
         })
       );
     }

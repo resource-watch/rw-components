@@ -14,8 +14,6 @@ var _omit = require('lodash/omit');
 
 var _omit2 = _interopRequireDefault(_omit);
 
-require('./style.scss');
-
 var _constants = require('./constants');
 
 var _step = require('./Steps/step-1');

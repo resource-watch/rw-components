@@ -97,7 +97,12 @@ export default class Table extends React.Component {
       return (
         <tr key={index}>
           {this.props.columns.map((col, i) => <td key={i}>{row[col]}</td>)}
-          {this.props.actionsColumn ? <td><a href={`/datasets/${row.id}/edit`}>Edit</a> | Remove</td> : null}
+          {this.props.actionsColumn ? <td>
+            <ul className="menu simple">
+              <li><a href={`/datasets/${row.id}/edit`}>Edit</a></li>
+              <li><a href={`/datasets/${row.id}/remove`}>Remove</a></li>
+            </ul>
+          </td> : null}
         </tr>
       );
     });
@@ -108,14 +113,14 @@ export default class Table extends React.Component {
       <div className="table-footer">
         {/* Paginator */}
         {this.props.paginated &&
-          <ul className="paginator">
-            <li className="paginator-link"><button className="paginator-btn" onClick={this.prevPage}>Prev</button></li>
-            <li className="paginator-link"><button className="paginator-btn" onClick={this.nextPage}>Next</button></li>
+          <ul className="pagination" role="navigation">
+            <li className="pagination-previous"><button className="paginator-btn" onClick={this.prevPage}>Prev</button></li>
+            <li className="pagination-next"><button className="paginator-btn" onClick={this.nextPage}>Next</button></li>
           </ul>
         }
         {/* Page locator */}
         {this.props.paginated &&
-          <span>Page <span>{this.state.currentPage + 1}</span> of <span>{this.state.totalPages}</span></span>
+          <div>Page <span>{this.state.currentPage + 1}</span> of <span>{this.state.totalPages}</span></div>
         }
       </div>
     );

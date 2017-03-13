@@ -30,8 +30,6 @@ var _Button = require('../../UI/Button');
 
 var _Button2 = _interopRequireDefault(_Button);
 
-require('./style.scss');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -235,14 +233,15 @@ var DatasetFilterItem = function (_React$Component) {
               properties: {
                 name: 'text',
                 label: 'Text',
-                default: filters.properties ? filters.properties.values[0] : ''
+                multi: true,
+                default: filters.properties ? filters.properties.values : ''
               },
               onChange: function onChange(value) {
                 return _this4.triggerChangeFilters({
                   columnName: selected.columnName,
                   columnType: selected.columnType,
                   properties: {
-                    values: [value]
+                    values: value
                   }
                 });
               }
