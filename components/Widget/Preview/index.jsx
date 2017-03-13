@@ -187,9 +187,11 @@ class WidgetPreview extends React.Component {
             </Field>
           }
 
-          <VegaChart
-            data={getParsedConfig(selected.type, parsedConfig)}
-          />
+          {selected.type &&
+            <VegaChart
+              data={getParsedConfig(selected.type, parsedConfig)}
+            />
+          }
         </fieldset>
       </div>
     );

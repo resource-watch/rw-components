@@ -93,20 +93,17 @@ class DatasetFilter extends React.Component {
     filters.splice(index, 1);
     const query = getQueryByFilters(this.props.dataset.tableName, filters);
 
-    // This is a piece of shit, we need to improve it
-    this.setState({ filters: [] }, () => {
-      this.setState({ filters, query }, () => {
-        if (this.props.onChange) {
-          this.props.onChange({
-            query: this.state.query,
-            filters: this.state.filters
-          });
-        }
-      });
+    this.setState({ filters, query }, () => {
+      if (this.props.onChange) {
+        this.props.onChange({
+          query: this.state.query,
+          filters: this.state.filters
+        });
+      }
     });
   }
 
-  triggerFetchFilteredData(e) {
+  triggerFetchFilteredData() {
     this.datasetService.fetchFilteredData(this.state.query)
       .then((data) => {
         console.info(data);
@@ -142,28 +139,32 @@ class DatasetFilter extends React.Component {
             )
           }
         </div>
+        <ul className="c-field-buttons actions">
+          <li>
+            <Button
+              properties={{
+                type: 'button',
+                className: '-primary'
+              }}
+              onClick={this.triggerNewFilter}
+            >
+              Add new
+            </Button>
+          </li>
+          <li>
+            <Button
+              properties={{
+                type: 'button',
+                className: '-primary'
+              }}
+              onClick={this.triggerFetchFilteredData}
+            >
+              Preview
+            </Button>
+          </li>
+        </ul>
         <div className="actions">
-          <Button
-            properties={{
-              type: 'button',
-              className: '-primary'
-            }}
-            onClick={this.triggerNewFilter}
-          >
-            Add new
-          </Button>
-          <Button
-            properties={{
-              type: 'button',
-              className: '-primary'
-            }}
-            onClick={this.triggerFetchFilteredData}
-          >
-            Preview
-          </Button>
-        </div>
-        <div className="actions">
-          <pre>{query}</pre>
+          <pre><code className="language-sql">{query}</code></pre>
         </div>
       </div>
     );

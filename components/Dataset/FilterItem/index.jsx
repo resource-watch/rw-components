@@ -87,7 +87,8 @@ class DatasetFilterItem extends React.Component {
             properties={{
               name: 'column',
               label: 'Column',
-              default: filters.columnName
+              default: filters.columnName,
+              value: selected.columnName
             }}
             onChange={this.triggerChangeSelected}
           >
@@ -112,7 +113,8 @@ class DatasetFilterItem extends React.Component {
                 label: 'Min',
                 min: selected.properties.min,
                 max: selected.properties.max,
-                default: (filters.properties) ? filters.properties.min : ''
+                default: (filters.properties) ? filters.properties.min : '',
+                value: (filters.properties) ? filters.properties.min : ''
               }}
               onChange={value => this.triggerChangeFilters({
                 columnName: selected.columnName,
@@ -141,7 +143,8 @@ class DatasetFilterItem extends React.Component {
                 label: 'Max',
                 min: selected.properties.min,
                 max: selected.properties.max,
-                default: (filters.properties) ? filters.properties.max : ''
+                default: (filters.properties) ? filters.properties.max : '',
+                value: (filters.properties) ? filters.properties.max : ''
               }}
               onChange={value => this.triggerChangeFilters({
                 columnName: selected.columnName,
@@ -166,10 +169,11 @@ class DatasetFilterItem extends React.Component {
                 };
               })}
               properties={{
-                name: 'text',
-                label: 'Text',
+                name: 'values',
+                label: 'Values',
                 multi: true,
-                default: (filters.properties) ? filters.properties.values : ''
+                default: (filters.properties) ? filters.properties.values : [],
+                value: (filters.properties) ? filters.properties.values : []
               }}
               onChange={value => this.triggerChangeFilters({
                 columnName: selected.columnName,
