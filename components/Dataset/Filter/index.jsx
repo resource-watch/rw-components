@@ -114,6 +114,29 @@ class DatasetFilter extends React.Component {
   }
 
   /**
+   * HELPERS
+   * - getColumns
+  */
+  getColumns(index) {
+    const { columns, filters } = this.state;
+    let parsedFilters = [].concat(filters);
+    let parsedColumns = [].concat(columns);
+
+    if (filters.length > 1 && index) {
+      parsedFilters = parsedFilters
+        .slice(null, index)
+        .map(filter => filter.filters.columnName);
+      parsedColumns = parsedColumns.filter((column) => {
+        const isColumnFiltered = parsedFilters.indexOf(column.columnName) === -1;
+        return isColumnFiltered;
+      });
+    }
+
+    return parsedColumns;
+  }
+
+
+  /**
    * RENDER
   */
   render() {
@@ -130,7 +153,7 @@ class DatasetFilter extends React.Component {
               <DatasetFilterItem
                 key={i}
                 index={i}
-                columns={columns}
+                columns={this.getColumns(i)}
                 filters={filter.filters}
                 selected={filter.selected}
                 onChange={value => this.triggerChangeFilters(value, i)}
