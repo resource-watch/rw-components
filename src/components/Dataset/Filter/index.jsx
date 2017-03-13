@@ -1,7 +1,7 @@
 import React from 'react';
 
 import DatasetService from '../../../services/DatasetService';
-import { getQueryByFilters } from '../../../utils/queries';
+import getQueryByFilters from '../../../utils/getQueryByFilters';
 import DatasetFilterItem from '../FilterItem';
 import Spinner from '../../UI/Spinner';
 import Button from '../../UI/Button';

@@ -2,8 +2,8 @@ import React from 'react';
 
 import Jiminy from 'jiminy';
 import { chartConfig } from './constants';
-import { getQueryByFilters } from '../../../utils/queries';
-import { getParsedConfig } from '../../../utils/widgets';
+import getQueryByFilters from '../../../utils/getQueryByFilters';
+import getParsedConfig from '../../../utils/getWidgetConfig';
 
 import Field from '../../Form/Field';
 import Select from '../../Form/Select';

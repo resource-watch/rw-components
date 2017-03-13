@@ -7,6 +7,6 @@ const types = { bar, line };
  * @param  {Array} filters
  * @return {String}
  */
-export function getParsedConfig(type, parsedConfig) {
+export default function getParsedConfig(type, parsedConfig) {
   return Object.assign({}, types[type], parsedConfig);
 }

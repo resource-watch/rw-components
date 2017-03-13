@@ -4,29 +4,29 @@ import { storiesOf, action, linkTo } from '@kadira/storybook';
 import './style.scss';
 
 // Dataset
-import DatasetForm from '../components/Dataset/Form';
-import DatasetList from '../components/Dataset/List';
-import DatasetCard from '../components/Dataset/Card';
+import DatasetForm from '../src/components/Dataset/Form';
+import DatasetList from '../src/components/Dataset/List';
+import DatasetCard from '../src/components/Dataset/Card';
 
 // Widget
-import WidgetForm from '../components/Widget/Form';
-import WidgetList from '../components/Widget/List';
-import WidgetCard from '../components/Widget/Card';
-import WidgetWizard from '../components/Widget/Wizard';
+import WidgetForm from '../src/components/Widget/Form';
+import WidgetList from '../src/components/Widget/List';
+import WidgetCard from '../src/components/Widget/Card';
+import WidgetWizard from '../src/components/Widget/Wizard';
 
 
 // Layer
-import LayerForm from '../components/Layer/Form';
+import LayerForm from '../src/components/Layer/Form';
 
 // Form Elements
-import Field from '../components/Form/Field';
-import Input from '../components/Form/Input';
-import Textarea from '../components/Form/Textarea';
-import Select from '../components/Form/Select';
-import Token from '../components/Form/Token';
-import CheckboxGroup from '../components/Form/CheckboxGroup';
-import RadioGroup from '../components/Form/RadioGroup';
-import Navigation from '../components/Form/Navigation';
+import Field from '../src/components/Form/Field';
+import Input from '../src/components/Form/Input';
+import Textarea from '../src/components/Form/Textarea';
+import Select from '../src/components/Form/Select';
+import Token from '../src/components/Form/Token';
+import CheckboxGroup from '../src/components/Form/CheckboxGroup';
+import RadioGroup from '../src/components/Form/RadioGroup';
+import Navigation from '../src/components/Form/Navigation';
 
 storiesOf('Dataset', module)
   .add('Form', () => {

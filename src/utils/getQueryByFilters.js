@@ -4,7 +4,7 @@ import compact from 'lodash/compact';
  * @param  {Array} filters
  * @return {String}
  */
-export function getQueryByFilters(tableName, arrFilters = [], arrColumns = []) {
+export default function getQueryByFilters(tableName, arrFilters = [], arrColumns = []) {
   const filtersQuery = compact(arrFilters.map((element) => {
     const filter = element.filters;
     // Check that there is a filter present
