@@ -131,7 +131,13 @@ export default class DatasetService {
     return new Promise((resolve) => {
       fetch(`https://api.resourcewatch.org/query/${this.datasetId}?sql=${query}`)
         .then(response => response.json())
-        .then(jsonData => resolve(jsonData.data[0]));
+        .then((jsonData) => {
+          if (jsonData.data) {
+            resolve(jsonData.data[0]);
+          } else {
+            resolve({});
+          }
+        });
     });
   }
 

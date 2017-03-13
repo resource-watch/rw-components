@@ -93,20 +93,17 @@ class DatasetFilter extends React.Component {
     filters.splice(index, 1);
     const query = getQueryByFilters(this.props.dataset.tableName, filters);
 
-    // This is a piece of shit, we need to improve it
-    this.setState({ filters: [] }, () => {
-      this.setState({ filters, query }, () => {
-        if (this.props.onChange) {
-          this.props.onChange({
-            query: this.state.query,
-            filters: this.state.filters
-          });
-        }
-      });
+    this.setState({ filters, query }, () => {
+      if (this.props.onChange) {
+        this.props.onChange({
+          query: this.state.query,
+          filters: this.state.filters
+        });
+      }
     });
   }
 
-  triggerFetchFilteredData(e) {
+  triggerFetchFilteredData() {
     this.datasetService.fetchFilteredData(this.state.query)
       .then((data) => {
         console.info(data);
@@ -115,6 +112,29 @@ class DatasetFilter extends React.Component {
         console.error(err);
       });
   }
+
+  /**
+   * HELPERS
+   * - getColumns
+  */
+  getColumns(index) {
+    const { columns, filters } = this.state;
+    let parsedFilters = [].concat(filters);
+    let parsedColumns = [].concat(columns);
+
+    if (filters.length > 1 && index) {
+      parsedFilters = parsedFilters
+        .slice(null, index)
+        .map(filter => filter.filters.columnName);
+      parsedColumns = parsedColumns.filter((column) => {
+        const isColumnFiltered = parsedFilters.indexOf(column.columnName) === -1;
+        return isColumnFiltered;
+      });
+    }
+
+    return parsedColumns;
+  }
+
 
   /**
    * RENDER
@@ -133,7 +153,7 @@ class DatasetFilter extends React.Component {
               <DatasetFilterItem
                 key={i}
                 index={i}
-                columns={columns}
+                columns={this.getColumns(i)}
                 filters={filter.filters}
                 selected={filter.selected}
                 onChange={value => this.triggerChangeFilters(value, i)}
@@ -142,28 +162,32 @@ class DatasetFilter extends React.Component {
             )
           }
         </div>
+        <ul className="c-field-buttons actions">
+          <li>
+            <Button
+              properties={{
+                type: 'button',
+                className: '-primary'
+              }}
+              onClick={this.triggerNewFilter}
+            >
+              Add new
+            </Button>
+          </li>
+          <li>
+            <Button
+              properties={{
+                type: 'button',
+                className: '-primary'
+              }}
+              onClick={this.triggerFetchFilteredData}
+            >
+              Preview
+            </Button>
+          </li>
+        </ul>
         <div className="actions">
-          <Button
-            properties={{
-              type: 'button',
-              className: '-primary'
-            }}
-            onClick={this.triggerNewFilter}
-          >
-            Add new
-          </Button>
-          <Button
-            properties={{
-              type: 'button',
-              className: '-primary'
-            }}
-            onClick={this.triggerFetchFilteredData}
-          >
-            Preview
-          </Button>
-        </div>
-        <div className="actions">
-          <pre>{query}</pre>
+          <pre><code className="language-sql">{query}</code></pre>
         </div>
       </div>
     );
