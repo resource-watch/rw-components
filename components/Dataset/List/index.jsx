@@ -2,6 +2,7 @@ import React from 'react';
 import sortBy from 'lodash/sortBy';
 
 import Spinner from '../../UI/Spinner';
+import Table from '../../UI/Table';
 import DatasetCard from '../Card';
 
 class DatasetList extends React.Component {
@@ -20,7 +21,7 @@ class DatasetList extends React.Component {
     this.triggerClick = this.triggerClick.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getDatasets();
   }
 
@@ -73,40 +74,62 @@ class DatasetList extends React.Component {
   }
 
   render() {
+    const { mode } = this.props;
     const { selected } = this.state;
+
+    let datasets = null;
+
+    if (mode === 'table') {
+      datasets = (<Table data={ this.state.datasets } columns={['name', 'provider']} />);
+    } else if (mode === 'cards') {
+      datasets = this.state.datasets.map(dataset => {
+        return (
+          <DatasetCard
+            key={dataset.id}
+            dataset={dataset}
+            properties={{
+              'data-id': dataset.id,
+              className: (dataset.id === selected.id) ? '-selected' : ''
+            }}
+            onClick={this.triggerClick}
+          />
+        );
+      });
+    } else {
+      datasets = (
+        <ul className="list">
+          {this.state.datasets.map(dataset => {
+            return (<li key={dataset.id} className="list-item">{dataset.name}</li>);
+          })}
+        </ul>
+      );
+    }
+
     return (
-      <div className="c-datasets-list">
-        {this.state.loading &&
-          <Spinner className="-light" isLoading={this.state.loading} />
-        }
-        {!!this.state.datasets.length &&
-          <ul className="list">
-            {this.state.datasets.map(dataset =>
-              <li
-                key={dataset.id}
-                className="list-item"
-              >
-                <DatasetCard
-                  dataset={dataset}
-                  properties={{
-                    'data-id': dataset.id,
-                    className: (dataset.id === selected.id) ? '-selected' : ''
-                  }}
-                  onClick={this.triggerClick}
-                />
-              </li>
-            )}
-          </ul>
-        }
+      <div className={`c-datasets-list -${mode}`}>
+        <Spinner className="-light" isLoading={this.state.loading} />
+        { datasets }
       </div>
     );
   }
 }
 
+DatasetList.defaultProps = {
+  application: ['rw'],
+  mode: 'table', // list, table or cards,
+  selectable: true,
+  editable: true,
+  editPath: '/datasets/:id/edit'
+};
+
 DatasetList.propTypes = {
   application: React.PropTypes.array.isRequired,
-  selected: React.PropTypes.object,
-  onChange: React.PropTypes.func
+  mode: React.PropTypes.string,
+  selectable: React.PropTypes.bool,
+  editable: React.PropTypes.bool,
+  editPath: React.PropTypes.string,
+  selected: React.PropTypes.object, // deprecated
+  onChange: React.PropTypes.func // deprecated
 };
 
 export default DatasetList;

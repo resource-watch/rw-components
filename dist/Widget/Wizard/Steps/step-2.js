@@ -10,8 +10,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-require('./style.scss');
-
 var _step = require('./step');
 
 var _step2 = _interopRequireDefault(_step);

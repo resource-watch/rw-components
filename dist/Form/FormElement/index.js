@@ -14,6 +14,10 @@ var _isEqual = require('lodash/isEqual');
 
 var _isEqual2 = _interopRequireDefault(_isEqual);
 
+var _pick = require('lodash/pick');
+
+var _pick2 = _interopRequireDefault(_pick);
+
 var _Validator = require('./Validator');
 
 var _Validator2 = _interopRequireDefault(_Validator);
@@ -57,16 +61,34 @@ var FormElement = function (_React$Component) {
       }
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      var _this2 = this;
+
+      var hasValue = Object.prototype.hasOwnProperty.call(nextProps.properties, 'value');
+      var isNew = nextProps.properties.value !== this.state.value;
+      if (hasValue && isNew) {
+        this.setState({
+          value: nextProps.properties.value
+        }, function () {
+          _this2.triggerValidate();
+        });
+      }
+    }
+  }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps) {
-      if (!(0, _isEqual2.default)(prevProps, this.props)) {
+      var prevPropsParsed = (0, _pick2.default)(prevProps, ['properties', 'validations']);
+      var currentPropsParsed = (0, _pick2.default)(this.props, ['properties', 'validations']);
+
+      if (!(0, _isEqual2.default)(prevPropsParsed, currentPropsParsed)) {
         this.triggerValidate();
       }
     }
   }, {
     key: 'triggerValidate',
     value: function triggerValidate() {
-      var _this2 = this;
+      var _this3 = this;
 
       var validations = this.props.validations;
       var value = this.state.value;
@@ -97,7 +119,7 @@ var FormElement = function (_React$Component) {
         valid: valid,
         error: error
       }, function () {
-        if (_this2.props.onValid) _this2.props.onValid(valid, error);
+        if (_this3.props.onValid) _this3.props.onValid(valid, error);
       });
     }
   }, {
