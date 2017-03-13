@@ -5,6 +5,7 @@ import './style.scss';
 
 // Dataset
 import DatasetForm from '../src/components/Dataset/Form';
+import DatasetTable from '../src/components/Dataset/Table';
 import DatasetList from '../src/components/Dataset/List';
 import DatasetCard from '../src/components/Dataset/Card';
 
@@ -32,13 +33,14 @@ storiesOf('Dataset', module)
   .add('Form', () => {
     return (
       <DatasetForm
-        api="https://api.resourcewatch.org"
+        api='https://api.resourcewatch.org'
         application={['rw']}
-        authorization=""
-        dataset={{
-          // id: "f3d6d6c1-3b3b-4dfc-a2a0-dcf38d258ae9"
-        }}
       />
+    );
+  })
+  .add('Table', () => {
+    return (
+      <DatasetTable />
     );
   })
   .add('List', () => {

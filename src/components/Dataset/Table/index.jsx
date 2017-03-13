@@ -1,8 +1,9 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 import Spinner from '../../UI/Spinner';
+import Table from '../../UI/Table';
 
-class DatasetList extends React.Component {
+class DatasetTable extends React.Component {
 
   constructor(props) {
     super(props);
@@ -20,6 +21,8 @@ class DatasetList extends React.Component {
   /**
    * HELPERS
    * - getDatasets
+   * - validate
+   * - isValid
   */
   getDatasets() {
     const { application } = this.props;
@@ -44,38 +47,25 @@ class DatasetList extends React.Component {
   }
 
   render() {
-    const { mode } = this.props;
-    const datasets = (
-      <ul className="list">
-        {this.state.datasets.map(dataset => {
-          return (<li key={dataset.id} className="list-item">{dataset.name}</li>);
-        })}
-      </ul>
-    );
-
     return (
-      <div className={`c-datasets-list -${mode}`}>
+      <div className="c-dataset-table">
         <Spinner className="-light" isLoading={this.state.loading} />
-        { datasets }
+        <Table data={ this.state.datasets } columns={['name', 'provider']} />
       </div>
     );
   }
 }
 
-DatasetList.defaultProps = {
+DatasetTable.defaultProps = {
   application: ['rw'],
-  selectable: true,
   editable: true,
   editPath: '/datasets/:id/edit'
 };
 
-DatasetList.propTypes = {
+DatasetTable.propTypes = {
   application: React.PropTypes.array.isRequired,
-  selectable: React.PropTypes.bool,
   editable: React.PropTypes.bool,
-  editPath: React.PropTypes.string,
-  selected: React.PropTypes.object, // deprecated
-  onChange: React.PropTypes.func // deprecated
+  editPath: React.PropTypes.string
 };
 
-export default DatasetList;
+export default DatasetTable;
