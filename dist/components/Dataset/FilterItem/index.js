@@ -123,9 +123,9 @@ var DatasetFilterItem = function (_React$Component) {
     value: function render() {
       var _this4 = this;
 
-      var _state = this.state;
-      var selected = _state.selected;
-      var filters = _state.filters;
+      var _state = this.state,
+          selected = _state.selected,
+          filters = _state.filters;
       var columns = this.props.columns;
 
 

@@ -60,12 +60,12 @@ var Button = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props;
-      var children = _props.children;
-      var properties = _props.properties;
-      var onClick = _props.onClick;
-      var onMouseOver = _props.onMouseOver;
-      var onMouseOut = _props.onMouseOut;
+      var _props = this.props,
+          children = _props.children,
+          properties = _props.properties,
+          onClick = _props.onClick,
+          onMouseOver = _props.onMouseOver,
+          onMouseOut = _props.onMouseOut;
 
 
       return _react2.default.createElement(

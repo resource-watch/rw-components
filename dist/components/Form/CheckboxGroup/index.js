@@ -76,9 +76,9 @@ var CheckboxGroup = function (_FormElement) {
     value: function render() {
       var _this3 = this;
 
-      var _props = this.props;
-      var properties = _props.properties;
-      var options = _props.options;
+      var _props = this.props,
+          properties = _props.properties,
+          options = _props.options;
       var value = this.state.value;
 
 

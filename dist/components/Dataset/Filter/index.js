@@ -169,9 +169,9 @@ var DatasetFilter = function (_React$Component) {
   }, {
     key: 'getColumns',
     value: function getColumns(index) {
-      var _state = this.state;
-      var columns = _state.columns;
-      var filters = _state.filters;
+      var _state = this.state,
+          columns = _state.columns,
+          filters = _state.filters;
 
       var parsedFilters = [].concat(filters);
       var parsedColumns = [].concat(columns);
@@ -198,11 +198,11 @@ var DatasetFilter = function (_React$Component) {
     value: function render() {
       var _this6 = this;
 
-      var _state2 = this.state;
-      var columns = _state2.columns;
-      var filters = _state2.filters;
-      var query = _state2.query;
-      var loading = _state2.loading;
+      var _state2 = this.state,
+          columns = _state2.columns,
+          filters = _state2.filters,
+          query = _state2.query,
+          loading = _state2.loading;
 
 
       return _react2.default.createElement(

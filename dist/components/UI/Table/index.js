@@ -134,11 +134,9 @@ var Table = function (_React$Component) {
 
       var filteredData = this.state.filteredData;
 
-      var _getPageBounds = this.getPageBounds(this.state.currentPage);
-
-      var bottom = _getPageBounds.bottom;
-      var top = _getPageBounds.top;
-
+      var _getPageBounds = this.getPageBounds(this.state.currentPage),
+          bottom = _getPageBounds.bottom,
+          top = _getPageBounds.top;
 
       if (!filteredData.length) {
         return _react2.default.createElement(

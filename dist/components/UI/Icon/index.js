@@ -12,8 +12,8 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Icon(_ref) {
-  var name = _ref.name;
-  var className = _ref.className;
+  var name = _ref.name,
+      className = _ref.className;
 
   return _react2.default.createElement(
     'svg',

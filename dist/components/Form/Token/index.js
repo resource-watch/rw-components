@@ -183,9 +183,9 @@ var Token = function (_FormElement) {
     key: 'render',
     value: function render() {
       var properties = this.props.properties;
-      var _state = this.state;
-      var selected = _state.selected;
-      var items = _state.items;
+      var _state = this.state,
+          selected = _state.selected,
+          items = _state.items;
 
 
       var menuContent = items.length ? this.renderComboboxOptions() : [];

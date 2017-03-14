@@ -67,9 +67,9 @@ var WidgetList = function (_React$Component) {
     value: function getWidgets() {
       var _this2 = this;
 
-      var _props = this.props;
-      var dataset = _props.dataset;
-      var application = _props.application;
+      var _props = this.props,
+          dataset = _props.dataset,
+          application = _props.application;
 
       var url = 'https://api.resourcewatch.org/dataset/' + dataset.id + '/widget?app=' + application.join(',') + '&includes=widget&page[size]=' + Date.now();
 

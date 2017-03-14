@@ -47,9 +47,9 @@ var WidgetCard = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props;
-      var widget = _props.widget;
-      var properties = _props.properties;
+      var _props = this.props,
+          widget = _props.widget,
+          properties = _props.properties;
 
       return _react2.default.createElement(
         'div',
