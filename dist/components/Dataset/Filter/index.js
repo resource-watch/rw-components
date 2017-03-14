@@ -14,7 +14,9 @@ var _DatasetService = require('../../../services/DatasetService');
 
 var _DatasetService2 = _interopRequireDefault(_DatasetService);
 
-var _queries = require('../../../utils/queries');
+var _getQueryByFilters = require('../../../utils/getQueryByFilters');
+
+var _getQueryByFilters2 = _interopRequireDefault(_getQueryByFilters);
 
 var _FilterItem = require('../FilterItem');
 
@@ -48,7 +50,7 @@ var DatasetFilter = function (_React$Component) {
       loading: true,
       columns: [],
       filters: [{}], // We need to create an empty object to render the first one
-      query: (0, _queries.getQueryByFilters)(props.dataset.tableName)
+      query: (0, _getQueryByFilters2.default)(props.dataset.tableName)
     };
 
     // DatasetService
@@ -102,7 +104,7 @@ var DatasetFilter = function (_React$Component) {
 
       var filters = [].concat(this.state.filters);
       filters[i] = obj;
-      var query = (0, _queries.getQueryByFilters)(this.props.dataset.tableName, filters);
+      var query = (0, _getQueryByFilters2.default)(this.props.dataset.tableName, filters);
 
       this.setState({ filters: filters, query: query }, function () {
         if (_this3.props.onChange) {
@@ -120,7 +122,7 @@ var DatasetFilter = function (_React$Component) {
 
       var filters = [].concat(this.state.filters);
       filters.push({});
-      var query = (0, _queries.getQueryByFilters)(this.props.dataset.tableName, filters);
+      var query = (0, _getQueryByFilters2.default)(this.props.dataset.tableName, filters);
 
       this.setState({ filters: filters, query: query }, function () {
         if (_this4.props.onChange) {
@@ -138,28 +140,53 @@ var DatasetFilter = function (_React$Component) {
 
       var filters = [].concat(this.state.filters);
       filters.splice(index, 1);
-      var query = (0, _queries.getQueryByFilters)(this.props.dataset.tableName, filters);
+      var query = (0, _getQueryByFilters2.default)(this.props.dataset.tableName, filters);
 
-      // This is a piece of shit, we need to improve it
-      this.setState({ filters: [] }, function () {
-        _this5.setState({ filters: filters, query: query }, function () {
-          if (_this5.props.onChange) {
-            _this5.props.onChange({
-              query: _this5.state.query,
-              filters: _this5.state.filters
-            });
-          }
-        });
+      this.setState({ filters: filters, query: query }, function () {
+        if (_this5.props.onChange) {
+          _this5.props.onChange({
+            query: _this5.state.query,
+            filters: _this5.state.filters
+          });
+        }
       });
     }
   }, {
     key: 'triggerFetchFilteredData',
-    value: function triggerFetchFilteredData(e) {
+    value: function triggerFetchFilteredData() {
       this.datasetService.fetchFilteredData(this.state.query).then(function (data) {
         console.info(data);
       }).catch(function (err) {
         console.error(err);
       });
+    }
+
+    /**
+     * HELPERS
+     * - getColumns
+    */
+
+  }, {
+    key: 'getColumns',
+    value: function getColumns(index) {
+      var _state = this.state,
+          columns = _state.columns,
+          filters = _state.filters;
+
+      var parsedFilters = [].concat(filters);
+      var parsedColumns = [].concat(columns);
+
+      if (filters.length > 1 && index) {
+        parsedFilters = parsedFilters.slice(null, index).map(function (filter) {
+          return filter.filters.columnName;
+        });
+        parsedColumns = parsedColumns.filter(function (column) {
+          var isColumnFiltered = parsedFilters.indexOf(column.columnName) === -1;
+          return isColumnFiltered;
+        });
+      }
+
+      return parsedColumns;
     }
 
     /**
@@ -171,11 +198,11 @@ var DatasetFilter = function (_React$Component) {
     value: function render() {
       var _this6 = this;
 
-      var _state = this.state,
-          columns = _state.columns,
-          filters = _state.filters,
-          query = _state.query,
-          loading = _state.loading;
+      var _state2 = this.state,
+          columns = _state2.columns,
+          filters = _state2.filters,
+          query = _state2.query,
+          loading = _state2.loading;
 
 
       return _react2.default.createElement(
@@ -189,7 +216,7 @@ var DatasetFilter = function (_React$Component) {
             return _react2.default.createElement(_FilterItem2.default, {
               key: i,
               index: i,
-              columns: columns,
+              columns: _this6.getColumns(i),
               filters: filter.filters,
               selected: filter.selected,
               onChange: function onChange(value) {
@@ -202,29 +229,37 @@ var DatasetFilter = function (_React$Component) {
           })
         ),
         _react2.default.createElement(
-          'div',
-          { className: 'actions' },
+          'ul',
+          { className: 'c-field-buttons actions' },
           _react2.default.createElement(
-            _Button2.default,
-            {
-              properties: {
-                type: 'button',
-                className: '-primary'
+            'li',
+            null,
+            _react2.default.createElement(
+              _Button2.default,
+              {
+                properties: {
+                  type: 'button',
+                  className: '-primary'
+                },
+                onClick: this.triggerNewFilter
               },
-              onClick: this.triggerNewFilter
-            },
-            'Add new'
+              'Add new'
+            )
           ),
           _react2.default.createElement(
-            _Button2.default,
-            {
-              properties: {
-                type: 'button',
-                className: '-primary'
+            'li',
+            null,
+            _react2.default.createElement(
+              _Button2.default,
+              {
+                properties: {
+                  type: 'button',
+                  className: '-primary'
+                },
+                onClick: this.triggerFetchFilteredData
               },
-              onClick: this.triggerFetchFilteredData
-            },
-            'Preview'
+              'Preview'
+            )
           )
         ),
         _react2.default.createElement(
@@ -233,7 +268,11 @@ var DatasetFilter = function (_React$Component) {
           _react2.default.createElement(
             'pre',
             null,
-            query
+            _react2.default.createElement(
+              'code',
+              { className: 'language-sql' },
+              query
+            )
           )
         )
       );

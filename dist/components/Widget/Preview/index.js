@@ -16,9 +16,13 @@ var _jiminy2 = _interopRequireDefault(_jiminy);
 
 var _constants = require('./constants');
 
-var _queries = require('../../../utils/queries');
+var _getQueryByFilters = require('../../../utils/getQueryByFilters');
 
-var _widgets = require('../../../utils/widgets');
+var _getQueryByFilters2 = _interopRequireDefault(_getQueryByFilters);
+
+var _getWidgetConfig = require('../../../utils/getWidgetConfig');
+
+var _getWidgetConfig2 = _interopRequireDefault(_getWidgetConfig);
 
 var _Field = require('../../Form/Field');
 
@@ -133,7 +137,7 @@ var WidgetPreview = function (_React$Component) {
       if (selected.xAxis) columns.push({ key: 'x', value: selected.xAxis });
       if (selected.yAxis) columns.push({ key: 'y', value: selected.yAxis });
 
-      var sql = (0, _queries.getQueryByFilters)(wizard.dataset.tableName, wizard.filters, columns);
+      var sql = (0, _getQueryByFilters2.default)(wizard.dataset.tableName, wizard.filters, columns);
 
       var parsedConfig = {
         data: [{
@@ -254,8 +258,8 @@ var WidgetPreview = function (_React$Component) {
             },
             _Select2.default
           ),
-          _react2.default.createElement(_VegaChart2.default, {
-            data: (0, _widgets.getParsedConfig)(selected.type, parsedConfig)
+          selected.type && _react2.default.createElement(_VegaChart2.default, {
+            data: (0, _getWidgetConfig2.default)(selected.type, parsedConfig)
           })
         )
       );

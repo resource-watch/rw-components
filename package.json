@@ -6,7 +6,7 @@
   "scripts": {
     "test": "eslint --ext .js --ext .jsx .",
     "start": "start-storybook -p 9000",
-    "build": "babel ./components --out-dir ./dist"
+    "build": "babel ./src --out-dir ./dist"
   },
   "repository": {
     "type": "git",

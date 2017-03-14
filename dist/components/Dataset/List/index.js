@@ -18,14 +18,6 @@ var _Spinner = require('../../UI/Spinner');
 
 var _Spinner2 = _interopRequireDefault(_Spinner);
 
-var _Table = require('../../UI/Table');
-
-var _Table2 = _interopRequireDefault(_Table);
-
-var _Card = require('../Card');
-
-var _Card2 = _interopRequireDefault(_Card);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44,13 +36,8 @@ var DatasetList = function (_React$Component) {
 
     _this.state = {
       datasets: [],
-      loading: true,
-      selected: props.selected || {},
-      valid: false
+      loading: true
     };
-
-    // BINDINGS
-    _this.triggerClick = _this.triggerClick.bind(_this);
     return _this;
   }
 
@@ -63,8 +50,6 @@ var DatasetList = function (_React$Component) {
     /**
      * HELPERS
      * - getDatasets
-     * - validate
-     * - isValid
     */
 
   }, {
@@ -91,69 +76,21 @@ var DatasetList = function (_React$Component) {
       });
     }
   }, {
-    key: 'validate',
-    value: function validate() {
-      var valid = !!this.state.selected;
-      this.setState({ valid: valid });
-    }
-  }, {
-    key: 'isValid',
-    value: function isValid() {
-      return this.state.valid;
-    }
-
-    /**
-     * UI EVENTS
-     * - triggerClick
-    */
-
-  }, {
-    key: 'triggerClick',
-    value: function triggerClick(selected) {
-      var _this3 = this;
-
-      this.setState({ selected: selected }, function () {
-        if (_this3.props.onChange) _this3.props.onChange(_this3.state.selected);
-      });
-    }
-  }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
-
       var mode = this.props.mode;
-      var selected = this.state.selected;
 
-
-      var datasets = null;
-
-      if (mode === 'table') {
-        datasets = _react2.default.createElement(_Table2.default, { data: this.state.datasets, columns: ['name', 'provider'] });
-      } else if (mode === 'cards') {
-        datasets = this.state.datasets.map(function (dataset) {
-          return _react2.default.createElement(_Card2.default, {
-            key: dataset.id,
-            dataset: dataset,
-            properties: {
-              'data-id': dataset.id,
-              className: dataset.id === selected.id ? '-selected' : ''
-            },
-            onClick: _this4.triggerClick
-          });
-        });
-      } else {
-        datasets = _react2.default.createElement(
-          'ul',
-          { className: 'list' },
-          this.state.datasets.map(function (dataset) {
-            return _react2.default.createElement(
-              'li',
-              { key: dataset.id, className: 'list-item' },
-              dataset.name
-            );
-          })
-        );
-      }
+      var datasets = _react2.default.createElement(
+        'ul',
+        { className: 'list' },
+        this.state.datasets.map(function (dataset) {
+          return _react2.default.createElement(
+            'li',
+            { key: dataset.id, className: 'list-item' },
+            dataset.name
+          );
+        })
+      );
 
       return _react2.default.createElement(
         'div',
@@ -169,7 +106,6 @@ var DatasetList = function (_React$Component) {
 
 DatasetList.defaultProps = {
   application: ['rw'],
-  mode: 'table', // list, table or cards,
   selectable: true,
   editable: true,
   editPath: '/datasets/:id/edit'
@@ -177,7 +113,6 @@ DatasetList.defaultProps = {
 
 DatasetList.propTypes = {
   application: _react2.default.PropTypes.array.isRequired,
-  mode: _react2.default.PropTypes.string,
   selectable: _react2.default.PropTypes.bool,
   editable: _react2.default.PropTypes.bool,
   editPath: _react2.default.PropTypes.string,
