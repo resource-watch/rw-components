@@ -68,12 +68,12 @@ var Field = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var _props = this.props,
-          properties = _props.properties,
-          hint = _props.hint;
-      var _state = this.state,
-          valid = _state.valid,
-          error = _state.error;
+      var _props = this.props;
+      var properties = _props.properties;
+      var hint = _props.hint;
+      var _state = this.state;
+      var valid = _state.valid;
+      var error = _state.error;
 
       // Set classes
 

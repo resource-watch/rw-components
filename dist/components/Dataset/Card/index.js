@@ -50,9 +50,9 @@ var DatasetCard = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          dataset = _props.dataset,
-          properties = _props.properties;
+      var _props = this.props;
+      var dataset = _props.dataset;
+      var properties = _props.properties;
 
       return _react2.default.createElement(
         'div',

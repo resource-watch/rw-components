@@ -35,6 +35,7 @@ storiesOf('Dataset', module)
       <DatasetForm
         api='https://api.resourcewatch.org'
         application={['rw']}
+        dataset="223b936e-06b8-4970-abd9-4f123904d95d"
       />
     );
   })

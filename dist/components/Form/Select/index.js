@@ -68,9 +68,9 @@ var SelectInput = function (_FormElement) {
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          options = _props.options,
-          properties = _props.properties;
+      var _props = this.props;
+      var options = _props.options;
+      var properties = _props.properties;
 
 
       return _react2.default.createElement(_reactSelect2.default, _extends({}, properties, {

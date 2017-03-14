@@ -189,13 +189,13 @@ var WidgetPreview = function (_React$Component) {
     value: function render() {
       var _this5 = this;
 
-      var _state = this.state,
-          selected = _state.selected,
-          loading = _state.loading,
-          chartOptions = _state.chartOptions,
-          xOptions = _state.xOptions,
-          yOptions = _state.yOptions,
-          parsedConfig = _state.parsedConfig;
+      var _state = this.state;
+      var selected = _state.selected;
+      var loading = _state.loading;
+      var chartOptions = _state.chartOptions;
+      var xOptions = _state.xOptions;
+      var yOptions = _state.yOptions;
+      var parsedConfig = _state.parsedConfig;
 
       return _react2.default.createElement(
         'div',

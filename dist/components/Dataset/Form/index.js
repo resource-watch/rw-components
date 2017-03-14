@@ -45,7 +45,7 @@ var DatasetForm = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (DatasetForm.__proto__ || Object.getPrototypeOf(DatasetForm)).call(this, props));
 
     _this.state = Object.assign({}, _constants.STATE_DEFAULT, {
-      dataset: props.dataset.id,
+      dataset: props.dataset,
       form: Object.assign({}, _constants.STATE_DEFAULT.form, {
         application: props.application,
         authorization: props.authorization

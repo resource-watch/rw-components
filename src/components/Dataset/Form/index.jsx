@@ -12,7 +12,7 @@ class DatasetForm extends React.Component {
     super(props);
 
     this.state = Object.assign({}, STATE_DEFAULT, {
-      dataset: props.dataset.id,
+      dataset: props.dataset,
       form: Object.assign({}, STATE_DEFAULT.form, {
         application: props.application,
         authorization: props.authorization

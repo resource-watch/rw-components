@@ -56,10 +56,10 @@ var Navigation = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          step = _props.step,
-          stepLength = _props.stepLength,
-          submitting = _props.submitting;
+      var _props = this.props;
+      var step = _props.step;
+      var stepLength = _props.stepLength;
+      var submitting = _props.submitting;
 
       return _react2.default.createElement(
         'ul',
