@@ -30,7 +30,7 @@ class DatasetForm extends React.Component {
       this.setState({ loading: true });
 
       const xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('GET', `http://api.resourcewatch.org/dataset/${this.state.dataset}`);
+      xmlhttp.open('GET', `http://api.resourcewatch.org/v1/dataset/${this.state.dataset}`);
       xmlhttp.setRequestHeader('Content-Type', 'application/json');
       xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
       xmlhttp.send();
@@ -81,13 +81,10 @@ class DatasetForm extends React.Component {
             contentType: 'application/json',
             omit: (this.state.dataset) ? ['connectorUrlHint', 'authorization', 'connectorType', 'provider'] : ['connectorUrlHint', 'authorization']
           };
-          xmlhttp.open(xmlhttpOptions.type, `http://api.resourcewatch.org/dataset/${this.state.dataset || ''}`);
+          xmlhttp.open(xmlhttpOptions.type, `http://api.resourcewatch.org/v1/dataset/${this.state.dataset || ''}`);
           xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
           xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
-          xmlhttp.send(JSON.stringify({
-            // Remove unnecesary atributtes to prevent 'Unprocessable Entity error'
-            dataset: omit(this.state.form, xmlhttpOptions.omit)
-          }));
+          xmlhttp.send(JSON.stringify(omit(this.state.form, xmlhttpOptions.omit)));
 
           xmlhttp.onreadystatechange = () => {
             if (xmlhttp.readyState === 4) {

@@ -33,7 +33,7 @@ storiesOf('Dataset', module)
   .add('Form', () => {
     return (
       <DatasetForm
-        api='https://api.resourcewatch.org'
+        api='https://api.resourcewatch.org/v1'
         application={['rw']}
         dataset="223b936e-06b8-4970-abd9-4f123904d95d"
       />
@@ -69,7 +69,7 @@ storiesOf('Widget', module)
   .add('Form', () => {
     return (
       <WidgetForm
-        api="https://api.resourcewatch.org"
+        api="https://api.resourcewatch.org/v1"
         application={['rw']}
         authorization=""
         dataset="89a6358e-27eb-4b9c-9f0d-befc4959f914"
@@ -109,7 +109,7 @@ storiesOf('Layer', module)
   .add('Form', () => {
     return (
       <LayerForm
-        api="https://api.resourcewatch.org"
+        api="https://api.resourcewatch.org/v1"
         application={['rw']}
         authorization=""
         dataset="b7bf012f-4b8b-4478-b5c9-6af3075ca1e4"
