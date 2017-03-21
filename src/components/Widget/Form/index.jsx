@@ -30,7 +30,7 @@ class WidgetForm extends React.Component {
       this.setState({ loading: true });
 
       const xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('GET', `http://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget}?cache=${Date.now()}`);
+      xmlhttp.open('GET', `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget}?cache=${Date.now()}`);
       xmlhttp.setRequestHeader('Content-Type', 'application/json');
       xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
       xmlhttp.send();
@@ -81,7 +81,7 @@ class WidgetForm extends React.Component {
             contentType: 'application/json',
             omit: ['authorization']
           };
-          xmlhttp.open(xmlhttpOptions.type, `http://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget || ''}`);
+          xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget || ''}`);
           xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
           xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
           xmlhttp.send(JSON.stringify({
