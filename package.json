@@ -6,7 +6,8 @@
   "scripts": {
     "test": "eslint --ext .js --ext .jsx .",
     "start": "start-storybook -p 9000",
-    "build": "babel ./src --out-dir ./dist"
+    "style": "node-sass --include-path ./node_modules/ ./src/styles/index.scss ./dist/style.css",
+    "build": "babel ./src --out-dir ./dist && npm run style"
   },
   "repository": {
     "type": "git",
