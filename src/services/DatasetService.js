@@ -129,7 +129,8 @@ export default class DatasetService {
     const table = tableName || this.tableName;
     const query = `SELECT Min(${columnName}) AS min, Max(${columnName}) AS max FROM ${table}`;
     return new Promise((resolve) => {
-      fetch(`https://api.resourcewatch.org/v1/query/${this.datasetId}?sql=${query}`)
+      // TODO: remove cache param
+      fetch(`https://api.resourcewatch.org/v1/query/${this.datasetId}?sql=${query}&cache=${Date.now()}`)
         .then(response => response.json())
         .then((jsonData) => {
           if (jsonData.data) {
@@ -149,7 +150,8 @@ export default class DatasetService {
     const uniqQueryPart = uniqs ? `GROUP BY ${columnName}` : '';
     const query = `SELECT ${columnName} FROM ${table} ${uniqQueryPart} ORDER BY ${columnName}`;
     return new Promise((resolve) => {
-      fetch(`https://api.resourcewatch.org/v1/query/${this.datasetId}?sql=${query}`)
+      // TODO: remove cache param
+      fetch(`https://api.resourcewatch.org/v1/query/${this.datasetId}?sql=${query}&cache=${Date.now()}`)
         .then(response => response.json())
         .then((jsonData) => {
           const parsedData = _.map(jsonData.data, data => data[columnName]);
