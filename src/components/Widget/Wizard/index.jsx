@@ -52,7 +52,7 @@ class WidgetWizard extends React.Component {
             contentType: 'application/json',
             omit: ['authorization']
           };
-          xmlhttp.open(xmlhttpOptions.type, `http://api.resourcewatch.org/dataset/${this.state.dataset}/widget/${this.state.widget || ''}`);
+          xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget || ''}`);
           xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
           xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
           xmlhttp.send(JSON.stringify({
