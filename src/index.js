@@ -1,6 +1,8 @@
 export default {};
 // RW services
 export { default as DatasetService } from './services/DatasetService';
+export { default as getQueryByFilters } from './utils/getQueryByFilters';
+export { default as getWidgetConfig } from './utils/getWidgetConfig';
 
 // RW components
 // Dataset
