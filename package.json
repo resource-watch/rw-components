@@ -7,7 +7,8 @@
     "test": "eslint --ext .js --ext .jsx .",
     "start": "start-storybook -p 9000",
     "style": "node-sass --include-path ./node_modules/ ./src/styles/index.scss ./dist/style.css",
-    "build": "babel ./src --out-dir ./dist && npm run style"
+    "build": "babel ./src --out-dir ./dist && npm run style",
+    "build-watch": "babel ./src --out-dir ./dist --watch"
   },
   "repository": {
     "type": "git",
@@ -45,7 +46,9 @@
     "autoprefixer": "^6.5.3",
     "babel-cli": "^6.23.0",
     "babel-preset-env": "^1.2.1",
+    "babel-preset-latest": "^6.24.0",
     "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-3": "^6.22.0",
     "css-loader": "^0.26.1",
     "eslint": "^3.15.0",
     "eslint-config-vizzuality": "^1.0.3",
