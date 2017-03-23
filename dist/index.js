@@ -13,6 +13,24 @@ Object.defineProperty(exports, 'DatasetService', {
   }
 });
 
+var _getQueryByFilters = require('./utils/getQueryByFilters');
+
+Object.defineProperty(exports, 'getQueryByFilters', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_getQueryByFilters).default;
+  }
+});
+
+var _getWidgetConfig = require('./utils/getWidgetConfig');
+
+Object.defineProperty(exports, 'getWidgetConfig', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_getWidgetConfig).default;
+  }
+});
+
 var _Card = require('./components/Dataset/Card');
 
 Object.defineProperty(exports, 'DatasetCard', {

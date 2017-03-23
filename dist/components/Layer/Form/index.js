@@ -66,7 +66,7 @@ var LayerForm = function (_React$Component) {
         this.setState({ loading: true });
 
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('GET', 'http://api.resourcewatch.org/dataset/' + this.state.dataset + '/layer/' + this.state.layer + '?cache=' + Date.now());
+        xmlhttp.open('GET', 'https://api.resourcewatch.org/v1/dataset/' + this.state.dataset + '/layer/' + this.state.layer + '?cache=' + Date.now());
         xmlhttp.setRequestHeader('Content-Type', 'application/json');
         xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
         xmlhttp.send();
@@ -122,7 +122,7 @@ var LayerForm = function (_React$Component) {
               omit: ['authorization']
             };
 
-            xmlhttp.open(xmlhttpOptions.type, 'http://api.resourcewatch.org/dataset/' + _this3.state.dataset + '/layer/' + (_this3.state.layer || ''));
+            xmlhttp.open(xmlhttpOptions.type, 'https://api.resourcewatch.org/v1/dataset/' + _this3.state.dataset + '/layer/' + (_this3.state.layer || ''));
             xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
             xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
             xmlhttp.send(JSON.stringify({

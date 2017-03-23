@@ -71,7 +71,7 @@ var WidgetList = function (_React$Component) {
           dataset = _props.dataset,
           application = _props.application;
 
-      var url = 'https://api.resourcewatch.org/dataset/' + dataset.id + '/widget?app=' + application.join(',') + '&includes=widget&page[size]=' + Date.now();
+      var url = 'https://api.resourcewatch.org/v1/dataset/' + dataset.id + '/widget?application=' + application.join(',') + '&includes=widget&page[size]=' + Date.now();
 
       fetch(new Request(url)).then(function (response) {
         if (response.ok) return response.json();

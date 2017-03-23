@@ -55,7 +55,7 @@ var DatasetFilter = function (_React$Component) {
 
     // DatasetService
     _this.datasetService = new _DatasetService2.default(props.dataset.id, {
-      apiURL: 'https://api.resourcewatch.org'
+      apiURL: 'https://api.resourcewatch.org/v1'
     });
 
     // BINDINGS

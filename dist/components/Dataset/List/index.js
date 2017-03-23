@@ -59,7 +59,7 @@ var DatasetList = function (_React$Component) {
 
       var application = this.props.application;
 
-      var url = 'https://api.resourcewatch.org/dataset?app=' + application.join(',') + '&includes=widget,layer&page[size]=' + Date.now() / 100000;
+      var url = 'https://api.resourcewatch.org/v1/dataset?application=' + application.join(',') + '&includes=widget,layer&page[size]=' + Date.now() / 100000;
 
       fetch(new Request(url)).then(function (response) {
         if (response.ok) return response.json();
