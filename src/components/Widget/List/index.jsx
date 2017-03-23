@@ -31,7 +31,7 @@ class WidgetList extends React.Component {
   */
   getWidgets() {
     const { dataset, application } = this.props;
-    const url = `https://api.resourcewatch.org/dataset/${dataset.id}/widget?app=${application.join(',')}&includes=widget&page[size]=${Date.now()}`;
+    const url = `https://api.resourcewatch.org/v1/dataset/${dataset.id}/widget?application=${application.join(',')}&includes=widget&page[size]=${Date.now()}`;
 
     fetch(new Request(url))
       .then((response) => {
