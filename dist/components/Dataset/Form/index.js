@@ -55,6 +55,7 @@ var DatasetForm = function (_React$Component) {
     // BINDINGS
     _this.onSubmit = _this.onSubmit.bind(_this);
     _this.onChange = _this.onChange.bind(_this);
+    _this.onStepChange = _this.onStepChange.bind(_this);
     return _this;
   }
 
@@ -173,8 +174,8 @@ var DatasetForm = function (_React$Component) {
       });
     }
   }, {
-    key: 'onBack',
-    value: function onBack(step) {
+    key: 'onStepChange',
+    value: function onStepChange(step) {
       this.setState({ step: step });
     }
 
@@ -229,9 +230,7 @@ var DatasetForm = function (_React$Component) {
           step: this.state.step,
           stepLength: this.state.stepLength,
           submitting: this.state.submitting,
-          onBack: function onBack(step) {
-            return _this6.onBack(step);
-          }
+          onStepChange: this.onStepChange
         })
       );
     }

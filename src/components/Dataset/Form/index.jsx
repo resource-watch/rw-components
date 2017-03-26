@@ -22,6 +22,7 @@ class DatasetForm extends React.Component {
     // BINDINGS
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onStepChange = this.onStepChange.bind(this);
   }
 
   componentWillMount() {
@@ -123,7 +124,7 @@ class DatasetForm extends React.Component {
     this.setState({ form }, () => console.info(this.state.form));
   }
 
-  onBack(step) {
+  onStepChange(step) {
     this.setState({ step });
   }
 
@@ -168,7 +169,7 @@ class DatasetForm extends React.Component {
             step={this.state.step}
             stepLength={this.state.stepLength}
             submitting={this.state.submitting}
-            onBack={step => this.onBack(step)}
+            onStepChange={this.onStepChange}
           />
         }
       </form>

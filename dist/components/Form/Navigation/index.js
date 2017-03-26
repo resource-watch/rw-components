@@ -35,23 +35,23 @@ var Navigation = function (_React$Component) {
       stepLength: props.stepLength
     };
 
-    _this.onBack = _this.onBack.bind(_this);
+    _this.onStepChange = _this.onStepChange.bind(_this);
     return _this;
   }
 
   /**
    * UI EVENTS
-   * - onBack
+   * - onStepChange
   */
 
 
   _createClass(Navigation, [{
-    key: 'onBack',
-    value: function onBack(e) {
+    key: 'onStepChange',
+    value: function onStepChange(e) {
       e.preventDefault();
 
       // Send the step to the form
-      if (this.props.onBack) this.props.onBack(this.props.step - 1);
+      if (this.props.onStepChange) this.props.onStepChange(this.props.step - 1);
     }
   }, {
     key: 'render',
@@ -75,7 +75,7 @@ var Navigation = function (_React$Component) {
                 name: 'commit',
                 className: '-primary'
               },
-              onClick: this.onBack
+              onClick: this.onStepChange
             },
             'Back'
           )
@@ -122,7 +122,7 @@ Navigation.propTypes = {
   step: _react2.default.PropTypes.number,
   stepLength: _react2.default.PropTypes.number,
   submitting: _react2.default.PropTypes.bool,
-  onBack: _react2.default.PropTypes.func
+  onStepChange: _react2.default.PropTypes.func
 };
 
 exports.default = Navigation;
