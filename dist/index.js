@@ -31,6 +31,15 @@ Object.defineProperty(exports, 'getWidgetConfig', {
   }
 });
 
+var _request = require('./utils/request');
+
+Object.defineProperty(exports, 'request', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_request).default;
+  }
+});
+
 var _Card = require('./components/Dataset/Card');
 
 Object.defineProperty(exports, 'DatasetCard', {

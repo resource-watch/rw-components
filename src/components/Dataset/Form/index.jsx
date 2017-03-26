@@ -1,6 +1,8 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
+import { get, post } from '../../../utils/request';
+
 import { STATE_DEFAULT } from './constants';
 
 import Step1 from './Steps/step-1';
@@ -29,28 +31,25 @@ class DatasetForm extends React.Component {
     if (this.state.dataset) {
       // Start the loading
       this.setState({ loading: true });
-
-      const xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('GET', `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}`);
-      xmlhttp.setRequestHeader('Content-Type', 'application/json');
-      xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
-      xmlhttp.send();
-
-      xmlhttp.onreadystatechange = () => {
-        if (xmlhttp.readyState === 4) {
-          if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-            const response = JSON.parse(xmlhttp.responseText);
-            this.setState({
-              dataset: response.data.id,
-              form: this.setFormFromParams(response.data.attributes),
-              // Stop the loading
-              loading: false
-            });
-          } else {
-            console.info('Error');
-          }
+      get({
+        url: `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}`,
+        headers: [{
+          key: 'Content-Type',
+          value: 'application/json'
+        }],
+        onSuccess: (response) => {
+          this.setState({
+            dataset: response.data.id,
+            form: this.setFormFromParams(response.data.attributes),
+            // Stop the loading
+            loading: false
+          });
+        },
+        onError: (error) => {
+          this.setState({ loading: false });
+          console.error(error);
         }
-      };
+      });
     }
   }
 
@@ -74,42 +73,39 @@ class DatasetForm extends React.Component {
           this.setState({ submitting: true });
 
           // Set the request
-          // Send the request
-          const xmlhttp = new XMLHttpRequest();
-          const xmlhttpOptions = {
+          const requestOptions = {
             type: (this.state.dataset) ? 'PATCH' : 'POST',
-            authorization: this.state.form.authorization,
-            contentType: 'application/json',
             omit: (this.state.dataset) ? ['connectorUrlHint', 'authorization', 'connectorType', 'provider'] : ['connectorUrlHint', 'authorization']
           };
-          xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.dataset || ''}`);
-          xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
-          xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
-          xmlhttp.send(JSON.stringify(omit(this.state.form, xmlhttpOptions.omit)));
 
-          xmlhttp.onreadystatechange = () => {
-            if (xmlhttp.readyState === 4) {
-              // Stop the submitting
+          post({
+            type: requestOptions.type,
+            url: `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}`,
+            body: omit(this.state.form, requestOptions.omit),
+            headers: [{
+              key: 'Content-Type', value: 'application/json'
+            }, {
+              key: 'Authorization', value: this.state.form.authorization
+            }],
+            onSuccess: (response) => {
+              const successMessage = `The dataset "${response.data.id}" - "${response.data.attributes.name}" has been uploaded correctly`;
+              console.info(response);
+              console.info(successMessage);
+              alert(successMessage);
+
+              // Go back to first step and set the dataset
+              // This will trigger the PATCH function
+              this.setState({
+                submitting: false,
+                step: 1,
+                dataset: response.data.id
+              });
+            },
+            onError: (error) => {
               this.setState({ submitting: false });
-
-              if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-                const response = JSON.parse(xmlhttp.responseText);
-                const successMessage = `The dataset "${response.data.id}" - "${response.data.attributes.name}" has been uploaded correctly`;
-                console.info(response);
-                console.info(successMessage);
-                alert(successMessage);
-
-                // Go back to first step and set the dataset
-                // This will trigger the PATCH function
-                this.setState({
-                  step: 1,
-                  dataset: response.data.id
-                });
-              } else {
-                console.info('Error');
-              }
+              console.error(error);
             }
-          };
+          });
         } else {
           this.setState({
             step: this.state.step + 1
