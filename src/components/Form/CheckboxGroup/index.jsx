@@ -1,78 +1,75 @@
 import React from 'react';
+import isEqual from 'lodash/isEqual';
+import Checkbox from '../Checkbox';
 
-import FormElement from '../FormElement';
-
-class CheckboxGroup extends FormElement {
+export default class CheckboxGroup extends React.Component {
 
   constructor(props) {
     super(props);
 
+    // Initial state
     this.state = {
-      value: props.properties.default || []
+      checked: this.props.selected || []
     };
+    // BINDINGS
+    this.onChange = this.onChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps.selected, this.props.selected)) {
+      this.setState({
+        checked: nextProps.selected
+      });
+    }
   }
 
   /**
    * UI EVENTS
-   * - triggerChange
+   * - onChange
   */
-  triggerChange(e) {
-    // - newSelected: Clone the current value array
-    // - i: Get the indexOf the the current selection
-    const newSelected = [].concat(this.state.value);
-    const i = this.state.value.indexOf(e.currentTarget.value);
-
-    // Toggle element from the array
-    if (i === -1) {
-      newSelected.push(e.currentTarget.value);
+  onChange(newItem) {
+    // Send objects
+    const selectedObj = this.props.items.find(item => item.value === newItem.value);
+    const newChecked = this.state.checked.slice(0);
+    if (newItem.checked) {
+      newChecked.push(selectedObj.value);
     } else {
-      newSelected.splice(i, 1);
+      newChecked.splice(newChecked.indexOf(selectedObj.value), 1);
     }
-
-    // Set state
     this.setState({
-      value: newSelected
-    }, () => {
-      // Trigger validation
-      this.triggerValidate();
-
-      if (this.props.onChange) this.props.onChange(this.state.value);
+      checked: newChecked
     });
+    this.props.onChange && this.props.onChange(newChecked);
+  }
+
+  getCheckbox() {
+    return this.props.items.map((item, i) => (
+      <Checkbox
+        key={i}
+        name={this.props.name}
+        value={item.value}
+        checked={this.state.checked.includes(item.value)}
+        label={item.label}
+        onChange={newSelected => this.onChange(newSelected)}
+      />
+      ));
   }
 
   render() {
-    const { properties, options } = this.props;
-    const { value } = this.state;
-
     return (
-      <div className={`c-checkbox-box ${this.props.className}`}>
-        {options.map((item, i) => (
-          <div key={i} className="c-checkbox">
-            <input
-              {...properties}
-              type="checkbox"
-              name={name}
-              id={`checkbox-${name}-${item.value}`}
-              value={item.value}
-              checked={value.indexOf(item.value) !== -1}
-              onChange={this.triggerChange}
-            />
-            <label htmlFor={`checkbox-${name}-${item.value}`}>
-              <span />
-              {item.label}
-            </label>
-          </div>
-        ))}
+      <div className={`c-checkbox-box ${this.props.className ? this.props.className : ''}`}>
+        {this.props.title && <span className="checkbox-box-title">{this.props.title}</span>}
+        {this.getCheckbox()}
       </div>
     );
   }
 }
 
 CheckboxGroup.propTypes = {
-  options: React.PropTypes.array.isRequired,
-  properties: React.PropTypes.object.isRequired,
+  name: React.PropTypes.string,
+  title: React.PropTypes.string,
+  selected: React.PropTypes.array,
   className: React.PropTypes.string,
+  items: React.PropTypes.array,
   onChange: React.PropTypes.func
 };
-
-export default CheckboxGroup;

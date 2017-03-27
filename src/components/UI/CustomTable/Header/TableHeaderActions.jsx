@@ -11,9 +11,9 @@ export default class TableHeaderActions extends React.Component {
           <li className="action sortby-action">
             <TableSorts {...this.props} />
           </li>
-          {/*<li className="action">
+          <li className="action filter-action">
             <TableFilters {...this.props} />
-          </li>*/}
+          </li>
         </ul>
       </div>
     );

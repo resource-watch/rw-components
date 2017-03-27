@@ -14,6 +14,10 @@ export default class TableContent extends React.Component {
     };
   }
 
+  setIndividualActionPath(path, id) {
+    return path.replace(':id', id);
+  }
+
   render() {
     const { actions, columns, sort, rowSelection, individualActions } = this.props;
     const { bottom, top } = this.getPageBounds();
@@ -39,6 +43,7 @@ export default class TableContent extends React.Component {
 
     /* Apply pagination to data */
     data = data.slice(bottom, top);
+
     return (
       <tbody>
         {data.map((row, index) => {
@@ -68,7 +73,7 @@ export default class TableContent extends React.Component {
               )}
               {individualActions.show && 
                 individualActions.actions.map((ac, i) => (
-                  <td key={i} className="individual-action"><a href={ac.path}>{ac.name}</a></td>
+                  <td key={i} className="individual-action"><a href={this.setIndividualActionPath(ac.path, row.id)}>{ac.name}</a></td>
                 ))
               }
             </tr>

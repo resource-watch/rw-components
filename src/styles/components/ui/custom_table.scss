@@ -20,22 +20,36 @@ $padding-right: 75px;
         position: relative;
         font-size: 14px;
         text-transform: uppercase;
-        color: $color-gray;
+        color: $color-mid-grey;
         letter-spacing: 2.2px;
         padding-top: 20px;
         padding-bottom: 15px;
-        padding-right: 35px;
+        padding-right: 40px;
 
         &:first-child {
           padding-left: $padding-left;
 
           & .sortby-action {
-            left: $padding-left - 30px;
+            left: $padding-left - 13px;
           }
         }
 
         &:last-child {
           padding-right: $padding-right;
+        }
+
+        .sortby-action {
+          button { height: 10px; }
+
+          .c-icon {
+            fill: $color-mid-grey;
+            stroke: $color-mid-grey;
+            stroke-width: 3px;
+          }
+        }
+
+        .filter-action {
+          fill: $color-mid-grey;
         }
       }
     }
@@ -58,7 +72,7 @@ $padding-right: 75px;
         // padding: $space-1;
         padding: 15px 10px;
         color: rgba($color-text-1, .5);
-        font-size: 16px;
+        font-size: $font-size-default;
 
         &:first-child {
           padding-left: $padding-left;
@@ -78,6 +92,9 @@ $padding-right: 75px;
       .individual-action {
         a {
           color: $color-secondary;
+          text-transform: uppercase;
+          font-size: $font-size-default;
+          text-decoration: none;
 
           &:hover {
             opacity: .5;

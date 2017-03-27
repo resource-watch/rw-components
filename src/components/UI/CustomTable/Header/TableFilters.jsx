@@ -5,7 +5,6 @@ import isEqual from 'lodash/isEqual';
 import Icon from '../../Icon';
 import CheckboxGroup from '../../../Form/CheckboxGroup';
 
-
 export default class TableFilters extends React.Component {
   constructor(props) {
     super(props);
@@ -130,7 +129,7 @@ export default class TableFilters extends React.Component {
 
     const filteredValues = values.filter((val) => {
       if (input) {
-        return !!val.toString().toLowerCase().match(input.toString().toLowerCase());
+        return val.toString().toLowerCase() === input.toString().toLowerCase();
       }
       return true;
     });
@@ -162,7 +161,7 @@ export default class TableFilters extends React.Component {
             onClick={this.onToggle}
             className={`table-header-btn ${btnClass}`}
           >
-            <Icon name="icon-filter" className="-small" />
+            <Icon name="icon-filter" className="-smaller" />
           </button>
 
           {/* Second child: If present, this item will be tethered to the the first child */}
@@ -193,10 +192,11 @@ export default class TableFilters extends React.Component {
                   }
                 </div>
                 <CheckboxGroup
-                  className={`${field}-checkbox-group`}
-                  options={this.getFilteredValues()}
+                  name={field}
+                  title={field}
                   selected={selected || values}
-                  properties={{}}
+                  className={`${field}-checkbox-group`}
+                  items={this.getFilteredValues()}
                   onChange={this.onFilterSelect}
                 />
                 {/* <ul>

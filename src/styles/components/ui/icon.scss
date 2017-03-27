@@ -3,6 +3,16 @@
   height: 20px;
   flex-shrink: 0;
 
+  &.-tiny {
+    width: 7px;
+    height: 7px;
+  }
+
+  &.-smaller {
+    width: 10px;
+    height: 10px;
+  }
+
   &.-small {
     width: 14px;
     height: 14px;
