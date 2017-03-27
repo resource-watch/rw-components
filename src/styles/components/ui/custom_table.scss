@@ -74,6 +74,16 @@ $padding-right: 75px;
           align-items: center;
         }
       }
+
+      .individual-action {
+        a {
+          color: $color-secondary;
+
+          &:hover {
+            opacity: .5;
+          }
+        }
+      }
     }
   }
 

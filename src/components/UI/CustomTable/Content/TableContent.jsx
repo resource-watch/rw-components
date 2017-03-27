@@ -15,7 +15,7 @@ export default class TableContent extends React.Component {
   }
 
   render() {
-    const { actions, columns, sort, rowSelection } = this.props;
+    const { actions, columns, sort, rowSelection, individualActions } = this.props;
     const { bottom, top } = this.getPageBounds();
 
     let data = this.props.filteredData;
@@ -66,6 +66,11 @@ export default class TableContent extends React.Component {
               {columns.map((col, i) =>
                 <td key={i}>{row[col.value]}</td>
               )}
+              {individualActions.show && 
+                individualActions.actions.map((ac, i) => (
+                  <td key={i} className="individual-action"><a href={ac.path}>{ac.name}</a></td>
+                ))
+              }
             </tr>
           );
         })}

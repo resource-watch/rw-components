@@ -1,11 +1,12 @@
 import React from 'react';
+// import { Link } from 'react-router';
 
 import TableHeaderActions from './TableHeaderActions';
 
 
 export default class TableHeader extends React.Component {
   render() {
-    const { actions, columns, columnValues, columnQueries, filteredData, onFilter, onSort } = this.props;
+    const { actions, columns, columnValues, columnQueries, filteredData, onFilter, onSort, individualActions } = this.props;
     return (
       <thead>
         <tr>
@@ -29,6 +30,7 @@ export default class TableHeader extends React.Component {
               </th>
             );
           })}
+          {individualActions.show && <th colSpan={`${individualActions.actions.length}`}></th>}
         </tr>
       </thead>
     );

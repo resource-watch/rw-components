@@ -224,6 +224,7 @@ export default class CustomTable extends React.Component {
             columnValues={this.state.columnValues}
             columnQueries={this.state.columnQueries}
             filteredData={this.state.filteredData}
+            individualActions={this.props.individualActions}
             onFilter={this.onFilter}
             onSort={this.onSort}
           />
@@ -253,6 +254,7 @@ CustomTable.propTypes = {
   actions: React.PropTypes.object,
   data: React.PropTypes.array,
   columns: React.PropTypes.array,
+  individualActions: React.PropTypes.object,
   pagination: React.PropTypes.object,
   onToggleSelectedRow: React.PropTypes.func,
   onRowDelete: React.PropTypes.func
@@ -268,6 +270,13 @@ CustomTable.defaultProps = {
     pageSize: 20,
     page: 0,
     total: null
+  },
+  individualActions: {
+    show: true,
+    actions: [
+      { name: 'Edit', path: 'datasets/:id/edit' },
+      { name: 'Remove', path: 'datasets/:id/remove' }
+    ]
   },
   onToggleSelectedRow: null,
   onRowDelete: null
