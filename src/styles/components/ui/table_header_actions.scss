@@ -1,0 +1,17 @@
+
+.c-table-header-actions {
+  .action {
+    cursor: pointer;
+  }
+
+  .sortby-action {
+    position: absolute;
+    top: 0;
+    left: -30px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

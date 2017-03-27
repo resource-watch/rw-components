@@ -21,7 +21,7 @@ export default class TableFooter extends React.Component {
   }
 
   render() {
-    const { pagination } = this.props;
+    const { pagination, showTotalPages } = this.props;
     return (
       <div className="table-footer">
         {/* Paginator */}
@@ -41,7 +41,7 @@ export default class TableFooter extends React.Component {
         }
 
         {/* Page locator */}
-        {pagination.enabled &&
+        {pagination.enabled && showTotalPages &&
           <span>Page <span>{pagination.page + 1}</span> of <span>{pagination.total}</span></span>
         }
       </div>

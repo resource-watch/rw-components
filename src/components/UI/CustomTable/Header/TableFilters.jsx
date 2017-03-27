@@ -150,7 +150,7 @@ export default class TableFilters extends React.Component {
         <TetherComponent
           attachment="top center"
           constraints={[{
-            to: 'scrollParent'
+            to: 'window'
           }]}
           classes={{
             element: 'c-table-tooltip -footer'
@@ -193,9 +193,10 @@ export default class TableFilters extends React.Component {
                   }
                 </div>
                 <CheckboxGroup
-                  name={`${field}-checkbox-group`}
-                  items={this.getFilteredValues()}
+                  className={`${field}-checkbox-group`}
+                  options={this.getFilteredValues()}
                   selected={selected || values}
+                  properties={{}}
                   onChange={this.onFilterSelect}
                 />
                 {/* <ul>

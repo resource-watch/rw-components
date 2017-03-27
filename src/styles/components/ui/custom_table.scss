@@ -8,21 +8,35 @@ $padding-right: 75px;
     width: 100%;
     padding: $space-1;
 
-    th {
-      font-size: 14px;
-      text-transform: uppercase;
-      color: $color-gray;
-      letter-spacing: 2.2px;
-      padding-top: 20px;
-      padding-bottom: 15px;
+    li {
+      list-style: none;
+    }
 
-      &:first-child {
-        padding-left: $padding-left;
-      }
+    thead {
+      background-color: $color-white;
+    
 
-      &:last-child {
-        text-align: right;
-        padding-right: $padding-right;
+      th {
+        position: relative;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: $color-gray;
+        letter-spacing: 2.2px;
+        padding-top: 20px;
+        padding-bottom: 15px;
+        padding-right: 35px;
+
+        &:first-child {
+          padding-left: $padding-left;
+
+          & .sortby-action {
+            left: $padding-left - 30px;
+          }
+        }
+
+        &:last-child {
+          padding-right: $padding-right;
+        }
       }
     }
 
@@ -36,7 +50,7 @@ $padding-right: 75px;
         }
 
         &.-selected {
-          background-color: $color-secondary;
+          // background-color: $color-secondary;
         }
       }
 
@@ -51,7 +65,6 @@ $padding-right: 75px;
         }
 
         &:last-child {
-          text-align: right;
           padding-right: $padding-right;
         }
 
@@ -68,6 +81,10 @@ $padding-right: 75px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+
+    ul {
+      margin: 0;
+    }
   }
 
   .table-footer {

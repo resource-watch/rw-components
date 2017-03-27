@@ -241,6 +241,7 @@ export default class CustomTable extends React.Component {
         <TableFooter
           pagination={this.state.pagination}
           onChangePage={this.onChangePage}
+          showTotalPages={false}
         />
       </div>
     );

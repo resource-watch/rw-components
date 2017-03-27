@@ -65,7 +65,7 @@ class DatasetTable extends React.Component {
             page: 0
           }}
           onToggleSelectedRow={(ids) => {
-            this.props.setSelectedPoints(ids);
+            // this.props.setSelectedPoints(ids);
           }}
           onRowDelete={(id) => {
             this.props.onPointRemove(id);

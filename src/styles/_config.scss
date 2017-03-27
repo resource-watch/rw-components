@@ -27,7 +27,9 @@ $color-white: #fff;
 $color-black: #000;
 $color-gray: #e3e4e6;
 $color-red: #e23035;
-$color-green: #65b60d;
+$color-green: $color-red;
+
+$color-error: #65b60d;
 
 
 $color-text-1: #393f44;
