@@ -35,10 +35,10 @@ export default class Checkbox extends React.Component {
           onChange={this.onChange}
         />
         <label htmlFor={`checkbox-${name}-${value}`}>
-          <span>
+          <span className="checkbox-icon">
             <Icon name="icon-checkbox" />
           </span>
-          {label}
+          <span className="item-title">{label}</span>
         </label>
       </div>
     );
