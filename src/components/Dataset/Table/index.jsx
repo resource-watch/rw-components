@@ -3,6 +3,14 @@ import sortBy from 'lodash/sortBy';
 import Spinner from '../../UI/Spinner';
 import CustomTable from '../../UI/CustomTable/CustomTable';
 
+const individualActions = {
+  show: true,
+  actions: [
+    { name: 'Edit', path: 'datasets/:id/edit' },
+    { name: 'Remove', path: 'datasets/:id/remove' }
+  ]
+};
+
 class DatasetTable extends React.Component {
 
   constructor(props) {
@@ -54,6 +62,7 @@ class DatasetTable extends React.Component {
           columns={this.props.columns}
           data={this.state.datasets}
           pageSize={20}
+          individualActions={individualActions}
           actions={{
             showable: false,
             editable: false,
@@ -79,7 +88,6 @@ class DatasetTable extends React.Component {
 DatasetTable.defaultProps = {
   application: ['rw'],
   editable: true,
-  editPath: '/datasets/:id/edit',
   columns: [
     {label: 'name', value: 'name'}, 
     {label: 'provider', value: 'provider'}
@@ -90,6 +98,7 @@ DatasetTable.propTypes = {
   application: React.PropTypes.array.isRequired,
   editable: React.PropTypes.bool,
   editPath: React.PropTypes.string,
+  removePath: React.PropTypes.string,
   columns: React.PropTypes.array
 };
 

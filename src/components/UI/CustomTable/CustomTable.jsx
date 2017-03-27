@@ -274,8 +274,8 @@ CustomTable.defaultProps = {
   individualActions: {
     show: true,
     actions: [
-      { name: 'Edit', path: 'datasets/:id/edit' },
-      { name: 'Remove', path: 'datasets/:id/remove' }
+      { name: 'Edit', path: '#' },
+      { name: 'Remove', path: '#' }
     ]
   },
   onToggleSelectedRow: null,
