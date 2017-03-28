@@ -6,8 +6,8 @@ import CustomTable from '../../UI/CustomTable/CustomTable';
 const individualActions = {
   show: true,
   actions: [
-    { name: 'Edit', path: 'datasets/:id/edit' },
-    { name: 'Remove', path: 'datasets/:id/remove' }
+    { name: 'Edit', path: 'datasets/:id/edit', show: true },
+    { name: 'Remove', path: 'datasets/:id/remove', show: true }
   ]
 };
 
