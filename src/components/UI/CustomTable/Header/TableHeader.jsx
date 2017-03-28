@@ -11,7 +11,7 @@ export default class TableHeader extends React.Component {
         <tr>
           {columns.map((c, index) => {
             return (
-              <th key={index}>
+              <th key={index} className={c.type || ''}>
                 <span className="th-wrapper">
                   <span>{c.label}</span>
 
@@ -26,7 +26,7 @@ export default class TableHeader extends React.Component {
               </th>
             );
           })}
-          {actions.show && actionsShowed.length <th colSpan={`${actionsShowed.length}`}></th>}
+          {actions.show && actionsShowed.length && <th colSpan={`${actionsShowed.length}`}></th>}
         </tr>
       </thead>
     );

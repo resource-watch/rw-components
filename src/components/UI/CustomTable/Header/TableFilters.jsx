@@ -193,24 +193,11 @@ export default class TableFilters extends React.Component {
                 </div>
                 <CheckboxGroup
                   name={field}
-                  title={field}
                   selected={selected || values}
                   className={`${field}-checkbox-group`}
                   items={this.getFilteredValues()}
                   onChange={this.onFilterSelect}
                 />
-                {/* <ul>
-                  <li>
-                    <button onClick={() => this.props.onSort && this.props.onSort({ field: this.props.field, value: -1 })}>
-                      DESC
-                    </button>
-                  </li>
-                  <li>
-                    <button onClick={() => this.props.onSort && this.props.onSort({ field: this.props.field, value: 1 })}>
-                      ASC
-                    </button>
-                  </li>
-                </ul> */}
               </div>
               <div className="footer">
                 <ul>
