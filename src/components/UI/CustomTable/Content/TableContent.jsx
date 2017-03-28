@@ -21,6 +21,7 @@ export default class TableContent extends React.Component {
   render() {
     const { actions, columns, sort, rowSelection } = this.props;
     const { bottom, top } = this.getPageBounds();
+    const actionsShowed = actions.list.filter(ac => ac.show);
 
     let data = this.props.filteredData;
 
@@ -61,7 +62,7 @@ export default class TableContent extends React.Component {
                 <td key={i}>{row[col.value]}</td>
               )}
               {actions.show && 
-                actions.list.map((ac, i) => (
+                actionsShowed.map((ac, i) => (
                   <td key={i} className="individual-action">
                     <a href={this.setIndividualActionPath(ac.path, row.id)}>{ac.name}</a>
                   </td>

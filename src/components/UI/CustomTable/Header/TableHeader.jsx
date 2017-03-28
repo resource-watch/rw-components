@@ -4,7 +4,8 @@ import TableHeaderActions from './TableHeaderActions';
 export default class TableHeader extends React.Component {
   render() {
     const { actions, columns, columnValues, columnQueries, filteredData, onFilter, onSort } = this.props;
-    
+    const actionsShowed = actions.list.filter(a => a.show);
+
     return (
       <thead>
         <tr>
@@ -25,7 +26,7 @@ export default class TableHeader extends React.Component {
               </th>
             );
           })}
-          {actions.show && <th colSpan={`${actions.list.length}`}></th>}
+          {actions.show && actionsShowed.length <th colSpan={`${actionsShowed.length}`}></th>}
         </tr>
       </thead>
     );
