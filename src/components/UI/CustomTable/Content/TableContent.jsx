@@ -19,7 +19,7 @@ export default class TableContent extends React.Component {
   }
 
   render() {
-    const { actions, columns, sort, rowSelection, getValueClass } = this.props;
+    const { actions, columns, sort, rowSelection } = this.props;
     const { bottom, top } = this.getPageBounds();
     const actionsShowed = actions.list.filter(ac => ac.show);
 
@@ -58,8 +58,13 @@ export default class TableContent extends React.Component {
               onClick={() => this.props.onToggleSelectedRow(row.id)}
               key={index}
             >
-              {columns.map((col, i) =>
-                <td key={i} className={col.type ? `${col.type} ${getValueClass(col.type, row[col.value].toLowerCase())}` : ''}>{row[col.value]}</td>
+              {columns.map((col, i) => {
+                const value = row[col.value];
+                const td = col.td ?
+                  col.td(value, i) :
+                  <td key={i} className={col.className || ''}>{value}</td>;
+                return td;
+              }
               )}
               {actions.show && 
                 actionsShowed.map((ac, i) => (
@@ -82,7 +87,6 @@ TableContent.propTypes = {
   filteredData: React.PropTypes.array,
   pagination: React.PropTypes.object,
   rowSelection: React.PropTypes.array,
-  getValueClass: React.PropTypes.func.isRequired,
   sort: React.PropTypes.object,
   // FUNCTIONS
   onRowDelete: React.PropTypes.func,

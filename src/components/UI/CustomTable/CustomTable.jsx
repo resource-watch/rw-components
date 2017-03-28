@@ -255,7 +255,6 @@ CustomTable.propTypes = {
   columns: React.PropTypes.array,
   pagination: React.PropTypes.object,
   onToggleSelectedRow: React.PropTypes.func,
-  getValueClass: React.PropTypes.func,
   onRowDelete: React.PropTypes.func
 };
 

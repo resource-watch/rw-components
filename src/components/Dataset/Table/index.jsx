@@ -55,7 +55,6 @@ class DatasetTable extends React.Component {
           data={this.state.datasets}
           pageSize={20}
           actions={this.props.actions}
-          getValueClass={this.props.getValueClass}
           pagination={{
             enabled: true,
             pageSize: 20,
@@ -91,8 +90,7 @@ DatasetTable.defaultProps = {
 DatasetTable.propTypes = {
   application: React.PropTypes.array.isRequired,
   columns: React.PropTypes.array,
-  actions: React.PropTypes.object,
-  getValueClass: React.PropTypes.func
+  actions: React.PropTypes.object
 };
 
 export default DatasetTable;
