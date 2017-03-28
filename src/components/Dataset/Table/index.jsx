@@ -5,7 +5,7 @@ import CustomTable from '../../UI/CustomTable/CustomTable';
 
 const individualActions = {
   show: true,
-  actions: [
+  list: [
     { name: 'Edit', path: 'datasets/:id/edit', show: true },
     { name: 'Remove', path: 'datasets/:id/remove', show: true }
   ]
@@ -62,12 +62,7 @@ class DatasetTable extends React.Component {
           columns={this.props.columns}
           data={this.state.datasets}
           pageSize={20}
-          individualActions={individualActions}
-          actions={{
-            showable: false,
-            editable: false,
-            removable: false
-          }}
+          actions={individualActions}
           pagination={{
             enabled: true,
             pageSize: 20,
@@ -87,7 +82,6 @@ class DatasetTable extends React.Component {
 
 DatasetTable.defaultProps = {
   application: ['rw'],
-  editable: true,
   columns: [
     {label: 'name', value: 'name'}, 
     {label: 'provider', value: 'provider'}
@@ -96,9 +90,6 @@ DatasetTable.defaultProps = {
 
 DatasetTable.propTypes = {
   application: React.PropTypes.array.isRequired,
-  editable: React.PropTypes.bool,
-  editPath: React.PropTypes.string,
-  removePath: React.PropTypes.string,
   columns: React.PropTypes.array
 };
 
