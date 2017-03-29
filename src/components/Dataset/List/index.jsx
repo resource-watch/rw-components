@@ -64,7 +64,7 @@ class DatasetList extends React.Component {
 
 DatasetList.defaultProps = {
   application: ['rw'],
-  selectable: true,
+  selectable: false,
   editable: true,
   editPath: '/datasets/:id/edit'
 };

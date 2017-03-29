@@ -2,7 +2,6 @@
   label {
     display: block;
     padding: 2px 0;
-    font-weight: 700;
     text-transform: none;
     position: relative;
     padding-left: 22px;
@@ -15,32 +14,40 @@
     transform: none;
     text-align: left;
     color: $color-text-1;
+    margin-left: 0;
 
     &:hover {
       color: lighten($color-text-1, 12.5%);
     }
 
-    span {
+    .checkbox-icon {
       position: absolute;
       top: 50%;
       left: 0;
       width: 14px;
       height: 14px;
-      border: 1px solid $color-text-1;
+      border: 1px solid $color-secondary;
+      border-radius: 4px;
       transform: translate(0,-50%);
 
       &:after {
         content: "";
         position: absolute;
-        top: 50%;
+        display: block;
+        top: calc(50% - 1px);
         left: 50%;
         width: 6px;
-        height: 6px;
-        background: $color-text-1;
-        display: block;
-        transform: translate(-50%,-50%) scale(0);
+        height: 3px;
+        border-left: 1px solid $color-secondary;
+        border-bottom: 1px solid $color-secondary;
+        transform: translate(-50%,-50%) rotate(-40deg) scale(0);
         transition: all .16s cubic-bezier(0.445, 0.050, 0.550, 0.950);
       }
+    }
+
+    .item-title {
+      display: inline-block;
+      margin-left: 5px;
     }
   }
 
@@ -51,9 +58,9 @@
   input[type=checkbox]:checked + label {
     font-weight: 700;
 
-    span {
+    .checkbox-icon {
       &:after {
-        transform: translate(-50%,-50%) scale(1);
+        transform: translate(-50%,-50%) rotate(-40deg) scale(1);
       }
     }
   }
@@ -77,5 +84,11 @@
         margin: 0;
       }
     }
+  }
+
+  .checkbox-box-title {
+    display: inline-block;
+    margin-bottom: 16px;
+    text-transform: capitalize;
   }
 }

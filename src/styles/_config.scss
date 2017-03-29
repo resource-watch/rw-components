@@ -13,6 +13,8 @@ $small-screen: 320px;
 
 $max-width: 1040px;
 
+$space-1: 8px;
+
 /*
  * Configuring project settings
 */
@@ -24,8 +26,11 @@ $color-tertiary: #f4f5f6;
 $color-white: #fff;
 $color-black: #000;
 $color-gray: #e3e4e6;
+$color-mid-grey: #b9bfc4;
 $color-red: #e23035;
 $color-green: #65b60d;
+
+$color-error: $color-red;
 
 
 $color-text-1: #393f44;

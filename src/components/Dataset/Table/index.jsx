@@ -1,7 +1,7 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 import Spinner from '../../UI/Spinner';
-import Table from '../../UI/Table';
+import CustomTable from '../../UI/CustomTable/CustomTable';
 
 class DatasetTable extends React.Component {
 
@@ -50,7 +50,23 @@ class DatasetTable extends React.Component {
     return (
       <div className="c-dataset-table">
         <Spinner className="-light" isLoading={this.state.loading} />
-        <Table data={ this.state.datasets } columns={['name', 'provider']} />
+        <CustomTable
+          columns={this.props.columns}
+          data={this.state.datasets}
+          pageSize={20}
+          actions={this.props.actions}
+          pagination={{
+            enabled: true,
+            pageSize: 20,
+            page: 0
+          }}
+          onToggleSelectedRow={(ids) => {
+            // this.props.setSelectedPoints(ids);
+          }}
+          onRowDelete={(id) => {
+            this.props.onPointRemove(id);
+          }}
+        />
       </div>
     );
   }
@@ -58,14 +74,23 @@ class DatasetTable extends React.Component {
 
 DatasetTable.defaultProps = {
   application: ['rw'],
-  editable: true,
-  editPath: '/datasets/:id/edit'
+  columns: [
+    {label: 'name', value: 'name'}, 
+    {label: 'provider', value: 'provider'}
+  ],
+  actions: {
+    show: true,
+    list: [
+      { name: 'Edit', path: 'datasets/:id/edit', show: true },
+      { name: 'Remove', path: 'datasets/:id/remove', show: true }
+    ]
+  }
 };
 
 DatasetTable.propTypes = {
   application: React.PropTypes.array.isRequired,
-  editable: React.PropTypes.bool,
-  editPath: React.PropTypes.string
+  columns: React.PropTypes.array,
+  actions: React.PropTypes.object
 };
 
 export default DatasetTable;

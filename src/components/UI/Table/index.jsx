@@ -68,7 +68,7 @@ export default class Table extends React.Component {
           return (
             <th key={index}>
               <span className="th-wrapper">
-                <span>{c}</span>
+                <span>{c.name}</span>
               </span>
             </th>
           );
@@ -96,7 +96,7 @@ export default class Table extends React.Component {
     return paginatedData.map((row, index) => {
       return (
         <tr key={index}>
-          {this.props.columns.map((col, i) => <td key={i}>{row[col]}</td>)}
+          {this.props.columns.map((col, i) => <td key={i} className={col.cellClasses ? col.cellClasses : ''}>{row[col.name]}</td>)}
           {this.props.actionsColumn ? <td>
             <ul className="menu simple">
               <li><a href={`/datasets/${row.id}/edit`}>Edit</a></li>
