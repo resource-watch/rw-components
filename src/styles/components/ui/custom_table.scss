@@ -24,19 +24,8 @@ $padding-right: 75px;
         letter-spacing: 2.2px;
         padding-top: 20px;
         padding-bottom: 15px;
-        padding-right: 40px;
-
-        &:first-child {
-          padding-left: $padding-left;
-
-          & .sortby-action {
-            left: $padding-left - 13px;
-          }
-        }
-
-        &:last-child {
-          padding-right: $padding-right;
-        }
+        padding-left: 30px;
+        padding-right: 25px;
 
         .sortby-action {
           button { height: 10px; }
@@ -69,18 +58,9 @@ $padding-right: 75px;
       }
 
       td {
-        // padding: $space-1;
-        padding: 15px 10px;
+        padding: 15px 30px;
         color: rgba($color-text-1, .5);
         font-size: $font-size-default;
-
-        &:first-child {
-          padding-left: $padding-left;
-        }
-
-        &:last-child {
-          padding-right: $padding-right;
-        }
 
         button {
           display: flex;
@@ -89,12 +69,17 @@ $padding-right: 75px;
         }
       }
 
-      .individual-action {
+      .individual-actions {
         a {
           color: $color-secondary;
           text-transform: uppercase;
           font-size: $font-size-default;
           text-decoration: none;
+          margin-right: 20px;
+
+          &:last-child {
+            margin: 0;
+          }
 
           &:hover {
             opacity: .5;
@@ -106,11 +91,11 @@ $padding-right: 75px;
 
   .th-wrapper {
     display: flex;
-    justify-content: space-between;
     align-items: flex-end;
 
     ul {
       margin: 0;
+      margin-left: 10px;
     }
   }
 

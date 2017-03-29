@@ -67,11 +67,11 @@ export default class TableContent extends React.Component {
               }
               )}
               {actions.show && 
-                actionsShowed.map((ac, i) => (
-                  <td key={i} className="individual-action">
+                <td className="individual-actions">
+                  {actionsShowed.map((ac, i) => (
                     <a href={this.setIndividualActionPath(ac.path, row.id)}>{ac.name}</a>
-                  </td>
-                ))
+                  ))}
+                </td>
               }
             </tr>
           );
