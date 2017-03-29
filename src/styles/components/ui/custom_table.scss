@@ -116,38 +116,14 @@ $padding-right: 75px;
 
   .table-footer {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: $space-1;
     margin-top: 10px;
   }
 
-   .paginator {
-    display: flex;
-    justify-content: center;
-    margin: 0;
-
-    li {
-      list-style: none;
-      margin-right: 30px;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-
-    button {
-      padding: 15px ($space-1 * 2);
-      border-radius: 4px;
-      font-size: $font-size-default;
-      border: 0;
-      background-color: $color-primary;
-      color: $color-white;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-
-      &:focus { outline: none; }
-    }
+  .c-paginator {
+    margin-bottom: 20px;
   }
 }

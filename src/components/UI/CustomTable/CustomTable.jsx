@@ -195,16 +195,16 @@ export default class CustomTable extends React.Component {
       }).every(match => match);
     });
 
-    const total = Math.ceil(filteredData.length / pagination.pageSize);
+    const maxPage = Math.ceil(filteredData.length / pagination.pageSize);
     // Check if the page is equal to the total
-    const page = (pagination.page !== 0 && pagination.page === total) ? pagination.page - 1 : pagination.page;
+    const page = (pagination.page !== 0 && pagination.page === maxPage) ? pagination.page - 1 : pagination.page;
 
     this.setState({
       filteredData,
       pagination: {
         ...pagination,
         page,
-        total
+        total: filteredData.length
       }
     });
   }
@@ -241,7 +241,7 @@ export default class CustomTable extends React.Component {
         <TableFooter
           pagination={this.state.pagination}
           onChangePage={this.onChangePage}
-          showTotalPages={false}
+          showTotalPages
         />
       </div>
     );

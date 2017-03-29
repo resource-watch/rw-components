@@ -1,48 +1,34 @@
 import React from 'react';
+import Paginator from '../../Paginator';
 
 export default class TableFooter extends React.Component {
 
   constructor(props) {
     super(props);
-
-    // BINDINGS
-    this.onPrevPage = this.onPrevPage.bind(this);
-    this.onNextPage = this.onNextPage.bind(this);
   }
 
-  onNextPage() {
-    if (this.props.pagination.page === this.props.pagination.total - 1) return;
-    this.props.onChangePage && this.props.onChangePage(this.props.pagination.page + 1);
-  }
-
-  onPrevPage() {
-    if (this.props.pagination.page === 0) return;
-    this.props.onChangePage && this.props.onChangePage(this.props.pagination.page - 1);
+  onChangePage(page) {
+    this.props.onChangePage && this.props.onChangePage(page - 1);
   }
 
   render() {
     const { pagination, showTotalPages } = this.props;
+    const maxPage = Math.ceil(pagination.total / pagination.pageSize);
+
     return (
       <div className="table-footer">
-        {/* Paginator */}
-        {pagination.enabled &&
-          <ul className="paginator">
-            <li className="paginator-link">
-              <button className="paginator-btn" onClick={this.onPrevPage}>
-                Prev
-              </button>
-            </li>
-            <li className="paginator-link">
-              <button className="paginator-btn" onClick={this.onNextPage}>
-                Next
-              </button>
-            </li>
-          </ul>
-        }
+        <Paginator
+          options={{
+            page: pagination.page + 1,
+            size: pagination.total,
+            limit: pagination.pageSize
+          }}
+          onChange={page => this.onChangePage(page)}
+        />
 
         {/* Page locator */}
         {pagination.enabled && showTotalPages &&
-          <span>Page <span>{pagination.page + 1}</span> of <span>{pagination.total}</span></span>
+          <div>Page <span>{pagination.page + 1}</span> of <span>{maxPage}</span></div>
         }
       </div>
     );
@@ -58,7 +44,7 @@ TableFooter.defaultProps = {
   pagination: {
     enabled: true,
     pageSize: 20,
-    page: 0,
+    page: 1,
     total: null
   },
   onPrevPage: null,

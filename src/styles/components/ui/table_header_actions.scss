@@ -9,6 +9,10 @@
       &:focus { outline: none; }
       &:hover { opacity: .5; }
     }
+
+    .-active {
+      .c-icon { fill: $color-secondary; }
+    }
   }
 
   .sortby-action {

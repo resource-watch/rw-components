@@ -143,9 +143,9 @@ export default class TableFilters extends React.Component {
     const btnClass = classnames({
       '-active': values && selected && values.length !== selected.length
     });
-
+    
     return (
-      <div>
+      <div className={btnClass}>
         <TetherComponent
           attachment="top center"
           constraints={[{
