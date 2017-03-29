@@ -195,7 +195,7 @@ export default class TableFilters extends React.Component {
                   name={field}
                   selected={selected || values}
                   className={`${field}-checkbox-group`}
-                  items={this.getFilteredValues()}
+                  options={this.getFilteredValues()}
                   onChange={this.onFilterSelect}
                 />
               </div>
