@@ -98,7 +98,7 @@ class Step1 extends Step {
           {Select}
         </Field>
 
-        <Field
+        {/* <Field
           ref={(c) => { if (c) this.children.push(c); }}
           onChange={value => this.props.onChange({ tags: value })}
           validations={['required']}
@@ -113,7 +113,7 @@ class Step1 extends Step {
           }}
         >
           {Token}
-        </Field>
+        </Field> */}
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
