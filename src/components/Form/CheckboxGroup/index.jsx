@@ -29,7 +29,7 @@ export default class CheckboxGroup extends React.Component {
   */
   onChange(newItem) {
     // Send objects
-    const selectedObj = this.props.items.find(item => item.value === newItem.value);
+    const selectedObj = this.props.options.find(option => option.value === newItem.value);
     const newChecked = this.state.checked.slice(0);
     if (newItem.checked) {
       newChecked.push(selectedObj.value);
@@ -43,13 +43,13 @@ export default class CheckboxGroup extends React.Component {
   }
 
   getCheckbox() {
-    return this.props.items.map((item, i) => (
+    return this.props.options.map((option, i) => (
       <Checkbox
         key={i}
         name={this.props.name}
-        value={item.value}
-        checked={this.state.checked.includes(item.value)}
-        label={item.label}
+        value={option.value}
+        checked={this.state.checked.includes(option.value)}
+        label={option.label}
         onChange={newSelected => this.onChange(newSelected)}
       />
       ));
@@ -70,6 +70,6 @@ CheckboxGroup.propTypes = {
   title: React.PropTypes.string,
   selected: React.PropTypes.array,
   className: React.PropTypes.string,
-  items: React.PropTypes.array,
+  options: React.PropTypes.array,
   onChange: React.PropTypes.func
 };

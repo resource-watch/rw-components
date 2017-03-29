@@ -67,20 +67,22 @@ class Step1 extends Step {
           {Input}
         </Field>
 
-        <Field
-          ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.props.onChange({ application: value })}
-          validations={['required']}
-          options={APPLICATIONS}
-          properties={{
-            name: 'application',
-            label: 'Application',
-            required: true,
-            default: this.state.form.application
-          }}
-        >
-          {CheckboxGroup}
-        </Field>
+        {!this.state.form.authorization &&
+          <Field
+            ref={(c) => { if (c) this.children.push(c); }}
+            onChange={value => this.props.onChange({ application: value })}
+            validations={['required']}
+            options={APPLICATIONS}
+            selected={this.state.form.application}
+            properties={{
+              name: 'application',
+              label: 'Application',
+              required: true
+            }}
+          >
+            {CheckboxGroup}
+          </Field>
+        }
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
