@@ -2,7 +2,6 @@ import bar from './widgets/bar';
 import line from './widgets/line';
 
 const types = { bar, line };
-const caca = 'caca';
 /**
  * It returns a string query using filters Data
  * @param  {Array} filters
