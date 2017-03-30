@@ -4,7 +4,7 @@ const rootPath = process.cwd();
 module.exports = function(storybookBaseConfig, configType) {
   // storybookBaseConfig.resolve = Object.assign({}, storybookBaseConfig.resolve, {
   //   root: [
-  //     path.join(rootPath)
+  //     path.join(rootPath, 'src')
   //   ],
   //   extensions: ['', '.js', '.jsx', '.json', '.css', '.scss']
   // });

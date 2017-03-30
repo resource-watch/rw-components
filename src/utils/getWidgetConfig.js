@@ -1,5 +1,5 @@
-import bar from './widgets/bar.json';
-import line from './widgets/line.json';
+import bar from './widgets/bar';
+import line from './widgets/line';
 
 const types = { bar, line };
 /**

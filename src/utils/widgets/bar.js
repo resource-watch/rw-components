@@ -1,4 +1,4 @@
-{
+const bar = {
   "width": 400,
   "height": 200,
   "padding": {"top": 10, "left": 30, "bottom": 30, "right": 10},
@@ -46,4 +46,6 @@
       }
     }
   ]
-}
+};
+
+export default bar;

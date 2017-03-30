@@ -1,8 +1,8 @@
 // Susy
 $output-bourbon-deprecation-warnings: false;
-@import "bourbon/app/assets/stylesheets/settings/px-to-em";
-@import "bourbon/app/assets/stylesheets/functions/strip-units";
-@import "bourbon/app/assets/stylesheets/functions/px-to-rem";
+@import "../../node_modules/bourbon/app/assets/stylesheets/settings/px-to-em";
+@import "../../node_modules/bourbon/app/assets/stylesheets/functions/strip-units";
+@import "../../node_modules/bourbon/app/assets/stylesheets/functions/px-to-rem";
 
 /*
  * Configuring grid
@@ -12,6 +12,8 @@ $middle-screen: 800px;
 $small-screen: 320px;
 
 $max-width: 1040px;
+
+$space-1: 8px;
 
 /*
  * Configuring project settings
@@ -24,8 +26,11 @@ $color-tertiary: #f4f5f6;
 $color-white: #fff;
 $color-black: #000;
 $color-gray: #e3e4e6;
+$color-mid-grey: #b9bfc4;
 $color-red: #e23035;
 $color-green: #65b60d;
+
+$color-error: $color-red;
 
 
 $color-text-1: #393f44;

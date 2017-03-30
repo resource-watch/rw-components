@@ -7,7 +7,8 @@
     "test": "eslint --ext .js --ext .jsx .",
     "start": "start-storybook -p 9000",
     "style": "node-sass --include-path ./node_modules/ ./src/styles/index.scss ./dist/style.css",
-    "build": "babel ./src --out-dir ./dist && npm run style"
+    "build": "npm run style && babel ./src --out-dir ./dist",
+    "build-watch": "npm run style && babel ./src --out-dir ./dist --watch"
   },
   "repository": {
     "type": "git",
@@ -32,10 +33,12 @@
     "json-loader": "^0.5.4",
     "lodash": "^4.17.4",
     "normalize.css": "^5.0.0",
+    "rc-pagination": "^1.8.2",
     "react": "^15.4.1",
     "react-ace": "^4.1.6",
     "react-dom": "^15.4.1",
     "react-select": "^1.0.0-rc.3",
+    "react-tether": "^0.5.6",
     "react-tokeninput": "^2.2.2",
     "vega": "2.5.2",
     "whatwg-fetch": "^2.0.2"
@@ -44,8 +47,12 @@
     "@kadira/storybook": "^2.21.0",
     "autoprefixer": "^6.5.3",
     "babel-cli": "^6.23.0",
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
     "babel-preset-env": "^1.2.1",
+    "babel-preset-latest": "^6.24.0",
     "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-3": "^6.22.0",
     "css-loader": "^0.26.1",
     "eslint": "^3.15.0",
     "eslint-config-vizzuality": "^1.0.3",
