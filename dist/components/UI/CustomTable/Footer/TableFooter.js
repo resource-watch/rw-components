@@ -10,9 +10,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Icon = require('../../UI/Icon');
+var _Paginator = require('../../Paginator');
 
-var _Icon2 = _interopRequireDefault(_Icon);
+var _Paginator2 = _interopRequireDefault(_Paginator);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22,84 +22,82 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Checkbox = function (_React$Component) {
-  _inherits(Checkbox, _React$Component);
+var TableFooter = function (_React$Component) {
+  _inherits(TableFooter, _React$Component);
 
-  function Checkbox(props) {
-    _classCallCheck(this, Checkbox);
+  function TableFooter(props) {
+    _classCallCheck(this, TableFooter);
 
-    // BINDINGS
-    var _this = _possibleConstructorReturn(this, (Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call(this, props));
-
-    _this.onChange = _this.onChange.bind(_this);
-    return _this;
+    return _possibleConstructorReturn(this, (TableFooter.__proto__ || Object.getPrototypeOf(TableFooter)).call(this, props));
   }
 
-  /**
-   * UI EVENTS
-   * - onChange
-  */
-
-
-  _createClass(Checkbox, [{
-    key: 'onChange',
-    value: function onChange(evt) {
-      this.props.onChange && this.props.onChange({ value: this.props.value, checked: evt.currentTarget.checked });
+  _createClass(TableFooter, [{
+    key: 'onChangePage',
+    value: function onChangePage(page) {
+      this.props.onChangePage && this.props.onChangePage(page - 1);
     }
   }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          value = _props.value,
-          name = _props.name,
-          label = _props.label,
-          checked = _props.checked,
-          className = _props.className;
+      var _this2 = this;
 
-      var cNames = ['c-checkbox'];
-      if (className) {
-        cNames.push(className);
-      }
+      var _props = this.props,
+          pagination = _props.pagination,
+          showTotalPages = _props.showTotalPages;
+
+      var maxPage = Math.ceil(pagination.total / pagination.pageSize);
+
       return _react2.default.createElement(
         'div',
-        { className: cNames.join(' ') },
-        _react2.default.createElement('input', {
-          type: 'checkbox',
-          name: name,
-          id: 'checkbox-' + name + '-' + value,
-          value: value,
-          checked: checked,
-          onChange: this.onChange
+        { className: 'table-footer' },
+        _react2.default.createElement(_Paginator2.default, {
+          options: {
+            page: pagination.page + 1,
+            size: pagination.total,
+            limit: pagination.pageSize
+          },
+          onChange: function onChange(page) {
+            return _this2.onChangePage(page);
+          }
         }),
-        _react2.default.createElement(
-          'label',
-          { htmlFor: 'checkbox-' + name + '-' + value },
+        pagination.enabled && showTotalPages && _react2.default.createElement(
+          'div',
+          null,
+          'Page ',
           _react2.default.createElement(
             'span',
-            { className: 'checkbox-icon' },
-            _react2.default.createElement(_Icon2.default, { name: 'icon-checkbox' })
+            null,
+            pagination.page + 1
           ),
+          ' of ',
           _react2.default.createElement(
             'span',
-            { className: 'item-title' },
-            label
+            null,
+            maxPage
           )
         )
       );
     }
   }]);
 
-  return Checkbox;
+  return TableFooter;
 }(_react2.default.Component);
 
-exports.default = Checkbox;
+exports.default = TableFooter;
 
 
-Checkbox.propTypes = {
-  name: _react2.default.PropTypes.string,
-  value: _react2.default.PropTypes.string,
-  label: _react2.default.PropTypes.string,
-  className: _react2.default.PropTypes.string,
-  checked: _react2.default.PropTypes.bool,
-  onChange: _react2.default.PropTypes.func
+TableFooter.propTypes = {
+  pagination: _react2.default.PropTypes.object,
+  onChangePage: _react2.default.PropTypes.func
+};
+
+TableFooter.defaultProps = {
+  pagination: {
+    enabled: true,
+    pageSize: 20,
+    page: 1,
+    total: null
+  },
+  onPrevPage: null,
+  onNextPage: null
 };

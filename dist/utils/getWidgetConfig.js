@@ -16,7 +16,6 @@ var _line2 = _interopRequireDefault(_line);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var types = { bar: _bar2.default, line: _line2.default };
-var caca = 'caca';
 /**
  * It returns a string query using filters Data
  * @param  {Array} filters

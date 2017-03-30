@@ -125,7 +125,7 @@ var Step1 = function (_Step) {
           },
           _Input2.default
         ),
-        _react2.default.createElement(
+        !this.state.form.authorization && _react2.default.createElement(
           _Field2.default,
           {
             ref: function ref(c) {
@@ -136,11 +136,11 @@ var Step1 = function (_Step) {
             },
             validations: ['required'],
             options: _constants.APPLICATIONS,
+            selected: this.state.form.application,
             properties: {
               name: 'application',
               label: 'Application',
-              required: true,
-              default: this.state.form.application
+              required: true
             }
           },
           _CheckboxGroup2.default
@@ -165,27 +165,6 @@ var Step1 = function (_Step) {
             }
           },
           _Select2.default
-        ),
-        _react2.default.createElement(
-          _Field2.default,
-          {
-            ref: function ref(c) {
-              if (c) _this2.children.push(c);
-            },
-            onChange: function onChange(value) {
-              return _this2.props.onChange({ tags: value });
-            },
-            validations: ['required'],
-            hint: 'This will cover different vocabularies that represent this dataset. Please write them comma separated: water,food',
-            properties: {
-              name: 'tags',
-              label: 'Tags',
-              type: 'text',
-              default: this.state.form.tags || [],
-              required: true
-            }
-          },
-          _Token2.default
         ),
         _react2.default.createElement(
           _Field2.default,

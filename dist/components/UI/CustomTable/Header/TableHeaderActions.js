@@ -10,9 +10,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Icon = require('../../UI/Icon');
+var _TableFilters = require('./TableFilters');
 
-var _Icon2 = _interopRequireDefault(_Icon);
+var _TableFilters2 = _interopRequireDefault(_TableFilters);
+
+var _TableSorts = require('./TableSorts');
+
+var _TableSorts2 = _interopRequireDefault(_TableSorts);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22,84 +26,54 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Checkbox = function (_React$Component) {
-  _inherits(Checkbox, _React$Component);
+var TableHeaderActions = function (_React$Component) {
+  _inherits(TableHeaderActions, _React$Component);
 
-  function Checkbox(props) {
-    _classCallCheck(this, Checkbox);
+  function TableHeaderActions() {
+    _classCallCheck(this, TableHeaderActions);
 
-    // BINDINGS
-    var _this = _possibleConstructorReturn(this, (Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call(this, props));
-
-    _this.onChange = _this.onChange.bind(_this);
-    return _this;
+    return _possibleConstructorReturn(this, (TableHeaderActions.__proto__ || Object.getPrototypeOf(TableHeaderActions)).apply(this, arguments));
   }
 
-  /**
-   * UI EVENTS
-   * - onChange
-  */
-
-
-  _createClass(Checkbox, [{
-    key: 'onChange',
-    value: function onChange(evt) {
-      this.props.onChange && this.props.onChange({ value: this.props.value, checked: evt.currentTarget.checked });
-    }
-  }, {
+  _createClass(TableHeaderActions, [{
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          value = _props.value,
-          name = _props.name,
-          label = _props.label,
-          checked = _props.checked,
-          className = _props.className;
-
-      var cNames = ['c-checkbox'];
-      if (className) {
-        cNames.push(className);
-      }
       return _react2.default.createElement(
         'div',
-        { className: cNames.join(' ') },
-        _react2.default.createElement('input', {
-          type: 'checkbox',
-          name: name,
-          id: 'checkbox-' + name + '-' + value,
-          value: value,
-          checked: checked,
-          onChange: this.onChange
-        }),
+        { className: 'c-table-header-actions' },
         _react2.default.createElement(
-          'label',
-          { htmlFor: 'checkbox-' + name + '-' + value },
+          'ul',
+          null,
           _react2.default.createElement(
-            'span',
-            { className: 'checkbox-icon' },
-            _react2.default.createElement(_Icon2.default, { name: 'icon-checkbox' })
+            'li',
+            { className: 'action sortby-action' },
+            _react2.default.createElement(_TableSorts2.default, this.props)
           ),
           _react2.default.createElement(
-            'span',
-            { className: 'item-title' },
-            label
+            'li',
+            { className: 'action filter-action' },
+            _react2.default.createElement(_TableFilters2.default, this.props)
           )
         )
       );
     }
   }]);
 
-  return Checkbox;
+  return TableHeaderActions;
 }(_react2.default.Component);
 
-exports.default = Checkbox;
+exports.default = TableHeaderActions;
 
 
-Checkbox.propTypes = {
-  name: _react2.default.PropTypes.string,
-  value: _react2.default.PropTypes.string,
-  label: _react2.default.PropTypes.string,
-  className: _react2.default.PropTypes.string,
-  checked: _react2.default.PropTypes.bool,
-  onChange: _react2.default.PropTypes.func
+TableHeaderActions.propTypes = {
+  field: _react2.default.PropTypes.string.isRequired,
+  values: _react2.default.PropTypes.array,
+  selected: _react2.default.PropTypes.array,
+  onFilter: _react2.default.PropTypes.func,
+  onSort: _react2.default.PropTypes.func
+};
+
+TableHeaderActions.defaultProps = {
+  onChange: null,
+  selected: null
 };

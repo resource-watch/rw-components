@@ -115,7 +115,7 @@ var Table = function (_React$Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                c
+                c.name
               )
             )
           );
@@ -160,8 +160,8 @@ var Table = function (_React$Component) {
           _this2.props.columns.map(function (col, i) {
             return _react2.default.createElement(
               'td',
-              { key: i },
-              row[col]
+              { key: i, className: col.cellClasses ? col.cellClasses : '' },
+              row[col.name]
             );
           }),
           _this2.props.actionsColumn ? _react2.default.createElement(

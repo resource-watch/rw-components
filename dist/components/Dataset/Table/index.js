@@ -18,9 +18,9 @@ var _Spinner = require('../../UI/Spinner');
 
 var _Spinner2 = _interopRequireDefault(_Spinner);
 
-var _Table = require('../../UI/Table');
+var _CustomTable = require('../../UI/CustomTable/CustomTable');
 
-var _Table2 = _interopRequireDefault(_Table);
+var _CustomTable2 = _interopRequireDefault(_CustomTable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -84,11 +84,29 @@ var DatasetTable = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this3 = this;
+
       return _react2.default.createElement(
         'div',
         { className: 'c-dataset-table' },
         _react2.default.createElement(_Spinner2.default, { className: '-light', isLoading: this.state.loading }),
-        _react2.default.createElement(_Table2.default, { data: this.state.datasets, columns: ['name', 'provider'] })
+        _react2.default.createElement(_CustomTable2.default, {
+          columns: this.props.columns,
+          data: this.state.datasets,
+          pageSize: 20,
+          actions: this.props.actions,
+          pagination: {
+            enabled: true,
+            pageSize: 20,
+            page: 0
+          },
+          onToggleSelectedRow: function onToggleSelectedRow(ids) {
+            // this.props.setSelectedPoints(ids);
+          },
+          onRowDelete: function onRowDelete(id) {
+            _this3.props.onPointRemove(id);
+          }
+        })
       );
     }
   }]);
@@ -98,14 +116,17 @@ var DatasetTable = function (_React$Component) {
 
 DatasetTable.defaultProps = {
   application: ['rw'],
-  editable: true,
-  editPath: '/datasets/:id/edit'
+  columns: [{ label: 'name', value: 'name' }, { label: 'provider', value: 'provider' }],
+  actions: {
+    show: true,
+    list: [{ name: 'Edit', path: 'datasets/:id/edit', show: true }, { name: 'Remove', path: 'datasets/:id/remove', show: true }]
+  }
 };
 
 DatasetTable.propTypes = {
   application: _react2.default.PropTypes.array.isRequired,
-  editable: _react2.default.PropTypes.bool,
-  editPath: _react2.default.PropTypes.string
+  columns: _react2.default.PropTypes.array,
+  actions: _react2.default.PropTypes.object
 };
 
 exports.default = DatasetTable;

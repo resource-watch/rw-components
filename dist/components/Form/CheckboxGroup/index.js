@@ -4,17 +4,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _FormElement2 = require('../FormElement');
+var _isEqual = require('lodash/isEqual');
 
-var _FormElement3 = _interopRequireDefault(_FormElement2);
+var _isEqual2 = _interopRequireDefault(_isEqual);
+
+var _Checkbox = require('../Checkbox');
+
+var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24,99 +26,101 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var CheckboxGroup = function (_FormElement) {
-  _inherits(CheckboxGroup, _FormElement);
+var CheckboxGroup = function (_React$Component) {
+  _inherits(CheckboxGroup, _React$Component);
 
   function CheckboxGroup(props) {
     _classCallCheck(this, CheckboxGroup);
 
+    // Initial state
     var _this = _possibleConstructorReturn(this, (CheckboxGroup.__proto__ || Object.getPrototypeOf(CheckboxGroup)).call(this, props));
 
     _this.state = {
-      value: props.properties.default || []
+      checked: _this.props.selected || []
     };
+    // BINDINGS
+    _this.onChange = _this.onChange.bind(_this);
     return _this;
   }
 
-  /**
-   * UI EVENTS
-   * - triggerChange
-  */
-
-
   _createClass(CheckboxGroup, [{
-    key: 'triggerChange',
-    value: function triggerChange(e) {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (!(0, _isEqual2.default)(nextProps.selected, this.props.selected)) {
+        this.setState({
+          checked: nextProps.selected
+        });
+      }
+    }
+
+    /**
+     * UI EVENTS
+     * - onChange
+    */
+
+  }, {
+    key: 'onChange',
+    value: function onChange(newItem) {
+      // Send objects
+      var selectedObj = this.props.options.find(function (option) {
+        return option.value === newItem.value;
+      });
+      var newChecked = this.state.checked.slice(0);
+      if (newItem.checked) {
+        newChecked.push(selectedObj.value);
+      } else {
+        newChecked.splice(newChecked.indexOf(selectedObj.value), 1);
+      }
+      this.setState({
+        checked: newChecked
+      });
+      this.props.onChange && this.props.onChange(newChecked);
+    }
+  }, {
+    key: 'getCheckbox',
+    value: function getCheckbox() {
       var _this2 = this;
 
-      // - newSelected: Clone the current value array
-      // - i: Get the indexOf the the current selection
-      var newSelected = [].concat(this.state.value);
-      var i = this.state.value.indexOf(e.currentTarget.value);
-
-      // Toggle element from the array
-      if (i === -1) {
-        newSelected.push(e.currentTarget.value);
-      } else {
-        newSelected.splice(i, 1);
-      }
-
-      // Set state
-      this.setState({
-        value: newSelected
-      }, function () {
-        // Trigger validation
-        _this2.triggerValidate();
-
-        if (_this2.props.onChange) _this2.props.onChange(_this2.state.value);
+      return this.props.options.map(function (option, i) {
+        return _react2.default.createElement(_Checkbox2.default, {
+          key: i,
+          name: _this2.props.name,
+          value: option.value,
+          checked: _this2.state.checked.includes(option.value),
+          label: option.label,
+          onChange: function onChange(newSelected) {
+            return _this2.onChange(newSelected);
+          }
+        });
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
-
-      var _props = this.props,
-          properties = _props.properties,
-          options = _props.options;
-      var value = this.state.value;
-
-
       return _react2.default.createElement(
         'div',
-        { className: 'c-checkbox-box ' + this.props.className },
-        options.map(function (item, i) {
-          return _react2.default.createElement(
-            'div',
-            { key: i, className: 'c-checkbox' },
-            _react2.default.createElement('input', _extends({}, properties, {
-              type: 'checkbox',
-              name: name,
-              id: 'checkbox-' + name + '-' + item.value,
-              value: item.value,
-              checked: value.indexOf(item.value) !== -1,
-              onChange: _this3.triggerChange
-            })),
-            _react2.default.createElement(
-              'label',
-              { htmlFor: 'checkbox-' + name + '-' + item.value },
-              _react2.default.createElement('span', null),
-              item.label
-            )
-          );
-        })
+        { className: 'c-checkbox-box ' + (this.props.className ? this.props.className : '') },
+        this.props.title && _react2.default.createElement(
+          'span',
+          { className: 'checkbox-box-title' },
+          this.props.title
+        ),
+        this.getCheckbox()
       );
     }
   }]);
 
   return CheckboxGroup;
-}(_FormElement3.default);
-
-CheckboxGroup.propTypes = {
-  options: _react2.default.PropTypes.array.isRequired,
-  properties: _react2.default.PropTypes.object.isRequired,
-  className: _react2.default.PropTypes.string,
-  onChange: _react2.default.PropTypes.func
-};
+}(_react2.default.Component);
 
 exports.default = CheckboxGroup;
+
+
+CheckboxGroup.propTypes = {
+  name: _react2.default.PropTypes.string,
+  title: _react2.default.PropTypes.string,
+  selected: _react2.default.PropTypes.array,
+  className: _react2.default.PropTypes.string,
+  options: _react2.default.PropTypes.array,
+  onChange: _react2.default.PropTypes.func
+};
