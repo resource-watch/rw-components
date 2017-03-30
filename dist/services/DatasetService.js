@@ -25,7 +25,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @example:
     import DatasetService from '..path';
     const ds = new DatasetService('42de3f98-ba1c-4572-a227-2e18d45239a5', {
-      apiURL: 'https://api.resourcewatch.org'
+      apiURL: 'https://api.resourcewatch.org/v1'
     });
     ds.getFilters().then((data) => {
       console.log(data)
@@ -177,7 +177,8 @@ var DatasetService = function () {
       var table = tableName || this.tableName;
       var query = 'SELECT Min(' + columnName + ') AS min, Max(' + columnName + ') AS max FROM ' + table;
       return new _bluebird2.default(function (resolve) {
-        fetch('https://api.resourcewatch.org/query/' + _this6.datasetId + '?sql=' + query).then(function (response) {
+        // TODO: remove cache param
+        fetch('https://api.resourcewatch.org/v1/query/' + _this6.datasetId + '?sql=' + query + '&cache=' + Date.now()).then(function (response) {
           return response.json();
         }).then(function (jsonData) {
           if (jsonData.data) {
@@ -202,7 +203,8 @@ var DatasetService = function () {
       var uniqQueryPart = uniqs ? 'GROUP BY ' + columnName : '';
       var query = 'SELECT ' + columnName + ' FROM ' + table + ' ' + uniqQueryPart + ' ORDER BY ' + columnName;
       return new _bluebird2.default(function (resolve) {
-        fetch('https://api.resourcewatch.org/query/' + _this7.datasetId + '?sql=' + query).then(function (response) {
+        // TODO: remove cache param
+        fetch('https://api.resourcewatch.org/v1/query/' + _this7.datasetId + '?sql=' + query + '&cache=' + Date.now()).then(function (response) {
           return response.json();
         }).then(function (jsonData) {
           var parsedData = _lodash2.default.map(jsonData.data, function (data) {

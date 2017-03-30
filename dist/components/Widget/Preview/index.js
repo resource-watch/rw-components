@@ -82,7 +82,7 @@ var WidgetPreview = function (_React$Component) {
 
     // DatasetService
     _this.datasetService = new _DatasetService2.default(props.wizard.dataset.id, {
-      apiURL: 'https://api.resourcewatch.org'
+      apiURL: 'https://api.resourcewatch.org/v1'
     });
 
     // BINDINGS
@@ -141,7 +141,7 @@ var WidgetPreview = function (_React$Component) {
 
       var parsedConfig = {
         data: [{
-          url: 'https://api.resourcewatch.org/query/' + wizard.dataset.id + '?sql=' + sql,
+          url: 'https://api.resourcewatch.org/v1/query/' + wizard.dataset.id + '?sql=' + sql,
           name: 'table',
           format: {
             type: 'json',

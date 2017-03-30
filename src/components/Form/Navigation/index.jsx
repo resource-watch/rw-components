@@ -10,18 +10,18 @@ class Navigation extends React.Component {
       stepLength: props.stepLength
     };
 
-    this.onBack = this.onBack.bind(this);
+    this.onStepChange = this.onStepChange.bind(this);
   }
 
   /**
    * UI EVENTS
-   * - onBack
+   * - onStepChange
   */
-  onBack(e) {
+  onStepChange(e) {
     e.preventDefault();
 
     // Send the step to the form
-    if (this.props.onBack) this.props.onBack(this.props.step - 1);
+    if (this.props.onStepChange) this.props.onStepChange(this.props.step - 1);
   }
 
   render() {
@@ -36,7 +36,7 @@ class Navigation extends React.Component {
                 name: 'commit',
                 className: '-primary'
               }}
-              onClick={this.onBack}
+              onClick={this.onStepChange}
             >
               Back
             </Button>
@@ -78,7 +78,7 @@ Navigation.propTypes = {
   step: React.PropTypes.number,
   stepLength: React.PropTypes.number,
   submitting: React.PropTypes.bool,
-  onBack: React.PropTypes.func
+  onStepChange: React.PropTypes.func
 };
 
 export default Navigation;

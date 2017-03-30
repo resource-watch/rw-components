@@ -14,6 +14,8 @@ var _omit = require('lodash/omit');
 
 var _omit2 = _interopRequireDefault(_omit);
 
+var _request = require('../../../utils/request');
+
 var _constants = require('./constants');
 
 var _step = require('./Steps/step-1');
@@ -55,6 +57,7 @@ var DatasetForm = function (_React$Component) {
     // BINDINGS
     _this.onSubmit = _this.onSubmit.bind(_this);
     _this.onChange = _this.onChange.bind(_this);
+    _this.onStepChange = _this.onStepChange.bind(_this);
     return _this;
   }
 
@@ -66,28 +69,25 @@ var DatasetForm = function (_React$Component) {
       if (this.state.dataset) {
         // Start the loading
         this.setState({ loading: true });
-
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('GET', 'http://api.resourcewatch.org/dataset/' + this.state.dataset);
-        xmlhttp.setRequestHeader('Content-Type', 'application/json');
-        xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
-        xmlhttp.send();
-
-        xmlhttp.onreadystatechange = function () {
-          if (xmlhttp.readyState === 4) {
-            if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-              var response = JSON.parse(xmlhttp.responseText);
-              _this2.setState({
-                dataset: response.data.id,
-                form: _this2.setFormFromParams(response.data.attributes),
-                // Stop the loading
-                loading: false
-              });
-            } else {
-              console.info('Error');
-            }
+        (0, _request.get)({
+          url: 'https://api.resourcewatch.org/v1/dataset/' + this.state.dataset,
+          headers: [{
+            key: 'Content-Type',
+            value: 'application/json'
+          }],
+          onSuccess: function onSuccess(response) {
+            _this2.setState({
+              dataset: response.data.id,
+              form: _this2.setFormFromParams(response.data.attributes),
+              // Stop the loading
+              loading: false
+            });
+          },
+          onError: function onError(error) {
+            _this2.setState({ loading: false });
+            console.error(error);
           }
-        };
+        });
       }
     }
 
@@ -116,45 +116,39 @@ var DatasetForm = function (_React$Component) {
             _this3.setState({ submitting: true });
 
             // Set the request
-            // Send the request
-            var xmlhttp = new XMLHttpRequest();
-            var xmlhttpOptions = {
+            var requestOptions = {
               type: _this3.state.dataset ? 'PATCH' : 'POST',
-              authorization: _this3.state.form.authorization,
-              contentType: 'application/json',
               omit: _this3.state.dataset ? ['connectorUrlHint', 'authorization', 'connectorType', 'provider'] : ['connectorUrlHint', 'authorization']
             };
-            xmlhttp.open(xmlhttpOptions.type, 'http://api.resourcewatch.org/dataset/' + (_this3.state.dataset || ''));
-            xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
-            xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
-            xmlhttp.send(JSON.stringify({
-              // Remove unnecesary atributtes to prevent 'Unprocessable Entity error'
-              dataset: (0, _omit2.default)(_this3.state.form, xmlhttpOptions.omit)
-            }));
 
-            xmlhttp.onreadystatechange = function () {
-              if (xmlhttp.readyState === 4) {
-                // Stop the submitting
+            (0, _request.post)({
+              type: requestOptions.type,
+              url: 'https://api.resourcewatch.org/v1/dataset/' + _this3.state.dataset,
+              body: (0, _omit2.default)(_this3.state.form, requestOptions.omit),
+              headers: [{
+                key: 'Content-Type', value: 'application/json'
+              }, {
+                key: 'Authorization', value: _this3.state.form.authorization
+              }],
+              onSuccess: function onSuccess(response) {
+                var successMessage = 'The dataset "' + response.data.id + '" - "' + response.data.attributes.name + '" has been uploaded correctly';
+                console.info(response);
+                console.info(successMessage);
+                alert(successMessage);
+
+                // Go back to first step and set the dataset
+                // This will trigger the PATCH function
+                _this3.setState({
+                  submitting: false,
+                  step: 1,
+                  dataset: response.data.id
+                });
+              },
+              onError: function onError(error) {
                 _this3.setState({ submitting: false });
-
-                if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-                  var response = JSON.parse(xmlhttp.responseText);
-                  var successMessage = 'The dataset "' + response.data.id + '" - "' + response.data.attributes.name + '" has been uploaded correctly';
-                  console.info(response);
-                  console.info(successMessage);
-                  alert(successMessage);
-
-                  // Go back to first step and set the dataset
-                  // This will trigger the PATCH function
-                  _this3.setState({
-                    step: 1,
-                    dataset: response.data.id
-                  });
-                } else {
-                  console.info('Error');
-                }
+                console.error(error);
               }
-            };
+            });
           } else {
             _this3.setState({
               step: _this3.state.step + 1
@@ -176,8 +170,8 @@ var DatasetForm = function (_React$Component) {
       });
     }
   }, {
-    key: 'onBack',
-    value: function onBack(step) {
+    key: 'onStepChange',
+    value: function onStepChange(step) {
       this.setState({ step: step });
     }
 
@@ -232,9 +226,7 @@ var DatasetForm = function (_React$Component) {
           step: this.state.step,
           stepLength: this.state.stepLength,
           submitting: this.state.submitting,
-          onBack: function onBack(step) {
-            return _this6.onBack(step);
-          }
+          onStepChange: this.onStepChange
         })
       );
     }
