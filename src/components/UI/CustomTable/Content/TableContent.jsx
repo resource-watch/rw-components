@@ -39,7 +39,7 @@ export default class TableContent extends React.Component {
     if (!isEmpty(sort)) {
       data = data.slice().sort((rowA, rowB) => {
         return rowA[sort.field].toString().toLowerCase() > rowB[sort.field].toString().toLowerCase() ?
-          sort.value : 
+          sort.value :
           (sort.value * -1);
       });
     }
@@ -66,11 +66,15 @@ export default class TableContent extends React.Component {
                 return td;
               }
               )}
-              {actions.show && 
+              {actions.show &&
                 <td className="individual-actions">
-                  {actionsShowed.map((ac, i) => (
-                    <a href={this.setIndividualActionPath(ac.path, row.id)}>{ac.name}</a>
-                  ))}
+                  {actionsShowed.map((ac, i) => {
+                    if ((typeof ac.show === 'function' && ac.show(row, i)) || (typeof ac.show !== 'function')) {
+                      return (
+                        <a href={this.setIndividualActionPath(ac.path, row.id)}>{ac.name}</a>
+                      );
+                    }
+                  })}
                 </td>
               }
             </tr>
