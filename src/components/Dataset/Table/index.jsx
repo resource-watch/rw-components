@@ -26,7 +26,7 @@ class DatasetTable extends React.Component {
   */
   getDatasets() {
     const { application } = this.props;
-    const url = `https://api.resourcewatch.org/v1/dataset?application=${application.join(',')}&includes=widget,layer&page[size]=${Date.now() / 100000}`;
+    const url = `https://api.resourcewatch.org/v1/dataset?application=${application.join(',')}&includes=widget,layer,metadata&page[size]=${Date.now() / 100000}`;
 
     fetch(new Request(url))
       .then((response) => {
@@ -75,7 +75,7 @@ class DatasetTable extends React.Component {
 DatasetTable.defaultProps = {
   application: ['rw'],
   columns: [
-    {label: 'name', value: 'name'}, 
+    {label: 'name', value: 'name'},
     {label: 'provider', value: 'provider'}
   ],
   actions: {

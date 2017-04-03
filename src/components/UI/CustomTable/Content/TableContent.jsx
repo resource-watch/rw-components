@@ -21,7 +21,7 @@ export default class TableContent extends React.Component {
   render() {
     const { actions, columns, sort, rowSelection } = this.props;
     const { bottom, top } = this.getPageBounds();
-    const actionsShowed = actions.list.filter(ac => ac.show);
+    const actionsShowed = actions.list.filter(ac => ac.show || ac.component);
 
     let data = this.props.filteredData;
 
@@ -39,7 +39,7 @@ export default class TableContent extends React.Component {
     if (!isEmpty(sort)) {
       data = data.slice().sort((rowA, rowB) => {
         return rowA[sort.field].toString().toLowerCase() > rowB[sort.field].toString().toLowerCase() ?
-          sort.value : 
+          sort.value :
           (sort.value * -1);
       });
     }
@@ -61,16 +61,27 @@ export default class TableContent extends React.Component {
               {columns.map((col, i) => {
                 const value = row[col.value];
                 const td = col.td ?
-                  col.td(value, i) :
+                  <col.td key={i} value={value} /> :
                   <td key={i} className={col.className || ''}>{value}</td>;
                 return td;
               }
               )}
-              {actions.show && 
+              {actions.show &&
                 <td className="individual-actions">
-                  {actionsShowed.map((ac, i) => (
-                    <a href={this.setIndividualActionPath(ac.path, row.id)}>{ac.name}</a>
-                  ))}
+                  {actionsShowed.map((ac) => {
+                    if (ac.component) {
+                      return (
+                        <ac.component
+                          data={row}
+                          href={this.setIndividualActionPath(ac.path, row.id)}
+                        />);
+                    } else {
+                      return (<a href={this.setIndividualActionPath(ac.path, row.id)}>
+                        {ac.name}
+                      </a>);
+                    }
+                  })
+                  }
                 </td>
               }
             </tr>
