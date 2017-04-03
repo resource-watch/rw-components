@@ -68,17 +68,22 @@ export default class TableContent extends React.Component {
               )}
               {actions.show &&
                 <td className="individual-actions">
-                  {actionsShowed.map((ac) => {
+                  {actionsShowed.map((ac, j) => {
                     if (ac.component) {
                       return (
                         <ac.component
-                          data={row}
+                          key={j}
                           href={this.setIndividualActionPath(ac.path, row.id)}
+                          data={row}
                         />);
                     } else {
-                      return (<a href={this.setIndividualActionPath(ac.path, row.id)}>
-                        {ac.name}
-                      </a>);
+                      return (
+                        <a
+                          key={j}
+                          href={this.setIndividualActionPath(ac.path, row.id)}>
+                          {ac.name}
+                        </a>
+                      );
                     }
                   })
                   }

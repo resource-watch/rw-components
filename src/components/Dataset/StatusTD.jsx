@@ -13,12 +13,12 @@ const classesDic = {
 class StatusTD extends React.Component {
 
   render() {
-    const value = this.props.value;
+    const { value, index } = this.props;
     const className = `status ${classesDic.status[value]}`;
     return (
       <td
         className={className}
-        key={this.props.key}
+        key={index}
       >
         {value}
       </td>
@@ -27,8 +27,8 @@ class StatusTD extends React.Component {
 }
 
 StatusTD.propTypes = {
-  value: React.PropTypes.object,
-  key: React.PropTypes.string
+  value: React.PropTypes.string,
+  index: React.PropTypes.string
 };
 
 export default StatusTD;
