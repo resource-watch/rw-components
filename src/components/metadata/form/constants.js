@@ -8,5 +8,23 @@ export const STATE_DEFAULT = {
     name: '',
     description: '',
     status: 1
+  },
+  metadata: {
+    technical_title: '',
+    title: '',
+    subtitle: '',
+    source: '',
+    functions: '',
+    geographic_coverage: '',
+    spatial_resolution: '',
+    date_of_content: '',
+    frequency_of_updates: '',
+    cautions: '',
+    license: '',
+    license_link: '',
+    overview: '',
+    why: '',
+    citation: '',
+    other: ''
   }
 };
