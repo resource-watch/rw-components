@@ -9,7 +9,14 @@ import Title from '../../../UI/Title';
 class Step1 extends Step {
 
   changeMetadata(obj) {
-    const newMetadata = Object.assign({}, this.props.metadata, obj);
+    let newMetadata;
+    if (obj.info) {
+      const newInfo = Object.assign({}, this.props.metadata.info, obj.info);
+      newMetadata = Object.assign({}, this.props.metadata, { info: newInfo });
+    } else {
+      newMetadata = Object.assign({}, this.props.metadata, obj);
+    }
+
     this.props.onChange({ metadata: newMetadata });
   }
 
@@ -21,7 +28,7 @@ class Step1 extends Step {
         </Title>
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ technical_title: value })}
+          onChange={value => this.changeMetadata({ info: { technical_title: value } })}
           validations={['required']}
           hint="The tech title is the unique id for each RW data set. It refers to the back-end data management name (or the name given to the data in S3, for example 'cmr_logging'). See this doc for more information on technical titles: <a target='_blank' href='https://docs.google.com/document/d/11pOlf4tC47GWPwQOuswclM3-Trc7fEh0oLUxw-QLBag/edit?usp=sharing'>Open file</a>"
           properties={{
@@ -37,7 +44,103 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ title: value })}
+          onChange={value => this.changeMetadata({ name: value })}
+          validations={['required']}
+          hint="Name of the dataset"
+          properties={{
+            name: 'name',
+            label: 'Name',
+            type: 'text',
+            required: true,
+            default: this.props.metadata.name
+          }}
+        >
+          {Input}
+        </Field>
+
+        <Field
+          ref={(c) => { if (c) this.children.push(c); }}
+          onChange={value => this.changeMetadata({ description: value })}
+          validations={['required']}
+          hint="Description of the dataset"
+          properties={{
+            name: 'description',
+            label: 'Description',
+            type: 'text',
+            required: true,
+            default: this.props.metadata.description
+          }}
+        >
+          {Textarea}
+        </Field>
+
+        <Field
+          ref={(c) => { if (c) this.children.push(c); }}
+          onChange={value => this.changeMetadata({ license: value })}
+          validations={['required']}
+          hint="License under which data are published"
+          properties={{
+            name: 'license',
+            label: 'License',
+            type: 'text',
+            required: true,
+            default: this.props.metadata.license
+          }}
+        >
+          {Input}
+        </Field>
+
+        <Field
+          ref={(c) => { if (c) this.children.push(c); }}
+          onChange={value => this.changeMetadata({ source: value })}
+          validations={['required']}
+          hint="People/organizations that contributed to the data set (separate by commas), or link to the journal article"
+          properties={{
+            name: 'source',
+            label: 'Source',
+            type: 'text',
+            required: true,
+            default: this.props.metadata.source
+          }}
+        >
+          {Input}
+        </Field>
+
+        <Field
+          ref={(c) => { if (c) this.children.push(c); }}
+          onChange={val => this.changeMetadata({ units: { value: val } })}
+          validations={['required']}
+          hint="Units used in this dataset"
+          properties={{
+            name: 'units',
+            label: 'Units',
+            type: 'text',
+            required: true,
+            default: this.props.metadata.units.value
+          }}
+        >
+          {Input}
+        </Field>
+
+        <Field
+          ref={(c) => { if (c) this.children.push(c); }}
+          onChange={value => this.changeMetadata({ citation: value })}
+          validations={['required']}
+          hint="Unless otherwise specified on Data Sharing Agreement, format should be: Organization name. “Official data layer name as in the ODP.” Accessed through Resource Watch [date]. www.resourcewatch.org (should always end with: Accessed through Resource Watch on [date]. www.resourcewatch.org)"
+          properties={{
+            name: 'citation',
+            label: 'Citation',
+            type: 'text',
+            required: true,
+            default: this.props.metadata.citation
+          }}
+        >
+          {Textarea}
+        </Field>
+
+        <Field
+          ref={(c) => { if (c) this.children.push(c); }}
+          onChange={value => this.changeMetadata({ info: { title: value } })}
           hint="The official title for display on RW (see style guidelines: https://docs.google.com/document/d/1GtKycexP43BLWpQ56KZhKSMmidpvd-v4s0ajXCQcW48/edit)"
           properties={{
             name: 'title',
@@ -51,7 +154,7 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ subtitle: value })}
+          onChange={value => this.changeMetadata({info: { subtitle: value } })}
           hint="If the title should have a description include it here (e.g., annual, 30m, global, Hansen/UMD/Google/USGS/NASA)"
           properties={{
             name: 'subtitle',
@@ -62,24 +165,10 @@ class Step1 extends Step {
         >
           {Input}
         </Field>
-
+        
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ source: value })}
-          hint="People/organizations that contributed to the data set (separate by commas), or link to the journal article"
-          properties={{
-            name: 'source',
-            label: 'Source',
-            type: 'text',
-            default: this.props.metadata.source
-          }}
-        >
-          {Input}
-        </Field>
-
-        <Field
-          ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ functions: value })}
+          onChange={value => this.changeMetadata({ info: { 'function': value } })}
           hint="Briefly describes the purpose of the data and what it represents"
           properties={{
             name: 'functions',
@@ -93,7 +182,7 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ geographic_coverage: value })}
+          onChange={value => this.changeMetadata({ info: { geographic_coverage: value } })}
           hint="Describes the spatial extent of the data set (Note: if Global, write Global. If for a select group of countries, list countries in alphabetical order, use Oxford comma, and include 'the' in country names, e.g., Republic of the Congo)"
           properties={{
             name: 'geographic_coverage',
@@ -108,7 +197,7 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ spatial_resolution: value })}
+          onChange={value => this.changeMetadata({ info: { spatial_resolution: value } })}
           hint="Describes the spatial resolution, e.g., 50 meters (50 m in parentheses), 500 × 500 meters (note use of times symbol instead of x), 15 arc second/minute/degree"
           properties={{
             name: 'spatial_resolution',
@@ -122,7 +211,7 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ date_of_content: value })}
+          onChange={value => this.changeMetadata({ info: { date_of_content: value } })}
           hint="Date or time period that the data represents (Select the finest level of content - yearly, monthly, weekly, daily - and Other. Under other list the years for which data is available using four digits, separated by a space and a comma, e.g. 2005, 2010, 2015)"
           properties={{
             name: 'date_of_content',
@@ -136,7 +225,7 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ frequency_of_updates: value })}
+          onChange={value => this.changeMetadata({ info: { frequency_of_updates: value } })}
           hint="Describes how frequently the data set is updated"
           properties={{
             name: 'frequency_of_updates',
@@ -150,7 +239,7 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ cautions: value })}
+          onChange={value => this.changeMetadata({ info: { cautions: value } })}
           hint="Describes any limitations of the data set that users should be aware of. Use a bulleted list if possible."
           properties={{
             name: 'cautions',
@@ -161,24 +250,9 @@ class Step1 extends Step {
         >
           {Textarea}
         </Field>
-
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ license: value })}
-          hint="License under which data are published"
-          properties={{
-            name: 'license',
-            label: 'License',
-            type: 'text',
-            default: this.props.metadata.license
-          }}
-        >
-          {Input}
-        </Field>
-
-        <Field
-          ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ license_link: value })}
+          onChange={value => this.changeMetadata({ info: { license_link: value } })}
           hint="License under which data are published"
           validations={['url']}
           properties={{
@@ -193,7 +267,7 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ overview: value })}
+          onChange={value => this.changeMetadata({ info: { overview: value } })}
           hint="Description or abstract of the data and methodology. Include links as appropriate, e.g., source data (Landsat, MODIS, etc.), relevant publications, etc."
           properties={{
             name: 'overview',
@@ -207,7 +281,7 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ why: value })}
+          onChange={value => this.changeMetadata({ info: { why: value } })}
           hint="Briefly explain why this data set is being added to the website (e.g, best available for this country, useful for X organization, etc...)"
           properties={{
             name: 'why',
@@ -219,23 +293,11 @@ class Step1 extends Step {
           {Textarea}
         </Field>
 
-        <Field
-          ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ citation: value })}
-          hint="Unless otherwise specified on Data Sharing Agreement, format should be: Organization name. “Official data layer name as in the ODP.” Accessed through Resource Watch [date]. www.resourcewatch.org (should always end with: Accessed through Resource Watch on [date]. www.resourcewatch.org)"
-          properties={{
-            name: 'citation',
-            label: 'Citation',
-            type: 'text',
-            default: this.props.metadata.citation
-          }}
-        >
-          {Textarea}
-        </Field>
+
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.changeMetadata({ other: value })}
+          onChange={value => this.changeMetadata({ info: { other: value } })}
           hint="If there is a custom field outside the RW metadata standards please enter the text for it here. For example, a 'Tree Cover Density' field for the 2000 tree cover layer."
           properties={{
             name: 'other',

@@ -81,7 +81,7 @@ class MetadataForm extends React.Component {
           // Send the request
           const xmlhttp = new XMLHttpRequest();
           const xmlhttpOptions = {
-            type: (this.state.datasetID && this.state.metadata.length) ? 'PATCH' : 'POST',
+            type: (this.state.datasetID && this.state.metadata.status) ? 'PATCH' : 'POST',
             authorization: this.state.form.authorization,
             contentType: 'application/json',
             omit: ['authorization']
@@ -96,7 +96,6 @@ class MetadataForm extends React.Component {
             // Remove unnecesary atributtes to prevent 'Unprocessable Entity error'
             ...omit(this.state.metadata, xmlhttpOptions.omit)
           });
-          console.info('request', request);
           xmlhttp.send(request);
 
           xmlhttp.onreadystatechange = () => {
@@ -127,7 +126,7 @@ class MetadataForm extends React.Component {
 
   onChange(obj) {
     const metadata = Object.assign({}, this.state.metadata, obj.metadata);
-    this.setState({ metadata }, () => console.info(this.state.metadata));
+    this.setState({ metadata });
   }
 
   onBack(step) {
@@ -163,7 +162,7 @@ class MetadataForm extends React.Component {
 }
 
 MetadataForm.propTypes = {
-  application: React.PropTypes.array,
+  application: React.PropTypes.string,
   authorization: React.PropTypes.string,
   language: React.PropTypes.string,
   dataset: React.PropTypes.string.isRequired
