@@ -7,7 +7,7 @@ class MetadataTD extends React.Component {
     return (
       <span>
         {
-          (data.status === 'saved' || data.status === 'failed') &&
+          (data.status === 'saved') &&
           <a
             href={href}
           >
