@@ -81,7 +81,7 @@ class MetadataForm extends React.Component {
           // Send the request
           const xmlhttp = new XMLHttpRequest();
           const xmlhttpOptions = {
-            type: (this.state.datasetID && this.state.metadata) ? 'PATCH' : 'POST',
+            type: (this.state.datasetID && this.state.metadata.length) ? 'PATCH' : 'POST',
             authorization: this.state.form.authorization,
             contentType: 'application/json',
             omit: ['authorization']
@@ -90,12 +90,14 @@ class MetadataForm extends React.Component {
           xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/metadata`);
           xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
           xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
-          xmlhttp.send(JSON.stringify({
+          const request = JSON.stringify({
             language: this.state.form.language,
             application: this.state.form.application,
             // Remove unnecesary atributtes to prevent 'Unprocessable Entity error'
-            metadata: omit(this.state.metadata, xmlhttpOptions.omit)
-          }));
+            ...omit(this.state.metadata, xmlhttpOptions.omit)
+          });
+          console.info('request', request);
+          xmlhttp.send(request);
 
           xmlhttp.onreadystatechange = () => {
             if (xmlhttp.readyState === 4) {
@@ -109,14 +111,8 @@ class MetadataForm extends React.Component {
                 console.info(successMessage);
                 alert(successMessage);
 
-                // Go back to first step and set the dataset
-                // This will trigger the PATCH function
-                this.setState({
-                  step: 1,
-                  layer: response.data.id
-                });
               } else {
-                console.info('Error');
+                console.info('Error', xmlhttp);
               }
             }
           };

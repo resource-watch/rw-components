@@ -29,7 +29,7 @@ class Step1 extends Step {
             label: 'Technical Title',
             type: 'text',
             required: true,
-            default: this.props.metadata.technical_title
+            default: this.props.metadata.info.technical_title
           }}
         >
           {Input}
@@ -43,7 +43,7 @@ class Step1 extends Step {
             name: 'title',
             label: 'Title',
             type: 'text',
-            default: this.props.metadata.title
+            default: this.props.metadata.info.title
           }}
         >
           {Input}
@@ -57,7 +57,7 @@ class Step1 extends Step {
             name: 'subtitle',
             label: 'Subtitle',
             type: 'text',
-            default: this.props.metadata.subtitle
+            default: this.props.metadata.info.subtitle
           }}
         >
           {Input}
@@ -99,7 +99,7 @@ class Step1 extends Step {
             name: 'geographic_coverage',
             label: 'Geographic Coverage',
             type: 'text',
-            default: this.props.metadata.geographic_coverage
+            default: this.props.metadata.info.geographic_coverage
           }}
         >
           {Input}
@@ -114,7 +114,7 @@ class Step1 extends Step {
             name: 'spatial_resolution',
             label: 'Spatial Resolution',
             type: 'text',
-            default: this.props.metadata.spatial_resolution
+            default: this.props.metadata.info.spatial_resolution
           }}
         >
           {Input}
@@ -128,7 +128,7 @@ class Step1 extends Step {
             name: 'date_of_content',
             label: 'Date of Content',
             type: 'text',
-            default: this.props.metadata.date_of_content
+            default: this.props.metadata.info.date_of_content
           }}
         >
           {Input}
@@ -142,7 +142,7 @@ class Step1 extends Step {
             name: 'frequency_of_updates',
             label: 'Frequency of Updates',
             type: 'text',
-            default: this.props.metadata.frequency_of_updates
+            default: this.props.metadata.info.frequency_of_updates
           }}
         >
           {Input}
@@ -185,7 +185,7 @@ class Step1 extends Step {
             name: 'license_link',
             label: 'Link to License or ToS',
             type: 'text',
-            default: this.props.metadata.license_link
+            default: this.props.metadata.info.license_link
           }}
         >
           {Input}
@@ -199,7 +199,7 @@ class Step1 extends Step {
             name: 'overview',
             label: 'Overview',
             type: 'text',
-            default: this.props.metadata.overview
+            default: this.props.metadata.info.overview
           }}
         >
           {Textarea}
@@ -213,7 +213,7 @@ class Step1 extends Step {
             name: 'why',
             label: 'Why was this data added to the website?',
             type: 'text',
-            default: this.props.metadata.why
+            default: this.props.metadata.info.why
           }}
         >
           {Textarea}
@@ -241,7 +241,7 @@ class Step1 extends Step {
             name: 'other',
             label: 'Other',
             type: 'text',
-            default: this.props.metadata.other
+            default: this.props.metadata.info.other
           }}
         >
           {Textarea}
