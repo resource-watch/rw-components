@@ -2,6 +2,7 @@ import React from 'react';
 import sortBy from 'lodash/sortBy';
 import Spinner from '../../UI/Spinner';
 import CustomTable from '../../UI/CustomTable/CustomTable';
+import DeleteAction from './Actions/DeleteAction';
 import MetadataAction from './Actions/MetadataAction';
 import StatusTD from './TD/StatusTD';
 
@@ -62,7 +63,7 @@ class DatasetTable extends React.Component {
             show: true,
             list: [
               { name: 'Edit', path: 'datasets/:id/edit', show: true },
-              { name: 'Remove', path: 'datasets/:id/remove', show: true },
+              { name: 'Remove', path: 'datasets/:id/remove', component: DeleteAction, componentProps: { authorization: this.props.authorization } },
               { name: 'Metadata', path: 'datasets/:id/metadata', component: MetadataAction }
             ]
           }}
@@ -97,7 +98,8 @@ DatasetTable.defaultProps = {
 };
 
 DatasetTable.propTypes = {
-  application: React.PropTypes.array.isRequired
+  application: React.PropTypes.array.isRequired,
+  authorization: React.PropTypes.string
 };
 
 export default DatasetTable;

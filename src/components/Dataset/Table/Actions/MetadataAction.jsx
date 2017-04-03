@@ -11,7 +11,7 @@ class MetadataAction extends React.Component {
           <a
             href={href}
           >
-            METADATA
+            Metadata
           </a>
         }
       </span>

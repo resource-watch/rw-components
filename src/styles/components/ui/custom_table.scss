@@ -14,7 +14,7 @@ $padding-right: 75px;
 
     thead {
       background-color: $color-white;
-    
+
 
       th {
         position: relative;
@@ -72,16 +72,24 @@ $padding-right: 75px;
       }
 
       .individual-actions {
+        > ul {
+          display: flex;
+          margin: 0;
+
+          > li {
+            margin-right: 20px;
+
+            &:last-child {
+              margin: 0;
+            }
+          }
+        }
+
         a {
           color: $color-secondary;
           text-transform: uppercase;
           font-size: $font-size-default;
           text-decoration: none;
-          margin-right: 20px;
-
-          &:last-child {
-            margin: 0;
-          }
 
           &:hover {
             opacity: .5;
