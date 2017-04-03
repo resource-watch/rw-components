@@ -10,12 +10,10 @@ class Step1 extends Step {
 
   changeMetadata(obj) {
     const newMetadata = Object.assign({}, this.props.metadata, obj);
-    console.info('newMetadata', newMetadata);
     this.props.onChange({ metadata: newMetadata });
   }
 
   render() {
-    console.info('render', this.props.metadata);
     return (
       <fieldset className="c-field-container">
         <Title className="-primary -big">

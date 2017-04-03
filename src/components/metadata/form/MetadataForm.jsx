@@ -10,7 +10,8 @@ class MetadataForm extends React.Component {
   constructor(props) {
     super(props);
     const newState = Object.assign({}, STATE_DEFAULT, {
-      dataset: props.dataset,
+      datasetID: props.dataset,
+      datasetName: '',
       metadata: [],
       form: Object.assign({}, STATE_DEFAULT.form, {
         application: props.application,
@@ -26,12 +27,12 @@ class MetadataForm extends React.Component {
   }
 
   componentWillMount() {
-    if (this.state.dataset) {
+    if (this.state.datasetID) {
       // Start the loading
       this.setState({ loading: true });
 
       const xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('GET', `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/?includes=metadata&cache=${Date.now()}`);
+      xmlhttp.open('GET', `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/?includes=metadata&cache=${Date.now()}`);
       xmlhttp.setRequestHeader('Content-Type', 'application/json');
       xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
       xmlhttp.send();
@@ -41,8 +42,11 @@ class MetadataForm extends React.Component {
           if (xmlhttp.status === 200 || xmlhttp.status === 201) {
             const response = JSON.parse(xmlhttp.responseText);
             this.setState({
-              metadata: response.data.attributes.metadata ?
-                response.data.attributes.metadata[0].attributes : STATE_DEFAULT.metadata,
+              datasetName: response.data.attributes.name,
+              metadata: response.data.attributes.metadata &&
+                        response.data.attributes.metadata.length ?
+                        response.data.attributes.metadata[0].attributes :
+                        STATE_DEFAULT.metadata,
               // Stop the loading
               loading: false
             });
@@ -77,13 +81,13 @@ class MetadataForm extends React.Component {
           // Send the request
           const xmlhttp = new XMLHttpRequest();
           const xmlhttpOptions = {
-            type: (this.state.dataset && this.state.metadata) ? 'PATCH' : 'POST',
+            type: (this.state.datasetID && this.state.metadata) ? 'PATCH' : 'POST',
             authorization: this.state.form.authorization,
             contentType: 'application/json',
             omit: ['authorization']
           };
 
-          xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/metadata`);
+          xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/metadata`);
           xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
           xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
           xmlhttp.send(JSON.stringify({
@@ -137,7 +141,7 @@ class MetadataForm extends React.Component {
   render() {
     return (
       <div>
-        <h3>ID: {this.state.dataset}</h3>
+        <h3>{this.state.datasetName}</h3>
         <form className="c-form" onSubmit={this.onSubmit} noValidate>
           {this.state.loading && 'loading'}
           {(this.state.step === 1 && !this.state.loading) &&
@@ -145,7 +149,6 @@ class MetadataForm extends React.Component {
               ref={(c) => { this.step = c; }}
               onChange={value => this.onChange(value)}
               metadata={this.state.metadata}
-              dataset={this.state.dataset}
             />
           }
 

@@ -14,12 +14,14 @@ export const STATE_DEFAULT = {
     title: '',
     subtitle: '',
     source: '',
-    functions: '',
+    info: {
+      functions: '',
+      cautions: ''
+    },
     geographic_coverage: '',
     spatial_resolution: '',
     date_of_content: '',
     frequency_of_updates: '',
-    cautions: '',
     license: '',
     license_link: '',
     overview: '',

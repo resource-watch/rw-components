@@ -21,7 +21,7 @@ export default class TableContent extends React.Component {
   render() {
     const { actions, columns, sort, rowSelection } = this.props;
     const { bottom, top } = this.getPageBounds();
-    const actionsShowed = actions.list.filter(ac => ac.show);
+    const actionsShowed = actions.list.filter(ac => ac.show || ac.component);
 
     let data = this.props.filteredData;
 
@@ -68,13 +68,20 @@ export default class TableContent extends React.Component {
               )}
               {actions.show &&
                 <td className="individual-actions">
-                  {actionsShowed.map((ac, i) => {
-                    if ((typeof ac.show === 'function' && ac.show(row, i)) || (typeof ac.show !== 'function')) {
+                  {actionsShowed.map((ac) => {
+                    if (ac.component) {
                       return (
-                        <a href={this.setIndividualActionPath(ac.path, row.id)}>{ac.name}</a>
-                      );
+                        <ac.component
+                          data={row}
+                          href={this.setIndividualActionPath(ac.path, row.id)}
+                        />);
+                    } else {
+                      return (<a href={this.setIndividualActionPath(ac.path, row.id)}>
+                        {ac.name}
+                      </a>);
                     }
-                  })}
+                  })
+                  }
                 </td>
               }
             </tr>
