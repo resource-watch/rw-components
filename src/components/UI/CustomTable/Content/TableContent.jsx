@@ -1,7 +1,6 @@
-   import React from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-import Icon from '../../Icon';
 
 export default class TableContent extends React.Component {
 
@@ -55,7 +54,7 @@ export default class TableContent extends React.Component {
           return (
             <tr
               className={`${selectedClass}`}
-              onClick={() => this.props.onToggleSelectedRow(row.id)}
+              // onClick={() => this.props.onToggleSelectedRow(row.id)}
               key={index}
             >
               {columns.map((col, i) => {
@@ -72,10 +71,9 @@ export default class TableContent extends React.Component {
                     {actionsShowed.map((ac, j) => {
                       if (ac.component) {
                         return (
-                          <li>
+                          <li key={j}>
                             <ac.component
                               {...ac.componentProps}
-                              key={j}
                               href={this.setIndividualActionPath(ac.path, row.id)}
                               data={row}
                               onRowDelete={this.props.onRowDelete}

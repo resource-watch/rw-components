@@ -5,26 +5,41 @@
   .action {
     cursor: pointer;
 
-    button { 
+    button {
       cursor: pointer;
 
       &:focus { outline: none; }
       &:hover { opacity: .5; }
+
+      &.-active {
+        svg {
+          stroke: $color-secondary;
+          fill: $color-secondary;
+        }
+      }
     }
 
-    .-active {
-      .c-icon { fill: $color-secondary; }
-    }
   }
 
   .sortby-action {
     position: absolute;
-    top: 16px;
-    left: 12px;
+    top: 20px;
+    left: 14px;
 
     div {
       display: flex;
       flex-direction: column;
+
+      button {
+        display: flex;
+        height: 10px;
+      }
+
+      svg {
+        fill: $color-mid-grey;
+        stroke: $color-mid-grey;
+        stroke-width: 3px;
+      }
     }
   }
 }
