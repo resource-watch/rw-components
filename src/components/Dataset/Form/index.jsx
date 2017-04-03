@@ -46,7 +46,7 @@ class DatasetForm extends React.Component {
               loading: false
             });
           } else {
-            console.info('Error');
+            console.info('Error', xmlhttp);
           }
         }
       };

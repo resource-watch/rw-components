@@ -81,7 +81,7 @@ class MetadataForm extends React.Component {
           // Send the request
           const xmlhttp = new XMLHttpRequest();
           const xmlhttpOptions = {
-            type: (this.state.datasetID && this.state.metadata) ? 'PATCH' : 'POST',
+            type: (this.state.datasetID && this.state.metadata.status) ? 'PATCH' : 'POST',
             authorization: this.state.form.authorization,
             contentType: 'application/json',
             omit: ['authorization']
@@ -90,12 +90,13 @@ class MetadataForm extends React.Component {
           xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/metadata`);
           xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
           xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
-          xmlhttp.send(JSON.stringify({
+          const body = JSON.stringify({
             language: this.state.form.language,
             application: this.state.form.application,
             // Remove unnecesary atributtes to prevent 'Unprocessable Entity error'
-            metadata: omit(this.state.metadata, xmlhttpOptions.omit)
-          }));
+            ...omit(this.state.metadata, xmlhttpOptions.omit)
+          });
+          xmlhttp.send(body);
 
           xmlhttp.onreadystatechange = () => {
             if (xmlhttp.readyState === 4) {
@@ -109,14 +110,8 @@ class MetadataForm extends React.Component {
                 console.info(successMessage);
                 alert(successMessage);
 
-                // Go back to first step and set the dataset
-                // This will trigger the PATCH function
-                this.setState({
-                  step: 1,
-                  layer: response.data.id
-                });
               } else {
-                console.info('Error');
+                console.info('Error', xmlhttp);
               }
             }
           };
@@ -131,7 +126,7 @@ class MetadataForm extends React.Component {
 
   onChange(obj) {
     const metadata = Object.assign({}, this.state.metadata, obj.metadata);
-    this.setState({ metadata }, () => console.info(this.state.metadata));
+    this.setState({ metadata });
   }
 
   onBack(step) {
@@ -167,7 +162,7 @@ class MetadataForm extends React.Component {
 }
 
 MetadataForm.propTypes = {
-  application: React.PropTypes.array,
+  application: React.PropTypes.string,
   authorization: React.PropTypes.string,
   language: React.PropTypes.string,
   dataset: React.PropTypes.string.isRequired

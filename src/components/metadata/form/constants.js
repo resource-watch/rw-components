@@ -10,23 +10,25 @@ export const STATE_DEFAULT = {
     status: 1
   },
   metadata: {
-    technical_title: '',
-    title: '',
-    subtitle: '',
     source: '',
+    license: '',
+    citation: '',
+    description: '',
+    name: '',
     info: {
       functions: '',
-      cautions: ''
-    },
-    geographic_coverage: '',
-    spatial_resolution: '',
-    date_of_content: '',
-    frequency_of_updates: '',
-    license: '',
-    license_link: '',
-    overview: '',
-    why: '',
-    citation: '',
-    other: ''
+      cautions: '',
+      technical_title: '',
+      title: '',
+      subtitle: '',
+      license_link: '',
+      overview: '',
+      why: '',
+      other: '',
+      geographic_coverage: '',
+      spatial_resolution: '',
+      date_of_content: '',
+      frequency_of_updates: ''
+    }
   }
 };
