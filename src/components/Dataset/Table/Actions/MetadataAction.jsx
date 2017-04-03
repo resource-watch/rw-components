@@ -1,6 +1,6 @@
 import React from 'react';
 
-class MetadataTD extends React.Component {
+class MetadataAction extends React.Component {
 
   render() {
     const { data, href } = this.props;
@@ -19,9 +19,9 @@ class MetadataTD extends React.Component {
   }
 }
 
-MetadataTD.propTypes = {
+MetadataAction.propTypes = {
   data: React.PropTypes.object,
   href: React.PropTypes.string
 };
 
-export default MetadataTD;
+export default MetadataAction;

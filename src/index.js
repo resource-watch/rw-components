@@ -13,6 +13,12 @@ export { default as DatasetForm } from './components/Dataset/Form';
 export { default as DatasetList } from './components/Dataset/List';
 export { default as DatasetTable } from './components/Dataset/Table';
 
+// Tds
+export { default as StatusTD } from './components/Dataset/Table/TD/StatusTD';
+
+// Actions
+export { default as MetadataAction } from './components/Dataset/Table/Actions/MetadataAction';
+
 // Layer
 export { default as LayerForm } from './components/Layer/Form';
 
