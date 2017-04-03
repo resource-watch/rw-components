@@ -90,13 +90,13 @@ class MetadataForm extends React.Component {
           xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/metadata`);
           xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
           xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
-          const request = JSON.stringify({
+          const body = JSON.stringify({
             language: this.state.form.language,
             application: this.state.form.application,
             // Remove unnecesary atributtes to prevent 'Unprocessable Entity error'
             ...omit(this.state.metadata, xmlhttpOptions.omit)
           });
-          xmlhttp.send(request);
+          xmlhttp.send(body);
 
           xmlhttp.onreadystatechange = () => {
             if (xmlhttp.readyState === 4) {
