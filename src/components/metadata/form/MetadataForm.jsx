@@ -4,6 +4,7 @@ import omit from 'lodash/omit';
 import { STATE_DEFAULT } from './constants';
 
 import Step1 from './steps/Step1';
+import Title from '../../UI/Title';
 import Navigation from '../../Form/Navigation';
 
 class MetadataForm extends React.Component {
@@ -136,7 +137,9 @@ class MetadataForm extends React.Component {
   render() {
     return (
       <div>
-        <h3>{this.state.datasetName}</h3>
+        <Title className="-big">
+          {this.state.datasetName}
+        </Title>
         <form className="c-form" onSubmit={this.onSubmit} noValidate>
           {this.state.loading && 'loading'}
           {(this.state.step === 1 && !this.state.loading) &&

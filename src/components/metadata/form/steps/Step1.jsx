@@ -23,9 +23,6 @@ class Step1 extends Step {
   render() {
     return (
       <fieldset className="c-field-container">
-        <Title className="-primary -big">
-          Metadata
-        </Title>
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
           onChange={value => this.changeMetadata({ info: { technical_title: value } })}
@@ -115,8 +112,7 @@ class Step1 extends Step {
             name: 'units',
             label: 'Units',
             type: 'text',
-            required: true,
-            default: this.props.metadata.units.value
+            required: true
           }}
         >
           {Input}
@@ -165,7 +161,7 @@ class Step1 extends Step {
         >
           {Input}
         </Field>
-        
+
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
           onChange={value => this.changeMetadata({ info: { 'function': value } })}
