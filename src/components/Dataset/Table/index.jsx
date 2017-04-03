@@ -2,6 +2,8 @@ import React from 'react';
 import sortBy from 'lodash/sortBy';
 import Spinner from '../../UI/Spinner';
 import CustomTable from '../../UI/CustomTable/CustomTable';
+import MetadataAction from './Actions/MetadataAction';
+import StatusTD from './TD/StatusTD';
 
 class DatasetTable extends React.Component {
 
@@ -51,21 +53,28 @@ class DatasetTable extends React.Component {
       <div className="c-dataset-table">
         <Spinner className="-light" isLoading={this.state.loading} />
         <CustomTable
-          columns={this.props.columns}
+          columns={[
+            { label: 'name', value: 'name' },
+            { label: 'status', value: 'status', td: StatusTD },
+            { label: 'provider', value: 'provider' }
+          ]}
+          actions={{
+            show: true,
+            list: [
+              { name: 'Edit', path: 'datasets/:id/edit', show: true },
+              { name: 'Remove', path: 'datasets/:id/remove', show: true },
+              { name: 'Metadata', path: 'datasets/:id/metadata', component: MetadataAction }
+            ]
+          }}
           data={this.state.datasets}
           pageSize={20}
-          actions={this.props.actions}
           pagination={{
             enabled: true,
             pageSize: 20,
             page: 0
           }}
-          onToggleSelectedRow={(ids) => {
-            // this.props.setSelectedPoints(ids);
-          }}
-          onRowDelete={(id) => {
-            this.props.onPointRemove(id);
-          }}
+          onToggleSelectedRow={(ids) => { console.info(ids); }}
+          onRowDelete={(id) => { console.info(id); }}
         />
       </div>
     );
@@ -75,8 +84,8 @@ class DatasetTable extends React.Component {
 DatasetTable.defaultProps = {
   application: ['rw'],
   columns: [
-    {label: 'name', value: 'name'},
-    {label: 'provider', value: 'provider'}
+    { label: 'name', value: 'name' },
+    { label: 'provider', value: 'provider' }
   ],
   actions: {
     show: true,
@@ -88,9 +97,7 @@ DatasetTable.defaultProps = {
 };
 
 DatasetTable.propTypes = {
-  application: React.PropTypes.array.isRequired,
-  columns: React.PropTypes.array,
-  actions: React.PropTypes.object
+  application: React.PropTypes.array.isRequired
 };
 
 export default DatasetTable;
