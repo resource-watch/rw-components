@@ -8,15 +8,17 @@ class ButtonContainer extends React.Component {
     return (
       <div className={`c-button-container ${containerClassName}`}>
         <ul>
-          {this.props.buttons.map((button) => {
+          {this.props.buttons.map((button, i) => {
             const buttonClassName = classnames({ [button.className]: !!button.className });
             return (
-              <a
-                className={`c-button ${buttonClassName}`}
-                href={button.path}
-              >
-                {button.label}
-              </a>
+              <li key={i}>
+                <a
+                  className={`c-button ${buttonClassName}`}
+                  href={button.path}
+                >
+                  {button.label}
+                </a>
+              </li>
             );
           })}
         </ul>
