@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { APPLICATIONS, TOPICS, PROVIDERS } from '../constants';
+import { APPLICATIONS, CONNECTOR_TYPES, CONNECTOR_TYPES_DICTIONARY } from '../constants';
 
 import Step from './step';
 import Field from '../../../Form/Field';
@@ -17,9 +17,24 @@ class Step1 extends Step {
       dataset: props.dataset,
       form: props.form
     };
+
+    // BINDINGS
+    this.onConnectorTypeChange = this.onConnectorTypeChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.info('nextProps', nextProps);
+    this.setState({ form: nextProps.form });
+  }
+
+  onConnectorTypeChange(value) {
+    const newObj = Object.assign({}, value, { provider: '' });
+    this.props.onChange(newObj);
   }
 
   render() {
+    const provider = CONNECTOR_TYPES_DICTIONARY[this.state.form.connector_type];
+    console.info('provider', provider);
     return (
       <fieldset className="c-field-container">
         {!this.state.form.authorization &&
@@ -84,22 +99,6 @@ class Step1 extends Step {
           </Field>
         }
 
-        <Field
-          ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.props.onChange({ topics: [value] })}
-          validations={['required']}
-          blank
-          options={TOPICS}
-          properties={{
-            name: 'topics',
-            label: 'Topics',
-            default: (this.state.form.topics) ? this.state.form.topics[0] : '',
-            required: true
-          }}
-        >
-          {Select}
-        </Field>
-
         {/* <Field
           ref={(c) => { if (c) this.children.push(c); }}
           onChange={value => this.props.onChange({ tags: value })}
@@ -119,14 +118,14 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.props.onChange(this.providerDictionary[value])}
+          onChange={value => this.onConnectorTypeChange({ connector_type: value })}
           validations={['required']}
           blank
-          options={PROVIDERS}
+          options={CONNECTOR_TYPES}
           properties={{
-            name: 'provider',
-            label: 'Provider',
-            default: this.state.form.provider,
+            name: 'connector_type',
+            label: 'Connector Type',
+            default: this.state.form.connector_type,
             disabled: !!this.state.dataset,
             required: true
           }}
@@ -134,6 +133,32 @@ class Step1 extends Step {
           {Select}
         </Field>
 
+        {provider &&
+          <Field
+            ref={(c) => { if (c) this.children.push(c); }}
+            onChange={value => this.props.onChange({ provider: value })}
+            validations={['required']}
+            blank
+            options={Object.keys(provider).map(
+              (key) => {
+                console.info('provider[key]', provider[key]);
+                return {
+                  label: provider[key].label,
+                  value: provider[key].value
+                };
+              })}
+            properties={{
+              name: 'provider',
+              label: 'Provider',
+              default: this.state.form.provider,
+              value: this.state.form.provider,
+              disabled: !!this.state.dataset,
+              required: true
+            }}
+          >
+            {Select}
+          </Field>
+        }
       </fieldset>
     );
   }
