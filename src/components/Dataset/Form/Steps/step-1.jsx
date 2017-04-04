@@ -33,7 +33,7 @@ class Step1 extends Step {
   }
 
   render() {
-    const provider = CONNECTOR_TYPES_DICTIONARY[this.state.form.connector_type];
+    const provider = CONNECTOR_TYPES_DICTIONARY[this.state.form.connectorType];
     console.info('provider', provider);
     return (
       <fieldset className="c-field-container">
@@ -118,14 +118,14 @@ class Step1 extends Step {
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.onConnectorTypeChange({ connector_type: value })}
+          onChange={value => this.onConnectorTypeChange({ connectorType: value })}
           validations={['required']}
           blank
           options={CONNECTOR_TYPES}
           properties={{
-            name: 'connector_type',
+            name: 'connectorType',
             label: 'Connector Type',
-            default: this.state.form.connector_type,
+            default: this.state.form.connectorType,
             disabled: !!this.state.dataset,
             required: true
           }}

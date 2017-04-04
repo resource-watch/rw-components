@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { CONNECTOR_TYPES_DICTIONARY } from '../constants';
+
 import Step from './step';
 import Field from '../../../Form/Field';
 import Input from '../../../Form/Input';
@@ -30,19 +32,20 @@ class Step2 extends Step {
   */
   getHint() {
     const { form } = this.state;
-    return this.providerDictionary[form.provider].connectorUrlHint;
+    console.info('form', form);
+    return CONNECTOR_TYPES_DICTIONARY[form.connectorType][form.provider].connectorUrlHint;
   }
 
   render() {
     const hint = this.getHint();
     const { provider } = this.state.form;
-    const connectorType = this.state.form.connector_type;
-    const showCountry = provider === 'document';
-    const showDate = provider === 'document';
-    const showLongitude = provider === 'document';
-    const showLatitude = provider === 'document';
-    const showDataPath = (connectorType === 'json') || (connectorType === 'xml');
-    const dataPathRequired = (connectorType === 'xml');
+    const connectorType = this.state.form.connectorType;
+    const showCountry = connectorType === 'document';
+    const showDate = connectorType === 'document';
+    const showLongitude = connectorType === 'document';
+    const showLatitude = connectorType === 'document';
+    const showDataPath = (provider === 'json') || (provider === 'xml');
+    const dataPathRequired = (provider === 'xml');
 
 
     return (
@@ -66,7 +69,7 @@ class Step2 extends Step {
         { showDataPath &&
           <Field
             ref={(c) => { if (c) this.children.push(c); }}
-            onChange={value => this.onLegendChange({ dataPath: value })}
+            onChange={value => this.props.onChange({ dataPath: value })}
             hint="Name of the tag that you want to import"
             properties={{
               name: 'dataPath',
