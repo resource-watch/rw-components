@@ -23,7 +23,6 @@ class Step1 extends Step {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.info('nextProps', nextProps);
     this.setState({ form: nextProps.form });
   }
 
@@ -34,7 +33,6 @@ class Step1 extends Step {
 
   render() {
     const provider = CONNECTOR_TYPES_DICTIONARY[this.state.form.connectorType];
-    console.info('provider', provider);
     return (
       <fieldset className="c-field-container">
         {!this.state.form.authorization &&
@@ -141,7 +139,6 @@ class Step1 extends Step {
             blank
             options={Object.keys(provider).map(
               (key) => {
-                console.info('provider[key]', provider[key]);
                 return {
                   label: provider[key].label,
                   value: provider[key].value

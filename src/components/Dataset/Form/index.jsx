@@ -119,7 +119,6 @@ class DatasetForm extends React.Component {
   }
 
   onChange(obj) {
-    console.info('obj', obj);
     const form = Object.assign({}, this.state.form, obj);
     this.setState({ form }, () => console.info(this.state.form));
   }

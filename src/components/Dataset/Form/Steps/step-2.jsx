@@ -32,7 +32,6 @@ class Step2 extends Step {
   */
   getHint() {
     const { form } = this.state;
-    console.info('form', form);
     return CONNECTOR_TYPES_DICTIONARY[form.connectorType][form.provider].connectorUrlHint;
   }
 

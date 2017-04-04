@@ -90,6 +90,7 @@ export const STATE_DEFAULT = {
 
     // STEP 2
     connectorUrl: '',
+    dataPath: '',
     legend: {
       lat: null,
       long: null,
