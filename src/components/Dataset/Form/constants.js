@@ -31,40 +31,41 @@ export const CONNECTOR_TYPES_DICTIONARY = {
     gee: {
       label: 'GEE',
       value: 'gee',
-      connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27'
+      connectorUrlHint: ''
     },
     featureservice: {
       value: 'featureservice',
-      label: 'Feature Service'
+      label: 'Feature Service',
+      connectorUrlHint: ''
     }
   },
   document: {
     csv: {
       label: 'CSV',
       value: 'csv',
-      connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27'
+      connectorUrlHint: ''
     },
     json: {
       label: 'JSON',
       value: 'json',
-      connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27'
+      connectorUrlHint: ''
     },
     tsv: {
       label: 'TSV',
       value: 'tsv',
-      connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27'
+      connectorUrlHint: ''
     },
     xml: {
       label: 'XML',
       value: 'xml',
-      connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27'
+      connectorUrlHint: ''
     }
   },
   wms: {
     wms: {
       label: 'WMS',
       value: 'wms',
-      connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27'
+      connectorUrlHint: ''
     }
   }
 };
