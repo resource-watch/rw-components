@@ -30,6 +30,7 @@ export { default as MetadataForm } from './components/Metadata/Form/MetadataForm
 
 // UI
 export { default as Button } from './components/UI/Button';
+export { default as ButtonContainer } from './components/UI/ButtonContainer';
 export { default as Icon } from './components/UI/Icon';
 export { default as Spinner } from './components/UI/Spinner';
 export { default as Table } from './components/UI/Table';
