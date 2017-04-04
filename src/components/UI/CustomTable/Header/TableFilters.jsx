@@ -33,7 +33,7 @@ export default class TableFilters extends React.Component {
   componentWillReceiveProps(nextProps) {
     const selected = (nextProps.selected) ? nextProps.selected : nextProps.values;
     this.setState({
-      selected: (nextProps.selected) ? nextProps.selected : nextProps.values,
+      selected: selected,
       values: nextProps.values
     });
   }
@@ -64,7 +64,7 @@ export default class TableFilters extends React.Component {
     //                        so we will have 2 dropdown filters at the same time
     requestAnimationFrame(() => window[closed ? 'addEventListener' : 'removeEventListener']('click', this.onScreenClick));
 
-    this.setState({ closed: !closed, input: '' });
+    this.setState({ closed: !closed });
   }
 
   onScreenClick(e) {
@@ -77,9 +77,21 @@ export default class TableFilters extends React.Component {
   }
 
   onChangeInput() {
+    const inputValue = this.input.value;
+    let selectedFiltered;
+    if (inputValue.length > 0) {
+      selectedFiltered = this.getFilteredValues().filter(
+        value => value.value.indexOf(inputValue) >= 0);
+    } else {
+      selectedFiltered = this.state.values;
+    }
+    const selectedFilteredValues = selectedFiltered.map(elem => elem.value);
+
     this.setState({
-      input: this.input.value
-    });
+      input: inputValue,
+      selected: selectedFilteredValues,
+      checked: selectedFilteredValues
+    }, this.onFilterSelect(selectedFilteredValues));
   }
 
   onResetInput(e) {
@@ -93,6 +105,7 @@ export default class TableFilters extends React.Component {
   }
 
   onFilterSelect(selected) {
+    console.info('checked', this.state.checked);
     this.setState({ selected }, () => {
       const { selected, values } = this.state;
       this.props.onFilter && this.props.onFilter({
@@ -129,7 +142,7 @@ export default class TableFilters extends React.Component {
 
     const filteredValues = values.filter((val) => {
       if (input) {
-        return val.toString().toLowerCase() === input.toString().toLowerCase();
+        return val.toString().toLowerCase().indexOf(input.toString().toLowerCase()) >= 0;
       }
       return true;
     });
