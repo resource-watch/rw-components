@@ -158,6 +158,7 @@ export default class CustomTable extends React.Component {
       columnQueries
     }, () => {
       this.filter();
+      this.onChangePage(0);
     });
   }
 
