@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { CONNECTOR_TYPES_DICTIONARY } from '../constants';
+
 import Step from './step';
 import Field from '../../../Form/Field';
 import Input from '../../../Form/Input';
@@ -30,14 +32,18 @@ class Step2 extends Step {
   */
   getHint() {
     const { form } = this.state;
-    return this.providerDictionary[form.provider].connectorUrlHint;
+    return CONNECTOR_TYPES_DICTIONARY[form.connectorType][form.provider].connectorUrlHint;
   }
 
   render() {
     const hint = this.getHint();
+    const { provider, connectorType } = this.state.form;
+    const isDocument = connectorType === 'document';
+    const showDataPath = (provider === 'json') || (provider === 'xml');
+    const dataPathRequired = (provider === 'xml');
+
 
     return (
-
       <fieldset className="c-field-container">
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
@@ -55,7 +61,24 @@ class Step2 extends Step {
           {Input}
         </Field>
 
-        {(this.state.form.provider) === 'csv' &&
+        { showDataPath &&
+          <Field
+            ref={(c) => { if (c) this.children.push(c); }}
+            onChange={value => this.props.onChange({ dataPath: value })}
+            hint="Name of the element that you want to import"
+            properties={{
+              name: 'dataPath',
+              label: 'Data path',
+              type: 'text',
+              default: this.state.form.dataPath,
+              required: dataPathRequired
+            }}
+          >
+            {Input}
+          </Field>
+        }
+
+        { isDocument &&
           <Field
             ref={(c) => { if (c) this.children.push(c); }}
             onChange={value => this.onLegendChange({ lat: value })}
@@ -70,7 +93,7 @@ class Step2 extends Step {
             {Input}
           </Field>
         }
-        {(this.state.form.provider) === 'csv' &&
+        { isDocument &&
           <Field
             ref={(c) => { if (c) this.children.push(c); }}
             onChange={value => this.onLegendChange({ long: value })}
@@ -85,7 +108,7 @@ class Step2 extends Step {
             {Input}
           </Field>
         }
-        {(this.state.form.provider) === 'csv' &&
+        { isDocument === 'csv' &&
           <Field
             ref={(c) => { if (c) this.children.push(c); }}
             onChange={value => this.onLegendChange({ date: value })}
@@ -100,7 +123,7 @@ class Step2 extends Step {
             {Input}
           </Field>
         }
-        {(this.state.form.provider) === 'csv' &&
+        { isDocument &&
           <Field
             ref={(c) => { if (c) this.children.push(c); }}
             onChange={value => this.onLegendChange({ country: value })}
@@ -115,7 +138,6 @@ class Step2 extends Step {
             {Input}
           </Field>
         }
-
       </fieldset>
     );
   }
