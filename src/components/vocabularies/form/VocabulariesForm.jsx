@@ -24,6 +24,7 @@ class VocabulariesForm extends React.Component {
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.createNewVocabulary = this.createNewVocabulary.bind(this);
   }
 
   componentWillMount() {
@@ -47,6 +48,7 @@ class VocabulariesForm extends React.Component {
               vocabularyArray = STATE_DEFAULT.vocabularies;
             }
             this.setState({
+              hasVocabularies: attrs.vocabulary.length !== 0,
               datasetName: attrs.name,
               vocabularies: vocabularyArray,
               // Stop the loading
@@ -71,78 +73,71 @@ class VocabulariesForm extends React.Component {
     FORM_ELEMENTS.validate();
 
     if (FORM_ELEMENTS.isFormValid()) {
-      console.info('The form is valid!');
+      // Set a timeout due to the setState function of react
+      setTimeout(() => {
+        if (!this.state.submitting) {
+          // Start the submitting
+          this.setState({ submitting: true });
+          // Set the request
+          // Send the request
+          const xmlhttp = new XMLHttpRequest();
+          const xmlhttpOptions = {
+            // type: (this.state.hasVocabularies) ? 'PATCH' : 'POST',
+            type: 'POST',
+            authorization: this.state.form.authorization,
+            contentType: 'application/json',
+            omit: ['authorization']
+          };
+          xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/vocabulary`);
+          xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
+          xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
+          const bodyObj = {};
+          this.state.vocabularies.map(elem =>
+            bodyObj[elem.name] = { tags: elem.tags }
+          );
+          const body = JSON.stringify(bodyObj);
+          xmlhttp.send(body);
+          xmlhttp.onreadystatechange = () => {
+            if (xmlhttp.readyState === 4) {
+              // Stop the submitting
+              this.setState({ submitting: false });
+              if (xmlhttp.status === 200 || xmlhttp.status === 201) {
+                const response = JSON.parse(xmlhttp.responseText);
+                const successMessage = `Vocabularies have been uploaded correctly`;
+                console.info(response);
+                console.info(successMessage);
+                alert(successMessage);
+              } else {
+                console.info('Error', xmlhttp);
+              }
+            }
+          };
+        }
+      }, 0);
     }
-
-    // Set a timeout due to the setState function of react
-    // setTimeout(() => {
-    //   const valid = this.step.isValid();
-    //   if (valid) {
-    //     if (this.state.step === this.state.stepLength && !this.state.submitting) {
-    //       // Start the submitting
-    //       this.setState({ submitting: true });
-    //
-    //       // Set the request
-    //       // Send the request
-    //       const xmlhttp = new XMLHttpRequest();
-    //       const xmlhttpOptions = {
-    //         type: (this.state.datasetID && this.state.metadata.status) ? 'PATCH' : 'POST',
-    //         authorization: this.state.form.authorization,
-    //         contentType: 'application/json',
-    //         omit: ['authorization']
-    //       };
-    //
-    //       xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/metadata`);
-    //       xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
-    //       xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
-    //       const body = JSON.stringify({
-    //         language: this.state.form.language,
-    //         application: this.state.form.application,
-    //         // Remove unnecesary atributtes to prevent 'Unprocessable Entity error'
-    //         ...omit(this.state.metadata, xmlhttpOptions.omit)
-    //       });
-    //       xmlhttp.send(body);
-    //
-    //       xmlhttp.onreadystatechange = () => {
-    //         if (xmlhttp.readyState === 4) {
-    //           // Stop the submitting
-    //           this.setState({ submitting: false });
-    //
-    //           if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-    //             const response = JSON.parse(xmlhttp.responseText);
-    //             const successMessage = `Metadata has been uploaded correctly`;
-    //             console.info(response);
-    //             console.info(successMessage);
-    //             alert(successMessage);
-    //
-    //           } else {
-    //             console.info('Error', xmlhttp);
-    //           }
-    //         }
-    //       };
-    //     } else {
-    //       this.setState({
-    //         step: this.state.step + 1
-    //       }, () => console.info(this.state));
-    //     }
-    //   }
-    // }, 0);
   }
 
   onChange(obj) {
-    const vocabularies = this.state.vocabularies;
+    const vocabularies = this.state.vocabularies.slice(0);
     const newVocabularies = vocabularies.map((elem) => {
-      if (elem.id === obj.id) {
-        return { id: obj.id, tags: obj.values };
+      if (elem.attributes.name === obj.name) {
+        return { attributes: { name: obj.name, tags: obj.values } };
       } else {
         return elem;
       }
     });
-    this.setState({ vocabularies: newVocabularies });
+    this.setState({ vocabularies: newVocabularies }, console.info('this.state', this.state));
+  }
+
+  createNewVocabulary() {
+    const { vocabularies } = this.state;
+    vocabularies.push({ attributes: { name: 'name', tags: [] } });
+    this.setState({ vocabularies: vocabularies });
   }
 
   render() {
-    console.info(this.state);
+    const { vocabularies } = this.state;
+
     return (
       <div>
         <Title className="-huge -p-primary">
@@ -151,12 +146,21 @@ class VocabulariesForm extends React.Component {
         <Title className="-p-primary">
           Vocabularies
         </Title>
+        <Button
+          onClick={this.createNewVocabulary}
+          properties={{
+            type: 'button',
+            className: '-primary'
+          }}
+        >
+          New Vocabulary
+        </Button>
         <form className="c-form" onSubmit={this.onSubmit} noValidate>
           {this.state.loading && 'loading'}
-          {!this.state.loading && this.state.vocabularies.length > 0 &&
-            this.state.vocabularies.map(elem =>
+          {!this.state.loading && vocabularies.length > 0 &&
+            vocabularies.map(elem =>
               <VocabularyItem
-                vocabulary={elem}
+                vocabulary={elem.attributes}
                 onChange={this.onChange}
               />
             )
