@@ -37,12 +37,8 @@ class Step2 extends Step {
 
   render() {
     const hint = this.getHint();
-    const { provider } = this.state.form;
-    const connectorType = this.state.form.connectorType;
-    const showCountry = connectorType === 'document';
-    const showDate = connectorType === 'document';
-    const showLongitude = connectorType === 'document';
-    const showLatitude = connectorType === 'document';
+    const { provider, connectorType } = this.state.form;
+    const isDocument = connectorType === 'document';
     const showDataPath = (provider === 'json') || (provider === 'xml');
     const dataPathRequired = (provider === 'xml');
 
@@ -69,7 +65,7 @@ class Step2 extends Step {
           <Field
             ref={(c) => { if (c) this.children.push(c); }}
             onChange={value => this.props.onChange({ dataPath: value })}
-            hint="Name of the tag that you want to import"
+            hint="Name of the element that you want to import"
             properties={{
               name: 'dataPath',
               label: 'Data path',
@@ -82,7 +78,7 @@ class Step2 extends Step {
           </Field>
         }
 
-        { showLatitude &&
+        { isDocument &&
           <Field
             ref={(c) => { if (c) this.children.push(c); }}
             onChange={value => this.onLegendChange({ lat: value })}
@@ -97,7 +93,7 @@ class Step2 extends Step {
             {Input}
           </Field>
         }
-        { showLongitude &&
+        { isDocument &&
           <Field
             ref={(c) => { if (c) this.children.push(c); }}
             onChange={value => this.onLegendChange({ long: value })}
@@ -112,7 +108,7 @@ class Step2 extends Step {
             {Input}
           </Field>
         }
-        { showDate === 'csv' &&
+        { isDocument === 'csv' &&
           <Field
             ref={(c) => { if (c) this.children.push(c); }}
             onChange={value => this.onLegendChange({ date: value })}
@@ -127,7 +123,7 @@ class Step2 extends Step {
             {Input}
           </Field>
         }
-        { showCountry &&
+        { isDocument &&
           <Field
             ref={(c) => { if (c) this.children.push(c); }}
             onChange={value => this.onLegendChange({ country: value })}
