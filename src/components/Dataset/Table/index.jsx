@@ -4,6 +4,7 @@ import Spinner from '../../UI/Spinner';
 import CustomTable from '../../UI/CustomTable/CustomTable';
 import DeleteAction from './Actions/DeleteAction';
 import MetadataAction from './Actions/MetadataAction';
+import VocabulariesAction from './Actions/VocabulariesAction';
 import StatusTD from './TD/StatusTD';
 
 class DatasetTable extends React.Component {
@@ -62,9 +63,10 @@ class DatasetTable extends React.Component {
           actions={{
             show: true,
             list: [
-              { name: 'Edit', path: 'datasets/:id/edit', show: true },
-              { name: 'Remove', path: 'datasets/:id/remove', component: DeleteAction, componentProps: { authorization: this.props.authorization } },
-              { name: 'Metadata', path: 'datasets/:id/metadata', component: MetadataAction }
+              { name: 'Edit', path: '/datasets/:id/edit', show: true },
+              { name: 'Remove', path: '/datasets/:id/remove', component: DeleteAction, componentProps: { authorization: this.props.authorization } },
+              { name: 'Metadata', path: '/datasets/:id/metadata', component: MetadataAction },
+              { name: 'Vocabularies', path: '/datasets/:id/vocabularies', component: VocabulariesAction }
             ]
           }}
           data={this.state.datasets}
