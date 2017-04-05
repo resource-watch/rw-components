@@ -31,34 +31,34 @@ export const CONNECTOR_TYPES_DICTIONARY = {
     gee: {
       label: 'GEE',
       value: 'gee',
-      connectorUrlHint: ''
+      connectorUrlHint: 'Example: projects/wri-datalab/HansenComposite_14-15'
     },
     featureservice: {
       value: 'featureservice',
-      label: 'Feature Service',
-      connectorUrlHint: ''
+      label: 'Feature Service (Arcgis)',
+      connectorUrlHint: 'Example: http://gis-gfw.wri.org/arcgis/rest/services/prep/nex_gddp_indicators/MapServer/6?f=pjson'
     }
   },
   document: {
     csv: {
       label: 'CSV',
       value: 'csv',
-      connectorUrlHint: ''
+      connectorUrlHint: 'Format specification: https://en.wikipedia.org/wiki/Comma-separated_values'
     },
     json: {
       label: 'JSON',
       value: 'json',
-      connectorUrlHint: ''
+      connectorUrlHint: 'Format specification: http://www.json.org/'
     },
     tsv: {
       label: 'TSV',
       value: 'tsv',
-      connectorUrlHint: ''
+      connectorUrlHint: 'Format specification: https://en.wikipedia.org/wiki/Tab-separated_values'
     },
     xml: {
       label: 'XML',
       value: 'xml',
-      connectorUrlHint: ''
+      connectorUrlHint: 'Format specification: https://www.w3.org/TR/REC-xml/'
     }
   },
   wms: {
