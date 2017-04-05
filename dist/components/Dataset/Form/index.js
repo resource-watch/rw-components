@@ -113,18 +113,20 @@ var DatasetForm = function (_React$Component) {
         var valid = _this3.step.isValid();
         if (valid) {
           if (_this3.state.step === _this3.state.stepLength && !_this3.state.submitting) {
+            var dataset = _this3.state.dataset;
+
             // Start the submitting
             _this3.setState({ submitting: true });
 
             // Set the request
             var requestOptions = {
-              type: _this3.state.dataset ? 'PATCH' : 'POST',
-              omit: _this3.state.dataset ? ['connectorUrlHint', 'authorization', 'connectorType', 'provider'] : ['connectorUrlHint', 'authorization']
+              type: dataset ? 'PATCH' : 'POST',
+              omit: dataset ? ['connectorUrlHint', 'authorization', 'connectorType', 'provider'] : ['connectorUrlHint', 'authorization']
             };
 
             (0, _request.post)({
               type: requestOptions.type,
-              url: 'https://api.resourcewatch.org/v1/dataset/' + _this3.state.dataset,
+              url: 'https://api.resourcewatch.org/v1/dataset/' + (dataset || ''),
               body: (0, _omit2.default)(_this3.state.form, requestOptions.omit),
               headers: [{
                 key: 'Content-Type', value: 'application/json'

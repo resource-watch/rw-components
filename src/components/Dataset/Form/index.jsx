@@ -70,18 +70,20 @@ class DatasetForm extends React.Component {
       const valid = this.step.isValid();
       if (valid) {
         if (this.state.step === this.state.stepLength && !this.state.submitting) {
+          const dataset = this.state.dataset;
+
           // Start the submitting
           this.setState({ submitting: true });
 
           // Set the request
           const requestOptions = {
-            type: (this.state.dataset) ? 'PATCH' : 'POST',
-            omit: (this.state.dataset) ? ['connectorUrlHint', 'authorization', 'connectorType', 'provider'] : ['connectorUrlHint', 'authorization']
+            type: (dataset) ? 'PATCH' : 'POST',
+            omit: (dataset) ? ['connectorUrlHint', 'authorization', 'connectorType', 'provider'] : ['connectorUrlHint', 'authorization']
           };
 
           post({
             type: requestOptions.type,
-            url: `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}`,
+            url: `https://api.resourcewatch.org/v1/dataset/${dataset || ''}`,
             body: omit(this.state.form, requestOptions.omit),
             headers: [{
               key: 'Content-Type', value: 'application/json'
