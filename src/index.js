@@ -30,6 +30,7 @@ export { default as MetadataForm } from './components/metadata/form/MetadataForm
 
 // vocabularies
 export { default as VocabulariesForm } from './components/vocabularies/form/VocabulariesForm';
+export { default as VocabularyItem } from './components/vocabularies/form/VocabularyItem';
 
 // UI
 export { default as Button } from './components/UI/Button';

@@ -1,7 +1,10 @@
 import React from 'react';
 
+import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
+
 import Title from '../../UI/Title';
-import { STATE_DEFAULT } from './constants';
+import VocabularyItem from './VocabularyItem';
+import Button from '../../UI/Button';
 
 class VocabulariesForm extends React.Component {
 
@@ -29,7 +32,7 @@ class VocabulariesForm extends React.Component {
       this.setState({ loading: true });
 
       const xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('GET', `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/?cache=${Date.now()}`);
+      xmlhttp.open('GET', `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}?includes=vocabulary&cache=${Date.now()}`);
       xmlhttp.setRequestHeader('Content-Type', 'application/json');
       xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
       xmlhttp.send();
@@ -38,8 +41,14 @@ class VocabulariesForm extends React.Component {
         if (xmlhttp.readyState === 4) {
           if (xmlhttp.status === 200 || xmlhttp.status === 201) {
             const response = JSON.parse(xmlhttp.responseText);
+            const attrs = response.data.attributes;
+            let vocabularyArray = attrs.vocabulary;
+            if (attrs.vocabulary.length === 0) {
+              vocabularyArray = STATE_DEFAULT.vocabularies;
+            }
             this.setState({
-              datasetName: response.data.attributes.name,
+              datasetName: attrs.name,
+              vocabularies: vocabularyArray,
               // Stop the loading
               loading: false
             });
@@ -59,8 +68,11 @@ class VocabulariesForm extends React.Component {
   onSubmit(event) {
     event.preventDefault();
 
-    // Validate the form
-    this.step.validate();
+    FORM_ELEMENTS.validate();
+
+    if (FORM_ELEMENTS.isFormValid()) {
+      console.info('The form is valid!');
+    }
 
     // Set a timeout due to the setState function of react
     // setTimeout(() => {
@@ -118,15 +130,52 @@ class VocabulariesForm extends React.Component {
   }
 
   onChange(obj) {
-
+    const vocabularies = this.state.vocabularies;
+    const newVocabularies = vocabularies.map((elem) => {
+      if (elem.id === obj.id) {
+        return { id: obj.id, tags: obj.values };
+      } else {
+        return elem;
+      }
+    });
+    this.setState({ vocabularies: newVocabularies });
   }
 
   render() {
+    console.info(this.state);
     return (
       <div>
         <Title className="-huge -p-primary">
           {this.state.datasetName}
         </Title>
+        <Title className="-p-primary">
+          Vocabularies
+        </Title>
+        <form className="c-form" onSubmit={this.onSubmit} noValidate>
+          {this.state.loading && 'loading'}
+          {!this.state.loading && this.state.vocabularies.length > 0 &&
+            this.state.vocabularies.map(elem =>
+              <VocabularyItem
+                vocabulary={elem}
+                onChange={this.onChange}
+              />
+            )
+          }
+          <ul className="c-field-buttons">
+            <li>
+              <Button
+                properties={{
+                  type: 'submit',
+                  name: 'commit',
+                  disabled: this.state.loading,
+                  className: `-primary ${this.state.loading ? '-disabled' : ''}`
+                }}
+              >
+                Submit
+              </Button>
+            </li>
+          </ul>
+        </form>
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'react-select';
+import Select, { Creatable } from 'react-select';
 import FormElement from '../FormElement';
 
 class SelectInput extends FormElement {
@@ -27,9 +27,10 @@ class SelectInput extends FormElement {
 
   render() {
     const { options, properties } = this.props;
+    const Component = properties.creatable ? Creatable : Select;
 
     return (
-      <Select
+      <Component
         {...properties}
         options={options}
         id={`select-${properties.name}`}
