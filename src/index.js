@@ -26,7 +26,10 @@ export { default as VegaChart } from './components/Widget/VegaChart';
 export { default as LayerChart } from './components/Widget/LayerChart';
 
 // Metadata
-export { default as MetadataForm } from './components/Metadata/Form/MetadataForm';
+export { default as MetadataForm } from './components/metadata/form/MetadataForm';
+
+// vocabularies
+export { default as VocabulariesForm } from './components/vocabularies/form/VocabulariesForm';
 
 // UI
 export { default as Button } from './components/UI/Button';
