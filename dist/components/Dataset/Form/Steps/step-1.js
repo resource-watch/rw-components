@@ -56,14 +56,29 @@ var Step1 = function (_Step) {
       dataset: props.dataset,
       form: props.form
     };
+
+    // BINDINGS
+    _this.onConnectorTypeChange = _this.onConnectorTypeChange.bind(_this);
     return _this;
   }
 
   _createClass(Step1, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.setState({ form: nextProps.form });
+    }
+  }, {
+    key: 'onConnectorTypeChange',
+    value: function onConnectorTypeChange(value) {
+      var newObj = Object.assign({}, value, { provider: '' });
+      this.props.onChange(newObj);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
+      var provider = _constants.CONNECTOR_TYPES_DICTIONARY[this.state.form.connectorType];
       return _react2.default.createElement(
         'fieldset',
         { className: 'c-field-container' },
@@ -152,36 +167,43 @@ var Step1 = function (_Step) {
               if (c) _this2.children.push(c);
             },
             onChange: function onChange(value) {
-              return _this2.props.onChange({ topics: [value] });
+              return _this2.onConnectorTypeChange({ connectorType: value });
             },
             validations: ['required'],
             blank: true,
-            options: _constants.TOPICS,
+            options: _constants.CONNECTOR_TYPES,
             properties: {
-              name: 'topics',
-              label: 'Topics',
-              default: this.state.form.topics ? this.state.form.topics[0] : '',
+              name: 'connectorType',
+              label: 'Connector Type',
+              default: this.state.form.connectorType,
+              disabled: !!this.state.dataset,
               required: true
             }
           },
           _Select2.default
         ),
-        _react2.default.createElement(
+        provider && _react2.default.createElement(
           _Field2.default,
           {
             ref: function ref(c) {
               if (c) _this2.children.push(c);
             },
             onChange: function onChange(value) {
-              return _this2.props.onChange(_this2.providerDictionary[value]);
+              return _this2.props.onChange({ provider: value });
             },
             validations: ['required'],
             blank: true,
-            options: _constants.PROVIDERS,
+            options: Object.keys(provider).map(function (key) {
+              return {
+                label: provider[key].label,
+                value: provider[key].value
+              };
+            }),
             properties: {
               name: 'provider',
               label: 'Provider',
               default: this.state.form.provider,
+              value: this.state.form.provider,
               disabled: !!this.state.dataset,
               required: true
             }

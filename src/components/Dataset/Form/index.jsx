@@ -31,6 +31,7 @@ class DatasetForm extends React.Component {
     if (this.state.dataset) {
       // Start the loading
       this.setState({ loading: true });
+
       get({
         url: `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}`,
         headers: [{

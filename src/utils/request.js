@@ -1,3 +1,25 @@
+function get({ url, headers = [], onSuccess, onError }) {
+  const request = new XMLHttpRequest();
+  request.open('GET', url);
+  // Set request headers
+  headers.forEach((h) => {
+    request.setRequestHeader(h.key, h.value);
+  });
+  request.send(null);
+
+  request.onreadystatechange = () => {
+    if (request.readyState === 4) {
+      if (request.status === 200 || request.status === 201) {
+        const data = JSON.parse(request.responseText);
+        onSuccess(data);
+      } else {
+        onError('error');
+      }
+    }
+  };
+
+  return request;
+}
 
 function post({ type, url, body, headers = [], onSuccess, onError }) {
   const request = new XMLHttpRequest();
@@ -10,11 +32,11 @@ function post({ type, url, body, headers = [], onSuccess, onError }) {
 
   request.onreadystatechange = () => {
     if (request.readyState === 4) {
-      const data = JSON.parse(request.responseText);
       if (request.status === 200 || request.status === 201) {
+        const data = JSON.parse(request.responseText);
         onSuccess(data);
       } else {
-        onError(data);
+        onError('error');
       }
     }
   };
@@ -22,22 +44,23 @@ function post({ type, url, body, headers = [], onSuccess, onError }) {
   return request;
 }
 
-function get({ url, headers = [], onSuccess, onError }) {
+function remove({ url, headers = [], onSuccess, onError }) {
   const request = new XMLHttpRequest();
-  request.open('GET', url);
+  request.open('DELETE', url);
   // Set request headers
   headers.forEach((h) => {
     request.setRequestHeader(h.key, h.value);
   });
-  request.send();
+
+  request.send(null);
 
   request.onreadystatechange = () => {
     if (request.readyState === 4) {
-      const data = JSON.parse(request.responseText);
       if (request.status === 200 || request.status === 201) {
+        const data = JSON.parse(request.responseText);
         onSuccess(data);
       } else {
-        onError(data);
+        onError('error');
       }
     }
   };
@@ -45,4 +68,4 @@ function get({ url, headers = [], onSuccess, onError }) {
   return request;
 }
 
-export { post, get };
+export { get, post, remove };

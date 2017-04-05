@@ -7,44 +7,54 @@ var APPLICATIONS = exports.APPLICATIONS = [{ label: 'Resource Watch', value: 'rw
 
 var TOPICS = exports.TOPICS = [{ label: 'Cities', value: 'cities' }, { label: 'Climate', value: 'climate' }, { label: 'Energy', value: 'energy' }, { label: 'Forests', value: 'forests' }, { label: 'Food', value: 'food' }, { label: 'Land classification', value: 'land_classification' }, { label: 'Society', value: 'society' }, { label: 'Supply chain', value: 'supply_chain' }, { label: 'Water', value: 'water' }];
 
-var PROVIDERS = exports.PROVIDERS = [{ label: 'Carto', value: 'cartodb' }, { label: 'ArcGIS', value: 'arcgis' }, { label: 'WMS', value: 'wms' }, { label: 'CSV', value: 'csv' }, { label: 'Google Earth Engine', value: 'gee' }];
+var CONNECTOR_TYPES = exports.CONNECTOR_TYPES = [{ label: 'REST', value: 'rest' }, { label: 'Document', value: 'document' }, { label: 'WMS', value: 'wms' }];
 
-var PROVIDER_DICTIONARY = exports.PROVIDER_DICTIONARY = {
-  csv: {
-    provider: 'csv',
-    connectorProvider: 'csv',
-    connectorType: 'document',
-    connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27 ."ftjson" param is required in the url'
+var CONNECTOR_TYPES_DICTIONARY = exports.CONNECTOR_TYPES_DICTIONARY = {
+  rest: {
+    cartodb: {
+      label: 'CartoDB',
+      value: 'cartodb',
+      connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27'
+    },
+    gee: {
+      label: 'GEE',
+      value: 'gee',
+      connectorUrlHint: 'Example: projects/wri-datalab/HansenComposite_14-15'
+    },
+    featureservice: {
+      value: 'featureservice',
+      label: 'Feature Service (Arcgis)',
+      connectorUrlHint: 'Example: http://gis-gfw.wri.org/arcgis/rest/services/prep/nex_gddp_indicators/MapServer/6?f=pjson'
+    }
   },
-  json: {
-    provider: 'json',
-    connectorProvider: 'rwjson',
-    connectorType: 'json',
-    connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27 ."ftjson" param is required in the url'
-  },
-  gee: {
-    provider: 'gee',
-    connectorProvider: 'gee',
-    connectorType: 'rest',
-    connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27 ."ftjson" param is required in the url'
-  },
-  cartodb: {
-    provider: 'cartodb',
-    connectorProvider: 'cartodb',
-    connectorType: 'rest',
-    connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27 ."ftjson" param is required in the url'
-  },
-  arcgis: {
-    provider: 'arcgis',
-    connectorProvider: 'featureservice',
-    connectorType: 'rest',
-    connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27 ."ftjson" param is required in the url'
+  document: {
+    csv: {
+      label: 'CSV',
+      value: 'csv',
+      connectorUrlHint: 'Format specification: https://en.wikipedia.org/wiki/Comma-separated_values'
+    },
+    json: {
+      label: 'JSON',
+      value: 'json',
+      connectorUrlHint: 'Format specification: http://www.json.org/'
+    },
+    tsv: {
+      label: 'TSV',
+      value: 'tsv',
+      connectorUrlHint: 'Format specification: https://en.wikipedia.org/wiki/Tab-separated_values'
+    },
+    xml: {
+      label: 'XML',
+      value: 'xml',
+      connectorUrlHint: 'Format specification: https://www.w3.org/TR/REC-xml/'
+    }
   },
   wms: {
-    provider: 'wms',
-    connectorProvider: null,
-    connectorType: null,
-    connectorUrlHint: 'Example: https://wri-01.carto.com/api/v2/sql?q=SELECT%20*%20FROM%20combined01_prepared%20where%20impactparameter=%27Food Demand%27 ."ftjson" param is required in the url'
+    wms: {
+      label: 'WMS',
+      value: 'wms',
+      connectorUrlHint: ''
+    }
   }
 };
 
@@ -69,6 +79,7 @@ var STATE_DEFAULT = exports.STATE_DEFAULT = {
 
     // STEP 2
     connectorUrl: '',
+    dataPath: '',
     legend: {
       lat: null,
       long: null,

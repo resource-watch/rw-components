@@ -143,13 +143,14 @@ export default class TableFilters extends React.Component {
     const btnClass = classnames({
       '-active': values && selected && values.length !== selected.length
     });
-    
+
     return (
       <div className={btnClass}>
         <TetherComponent
           attachment="top center"
           constraints={[{
-            to: 'window'
+            to: 'window',
+            pin: true
           }]}
           classes={{
             element: 'c-table-tooltip -footer'

@@ -69,6 +69,7 @@ var DatasetForm = function (_React$Component) {
       if (this.state.dataset) {
         // Start the loading
         this.setState({ loading: true });
+
         (0, _request.get)({
           url: 'https://api.resourcewatch.org/v1/dataset/' + this.state.dataset,
           headers: [{

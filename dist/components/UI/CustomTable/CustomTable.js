@@ -232,6 +232,7 @@ var CustomTable = function (_React$Component) {
         columnQueries: columnQueries
       }, function () {
         _this6.filter();
+        _this6.onChangePage(0);
       });
     }
   }, {
@@ -315,6 +316,7 @@ var CustomTable = function (_React$Component) {
             columnValues: this.state.columnValues,
             columnQueries: this.state.columnQueries,
             filteredData: this.state.filteredData,
+            sort: this.state.sort,
             onFilter: this.onFilter,
             onSort: this.onSort
           }),

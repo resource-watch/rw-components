@@ -10,6 +10,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _constants = require('../constants');
+
 var _step = require('./step');
 
 var _step2 = _interopRequireDefault(_step);
@@ -69,7 +71,7 @@ var Step2 = function (_Step) {
     value: function getHint() {
       var form = this.state.form;
 
-      return this.providerDictionary[form.provider].connectorUrlHint;
+      return _constants.CONNECTOR_TYPES_DICTIONARY[form.connectorType][form.provider].connectorUrlHint;
     }
   }, {
     key: 'render',
@@ -77,6 +79,13 @@ var Step2 = function (_Step) {
       var _this2 = this;
 
       var hint = this.getHint();
+      var _state$form = this.state.form,
+          provider = _state$form.provider,
+          connectorType = _state$form.connectorType;
+
+      var isDocument = connectorType === 'document';
+      var showDataPath = provider === 'json' || provider === 'xml';
+      var dataPathRequired = provider === 'xml';
 
       return _react2.default.createElement(
         'fieldset',
@@ -102,7 +111,27 @@ var Step2 = function (_Step) {
           },
           _Input2.default
         ),
-        this.state.form.provider === 'csv' && _react2.default.createElement(
+        showDataPath && _react2.default.createElement(
+          _Field2.default,
+          {
+            ref: function ref(c) {
+              if (c) _this2.children.push(c);
+            },
+            onChange: function onChange(value) {
+              return _this2.props.onChange({ dataPath: value });
+            },
+            hint: 'Name of the element that you want to import',
+            properties: {
+              name: 'dataPath',
+              label: 'Data path',
+              type: 'text',
+              default: this.state.form.dataPath,
+              required: dataPathRequired
+            }
+          },
+          _Input2.default
+        ),
+        isDocument && _react2.default.createElement(
           _Field2.default,
           {
             ref: function ref(c) {
@@ -121,7 +150,7 @@ var Step2 = function (_Step) {
           },
           _Input2.default
         ),
-        this.state.form.provider === 'csv' && _react2.default.createElement(
+        isDocument && _react2.default.createElement(
           _Field2.default,
           {
             ref: function ref(c) {
@@ -140,7 +169,7 @@ var Step2 = function (_Step) {
           },
           _Input2.default
         ),
-        this.state.form.provider === 'csv' && _react2.default.createElement(
+        isDocument === 'csv' && _react2.default.createElement(
           _Field2.default,
           {
             ref: function ref(c) {
@@ -159,7 +188,7 @@ var Step2 = function (_Step) {
           },
           _Input2.default
         ),
-        this.state.form.provider === 'csv' && _react2.default.createElement(
+        isDocument && _react2.default.createElement(
           _Field2.default,
           {
             ref: function ref(c) {

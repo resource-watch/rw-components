@@ -17,7 +17,7 @@ export { default as DatasetTable } from './components/Dataset/Table';
 // Layer
 export { default as LayerForm } from './components/Layer/Form';
 
-// Layer
+// Widget
 export { default as WidgetCard } from './components/Widget/Card';
 export { default as WidgetForm } from './components/Widget/Form';
 export { default as WidgetList } from './components/Widget/List';
@@ -26,8 +26,12 @@ export { default as WidgetWizard } from './components/Widget/Wizard';
 export { default as VegaChart } from './components/Widget/VegaChart';
 export { default as LayerChart } from './components/Widget/LayerChart';
 
+// Metadata
+export { default as MetadataForm } from './components/Metadata/Form/MetadataForm';
+
 // UI
 export { default as Button } from './components/UI/Button';
+export { default as ButtonContainer } from './components/UI/ButtonContainer';
 export { default as Icon } from './components/UI/Icon';
 export { default as Spinner } from './components/UI/Spinner';
 export { default as Table } from './components/UI/Table';

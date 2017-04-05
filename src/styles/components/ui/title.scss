@@ -20,6 +20,11 @@
     font-weight: $font-weight-light;
   }
 
+  // Paddings
+  &.-p-primary {
+    padding: 40px 0 25px;
+  }
+
   // Colors
   &.-primary {
     color: $color-text-1;

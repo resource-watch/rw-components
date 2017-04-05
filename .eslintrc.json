@@ -16,5 +16,6 @@
   },
   "extends": "vizzuality",
   "rules": {
+    "react/no-array-index-key": 0
   }
 }

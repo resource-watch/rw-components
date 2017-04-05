@@ -1,7 +1,6 @@
-   import React from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-import Icon from '../../Icon';
 
 export default class TableContent extends React.Component {
 
@@ -21,7 +20,7 @@ export default class TableContent extends React.Component {
   render() {
     const { actions, columns, sort, rowSelection } = this.props;
     const { bottom, top } = this.getPageBounds();
-    const actionsShowed = actions.list.filter(ac => ac.show);
+    const actionsShowed = actions.list.filter(ac => ac.show || ac.component);
 
     let data = this.props.filteredData;
 
@@ -39,7 +38,7 @@ export default class TableContent extends React.Component {
     if (!isEmpty(sort)) {
       data = data.slice().sort((rowA, rowB) => {
         return rowA[sort.field].toString().toLowerCase() > rowB[sort.field].toString().toLowerCase() ?
-          sort.value : 
+          sort.value :
           (sort.value * -1);
       });
     }
@@ -55,22 +54,44 @@ export default class TableContent extends React.Component {
           return (
             <tr
               className={`${selectedClass}`}
-              onClick={() => this.props.onToggleSelectedRow(row.id)}
+              // onClick={() => this.props.onToggleSelectedRow(row.id)}
               key={index}
             >
               {columns.map((col, i) => {
                 const value = row[col.value];
                 const td = col.td ?
-                  col.td(value, i) :
+                  <col.td key={i} value={value} /> :
                   <td key={i} className={col.className || ''}>{value}</td>;
                 return td;
               }
               )}
-              {actions.show && 
+              {actions.show &&
                 <td className="individual-actions">
-                  {actionsShowed.map((ac, i) => (
-                    <a href={this.setIndividualActionPath(ac.path, row.id)}>{ac.name}</a>
-                  ))}
+                  <ul>
+                    {actionsShowed.map((ac, j) => {
+                      if (ac.component) {
+                        return (
+                          <li key={j}>
+                            <ac.component
+                              {...ac.componentProps}
+                              href={this.setIndividualActionPath(ac.path, row.id)}
+                              data={row}
+                              onRowDelete={this.props.onRowDelete}
+                              onToggleSelectedRow={this.props.onToggleSelectedRow}
+                            />
+                          </li>
+                        );
+                      }
+                      return (
+                        <li key={j}>
+                          <a href={this.setIndividualActionPath(ac.path, row.id)} >
+                            {ac.name}
+                          </a>
+                        </li>
+                      );
+                    })
+                    }
+                  </ul>
                 </td>
               }
             </tr>

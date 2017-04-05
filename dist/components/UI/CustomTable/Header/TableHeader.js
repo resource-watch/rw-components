@@ -39,7 +39,7 @@ var TableHeader = function (_React$Component) {
           columns = _props.columns,
           columnValues = _props.columnValues,
           columnQueries = _props.columnQueries,
-          filteredData = _props.filteredData,
+          sort = _props.sort,
           onFilter = _props.onFilter,
           onSort = _props.onSort;
 
@@ -69,6 +69,7 @@ var TableHeader = function (_React$Component) {
                   field: c.value,
                   values: columnValues[c.value],
                   selected: columnQueries[c.value],
+                  sort: sort,
                   onFilter: onFilter,
                   onSort: onSort
                 })
@@ -93,6 +94,7 @@ TableHeader.propTypes = {
   columnValues: _react2.default.PropTypes.object,
   columnQueries: _react2.default.PropTypes.object,
   filteredData: _react2.default.PropTypes.array,
+  sort: _react2.default.PropTypes.object,
   onFilter: _react2.default.PropTypes.func,
   onSort: _react2.default.PropTypes.func
 };

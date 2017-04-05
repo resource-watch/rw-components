@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -17,10 +19,6 @@ var _classnames2 = _interopRequireDefault(_classnames);
 var _isEmpty = require('lodash/isEmpty');
 
 var _isEmpty2 = _interopRequireDefault(_isEmpty);
-
-var _Icon = require('../../Icon');
-
-var _Icon2 = _interopRequireDefault(_Icon);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -71,7 +69,7 @@ var TableContent = function (_React$Component) {
           top = _getPageBounds.top;
 
       var actionsShowed = actions.list.filter(function (ac) {
-        return ac.show;
+        return ac.show || ac.component;
       });
 
       var data = this.props.filteredData;
@@ -111,15 +109,13 @@ var TableContent = function (_React$Component) {
           return _react2.default.createElement(
             'tr',
             {
-              className: '' + selectedClass,
-              onClick: function onClick() {
-                return _this2.props.onToggleSelectedRow(row.id);
-              },
-              key: index
+              className: '' + selectedClass
+              // onClick={() => this.props.onToggleSelectedRow(row.id)}
+              , key: index
             },
             columns.map(function (col, i) {
               var value = row[col.value];
-              var td = col.td ? col.td(value, i) : _react2.default.createElement(
+              var td = col.td ? _react2.default.createElement(col.td, { key: i, value: value }) : _react2.default.createElement(
                 'td',
                 { key: i, className: col.className || '' },
                 value
@@ -129,13 +125,33 @@ var TableContent = function (_React$Component) {
             actions.show && _react2.default.createElement(
               'td',
               { className: 'individual-actions' },
-              actionsShowed.map(function (ac, i) {
-                return _react2.default.createElement(
-                  'a',
-                  { href: _this2.setIndividualActionPath(ac.path, row.id) },
-                  ac.name
-                );
-              })
+              _react2.default.createElement(
+                'ul',
+                null,
+                actionsShowed.map(function (ac, j) {
+                  if (ac.component) {
+                    return _react2.default.createElement(
+                      'li',
+                      { key: j },
+                      _react2.default.createElement(ac.component, _extends({}, ac.componentProps, {
+                        href: _this2.setIndividualActionPath(ac.path, row.id),
+                        data: row,
+                        onRowDelete: _this2.props.onRowDelete,
+                        onToggleSelectedRow: _this2.props.onToggleSelectedRow
+                      }))
+                    );
+                  }
+                  return _react2.default.createElement(
+                    'li',
+                    { key: j },
+                    _react2.default.createElement(
+                      'a',
+                      { href: _this2.setIndividualActionPath(ac.path, row.id) },
+                      ac.name
+                    )
+                  );
+                })
+              )
             )
           );
         })

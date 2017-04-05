@@ -233,7 +233,8 @@ var TableFilters = function (_React$Component) {
           {
             attachment: 'top center',
             constraints: [{
-              to: 'window'
+              to: 'window',
+              pin: true
             }],
             classes: {
               element: 'c-table-tooltip -footer'

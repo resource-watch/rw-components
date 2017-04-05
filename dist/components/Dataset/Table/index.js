@@ -22,6 +22,18 @@ var _CustomTable = require('../../UI/CustomTable/CustomTable');
 
 var _CustomTable2 = _interopRequireDefault(_CustomTable);
 
+var _DeleteAction = require('./Actions/DeleteAction');
+
+var _DeleteAction2 = _interopRequireDefault(_DeleteAction);
+
+var _MetadataAction = require('./Actions/MetadataAction');
+
+var _MetadataAction2 = _interopRequireDefault(_MetadataAction);
+
+var _StatusTD = require('./TD/StatusTD');
+
+var _StatusTD2 = _interopRequireDefault(_StatusTD);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -65,7 +77,7 @@ var DatasetTable = function (_React$Component) {
 
       var application = this.props.application;
 
-      var url = 'https://api.resourcewatch.org/v1/dataset?application=' + application.join(',') + '&includes=widget,layer&page[size]=' + Date.now() / 100000;
+      var url = 'https://api.resourcewatch.org/v1/dataset?application=' + application.join(',') + '&includes=widget,layer,metadata&page[size]=' + Date.now() / 100000;
 
       fetch(new Request(url)).then(function (response) {
         if (response.ok) return response.json();
@@ -84,27 +96,28 @@ var DatasetTable = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
-
       return _react2.default.createElement(
         'div',
         { className: 'c-dataset-table' },
         _react2.default.createElement(_Spinner2.default, { className: '-light', isLoading: this.state.loading }),
         _react2.default.createElement(_CustomTable2.default, {
-          columns: this.props.columns,
+          columns: [{ label: 'name', value: 'name' }, { label: 'status', value: 'status', td: _StatusTD2.default }, { label: 'provider', value: 'provider' }],
+          actions: {
+            show: true,
+            list: [{ name: 'Edit', path: 'datasets/:id/edit', show: true }, { name: 'Remove', path: 'datasets/:id/remove', component: _DeleteAction2.default, componentProps: { authorization: this.props.authorization } }, { name: 'Metadata', path: 'datasets/:id/metadata', component: _MetadataAction2.default }]
+          },
           data: this.state.datasets,
           pageSize: 20,
-          actions: this.props.actions,
           pagination: {
             enabled: true,
             pageSize: 20,
             page: 0
           },
           onToggleSelectedRow: function onToggleSelectedRow(ids) {
-            // this.props.setSelectedPoints(ids);
+            console.info(ids);
           },
           onRowDelete: function onRowDelete(id) {
-            _this3.props.onPointRemove(id);
+            console.info(id);
           }
         })
       );
@@ -125,8 +138,7 @@ DatasetTable.defaultProps = {
 
 DatasetTable.propTypes = {
   application: _react2.default.PropTypes.array.isRequired,
-  columns: _react2.default.PropTypes.array,
-  actions: _react2.default.PropTypes.object
+  authorization: _react2.default.PropTypes.string
 };
 
 exports.default = DatasetTable;
