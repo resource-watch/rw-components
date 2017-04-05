@@ -117,10 +117,10 @@ class VocabulariesForm extends React.Component {
     }
   }
 
-  onChange(obj) {
+  onChange(vocabularyName, obj) {
     const vocabularies = this.state.vocabularies.slice(0);
     const newVocabularies = vocabularies.map((elem) => {
-      if (elem.attributes.name === obj.name) {
+      if (elem.attributes.name === vocabularyName) {
         return { attributes: { name: obj.name, tags: obj.values } };
       } else {
         return elem;
@@ -137,7 +137,6 @@ class VocabulariesForm extends React.Component {
 
   render() {
     const { vocabularies } = this.state;
-
     return (
       <div>
         <Title className="-huge -p-primary">

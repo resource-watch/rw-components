@@ -16,20 +16,24 @@ class VocabularyItem extends React.Component {
     this.onTagsChange = this.onTagsChange.bind(this);
   }
 
-  componentWillReceiveProps(props){
+  componentWillReceiveProps(props) {
     this.setState({ vocabulary: props.vocabulary });
   }
 
   onTagsChange(vals) {
-    this.props.onChange({ name: this.state.vocabulary.name, values: vals });
+    this.props.onChange(this.state.vocabulary.name,
+      { name: this.state.vocabulary.name, values: vals });
   }
 
   render() {
+    console.info('render', this.state.vocabulary);
     return (
       <fieldset className="c-field-container c-vocabulary-item">
         <Field
           ref={(c) => { if (c) FORM_ELEMENTS.children.name = c; }}
-          onChange={value => this.props.onChange({ name: value })}
+          onChange={value =>
+            this.props.onChange(this.state.vocabulary.name,
+              { name: value, tags: this.state.vocabulary.tags })}
           validations={['required']}
           properties={{
             name: 'name',
