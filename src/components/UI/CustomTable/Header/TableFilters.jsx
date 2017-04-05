@@ -20,6 +20,7 @@ export default class TableFilters extends React.Component {
     // Bindings
     this.onToggle = this.onToggle.bind(this);
     this.onScreenClick = this.onScreenClick.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
 
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onResetInput = this.onResetInput.bind(this);
@@ -59,20 +60,38 @@ export default class TableFilters extends React.Component {
 
     // requestAnimationFrame
     //   - Goal: Prevent double trigger at first atempt
-    //   - Issue: When you add the listener the click event is not finished yet so it will trigger onScrennClick
-    //   - Stop propagation?: if I put e.stopPropagation clicking on another filter btn won't trigger the screenClick,
+    //   - Issue: When you add the listener the click event
+    //            is not finished yet so it will trigger onScrennClick
+    //   - Stop propagation?: if I put e.stopPropagation clicking on another
+    //                        filter btn won't trigger the screenClick,
     //                        so we will have 2 dropdown filters at the same time
-    requestAnimationFrame(() => window[closed ? 'addEventListener' : 'removeEventListener']('click', this.onScreenClick));
+    requestAnimationFrame(() => {
+      window[closed ? 'addEventListener' : 'removeEventListener']('click', this.onScreenClick);
+      window[closed ? 'addEventListener' : 'removeEventListener']('keyup', this.onKeyUp);
+    });
 
     this.setState({ closed: !closed, input: '' });
   }
 
+  // WINDOW EVENTS
   onScreenClick(e) {
     const el = document.querySelector('.c-table-tooltip');
     const clickOutside = el && el.contains && !el.contains(e.target);
 
     if (clickOutside) {
       this.onToggle();
+    }
+  }
+
+  onKeyUp(e) {
+    switch (e.keyCode) {
+      case 27: {
+        this.onToggle();
+        break;
+      }
+      default: {
+
+      }
     }
   }
 
@@ -129,7 +148,7 @@ export default class TableFilters extends React.Component {
 
     const filteredValues = values.filter((val) => {
       if (input) {
-        return val.toString().toLowerCase() === input.toString().toLowerCase();
+        return val.toString().toLowerCase().includes(input.toString().toLowerCase());
       }
       return true;
     });
@@ -203,12 +222,12 @@ export default class TableFilters extends React.Component {
               <div className="footer">
                 <ul>
                   <li>
-                    <button onClick={this.onFilterSelectAll}>
+                    <button className="c-button" onClick={this.onFilterSelectAll}>
                       Select all
                     </button>
                   </li>
                   <li>
-                    <button onClick={this.onFilterClear}>
+                    <button className="c-button" onClick={this.onFilterClear}>
                       Clear
                     </button>
                   </li>

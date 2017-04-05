@@ -57,6 +57,7 @@ var TableFilters = function (_React$Component) {
     // Bindings
     _this.onToggle = _this.onToggle.bind(_this);
     _this.onScreenClick = _this.onScreenClick.bind(_this);
+    _this.onKeyUp = _this.onKeyUp.bind(_this);
 
     _this.onChangeInput = _this.onChangeInput.bind(_this);
     _this.onResetInput = _this.onResetInput.bind(_this);
@@ -107,16 +108,22 @@ var TableFilters = function (_React$Component) {
 
       // requestAnimationFrame
       //   - Goal: Prevent double trigger at first atempt
-      //   - Issue: When you add the listener the click event is not finished yet so it will trigger onScrennClick
-      //   - Stop propagation?: if I put e.stopPropagation clicking on another filter btn won't trigger the screenClick,
+      //   - Issue: When you add the listener the click event
+      //            is not finished yet so it will trigger onScrennClick
+      //   - Stop propagation?: if I put e.stopPropagation clicking on another
+      //                        filter btn won't trigger the screenClick,
       //                        so we will have 2 dropdown filters at the same time
 
       requestAnimationFrame(function () {
-        return window[closed ? 'addEventListener' : 'removeEventListener']('click', _this2.onScreenClick);
+        window[closed ? 'addEventListener' : 'removeEventListener']('click', _this2.onScreenClick);
+        window[closed ? 'addEventListener' : 'removeEventListener']('keyup', _this2.onKeyUp);
       });
 
       this.setState({ closed: !closed, input: '' });
     }
+
+    // WINDOW EVENTS
+
   }, {
     key: 'onScreenClick',
     value: function onScreenClick(e) {
@@ -125,6 +132,19 @@ var TableFilters = function (_React$Component) {
 
       if (clickOutside) {
         this.onToggle();
+      }
+    }
+  }, {
+    key: 'onKeyUp',
+    value: function onKeyUp(e) {
+      switch (e.keyCode) {
+        case 27:
+          {
+            this.onToggle();
+            break;
+          }
+        default:
+          {}
       }
     }
   }, {
@@ -201,7 +221,7 @@ var TableFilters = function (_React$Component) {
 
       var filteredValues = values.filter(function (val) {
         if (input) {
-          return val.toString().toLowerCase() === input.toString().toLowerCase();
+          return val.toString().toLowerCase().includes(input.toString().toLowerCase());
         }
         return true;
       });
@@ -302,7 +322,7 @@ var TableFilters = function (_React$Component) {
                   null,
                   _react2.default.createElement(
                     'button',
-                    { onClick: this.onFilterSelectAll },
+                    { className: 'c-button', onClick: this.onFilterSelectAll },
                     'Select all'
                   )
                 ),
@@ -311,7 +331,7 @@ var TableFilters = function (_React$Component) {
                   null,
                   _react2.default.createElement(
                     'button',
-                    { onClick: this.onFilterClear },
+                    { className: 'c-button', onClick: this.onFilterClear },
                     'Clear'
                   )
                 )

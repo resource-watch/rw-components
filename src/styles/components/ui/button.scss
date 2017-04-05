@@ -2,22 +2,23 @@
   appearance: none;
   display: inline-block;
   margin: 0;
-  padding: 8px;
+  padding: $space-1;
   border: 1px solid transparent;
   border-radius: 4px;
   background: none;
   outline: none;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: $font-weight-bold;
-  letter-spacing: 0.8px;
+  text-transform: none;
+  font-size: 14px;
+  font-weight: $font-weight-regular;
+  letter-spacing: 0;
   cursor: pointer;
+  color: $color-secondary;
 
   // Types
   &.-primary {
-    color: $color-text-2;
-    background: $color-gray;
-    border-color: $border-color-1;
+    color: $color-primary;
+    background: $color-white;
+    border-color: $color-primary;
 
     // States
     &:hover {
@@ -28,6 +29,7 @@
     &.-active {
       background: $color-green;
       color: $color-white;
+      border-color: $color-green;
 
       &:hover {
         background: darken($color-green, 10%);
@@ -39,12 +41,7 @@
       border-color: $border-color-1;
       color: $color-text-2;
       cursor: default;
-      opacity: 0.5;
     }
-  }
-
-  &.-secondary {
-
   }
 
   // Helpers

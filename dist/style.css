@@ -422,29 +422,30 @@ body {
   border-radius: 4px;
   background: none;
   outline: none;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  cursor: pointer; }
+  text-transform: none;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  cursor: pointer;
+  color: #3bb2d0; }
   .c-button.-primary {
-    color: #999ba1;
-    background: #e3e4e6;
-    border-color: #e3e4e6; }
+    color: #c32d7b;
+    background: #fff;
+    border-color: #c32d7b; }
     .c-button.-primary:hover {
       color: #fff;
       background: #c32d7b; }
     .c-button.-primary.-active {
       background: #65b60d;
-      color: #fff; }
+      color: #fff;
+      border-color: #65b60d; }
       .c-button.-primary.-active:hover {
         background: #4b860a; }
     .c-button.-primary.-disabled {
       background: #fff;
       border-color: #e3e4e6;
       color: #999ba1;
-      cursor: default;
-      opacity: 0.5; }
+      cursor: default; }
   .c-button.-fullwidth {
     width: 100%; }
 
@@ -935,18 +936,10 @@ body {
         align-items: center;
         width: 100%;
         height: 100%;
-        padding: 0 10px; }
+        margin: 0;
+        padding: 0 20px; }
         .c-table-tooltip .tooltip-content .footer ul li {
-          margin-right: 20px; }
-          .c-table-tooltip .tooltip-content .footer ul li button {
-            cursor: pointer;
-            color: #3bb2d0;
-            text-transform: uppercase;
-            font-size: 14px; }
-            .c-table-tooltip .tooltip-content .footer ul li button:focus {
-              outline: none; }
-            .c-table-tooltip .tooltip-content .footer ul li button:hover {
-              opacity: .5; }
+          margin-right: 8px; }
           .c-table-tooltip .tooltip-content .footer ul li:last-child {
             margin-right: 0; }
   .c-table-tooltip.-footer .tooltip-content .content:after {
