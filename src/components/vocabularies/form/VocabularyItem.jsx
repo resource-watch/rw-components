@@ -22,7 +22,7 @@ class VocabularyItem extends React.Component {
 
   onTagsChange(vals) {
     this.props.onChange(this.state.vocabulary.name,
-      { name: this.state.vocabulary.name, values: vals });
+      { name: this.state.vocabulary.name, tags: vals });
   }
 
   render() {

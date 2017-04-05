@@ -93,7 +93,7 @@ class VocabulariesForm extends React.Component {
           xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
           const bodyObj = {};
           this.state.vocabularies.map(elem =>
-            bodyObj[elem.name] = { tags: elem.tags }
+            bodyObj[elem.attributes.name] = { tags: elem.attributes.tags }
           );
           const body = JSON.stringify(bodyObj);
           xmlhttp.send(body);
@@ -121,7 +121,7 @@ class VocabulariesForm extends React.Component {
     const vocabularies = this.state.vocabularies.slice(0);
     const newVocabularies = vocabularies.map((elem) => {
       if (elem.attributes.name === vocabularyName) {
-        return { attributes: { name: obj.name, tags: obj.values } };
+        return { attributes: { name: obj.name, tags: obj.tags } };
       } else {
         return elem;
       }
