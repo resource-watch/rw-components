@@ -18,7 +18,7 @@ var _omit2 = _interopRequireDefault(_omit);
 
 var _constants = require('./constants');
 
-var _Step = require('./Steps/Step1');
+var _Step = require('./steps/Step1');
 
 var _Step2 = _interopRequireDefault(_Step);
 
