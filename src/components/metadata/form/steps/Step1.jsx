@@ -3,8 +3,7 @@ import React from 'react';
 import Step from './Step';
 import Field from '../../../form/Field';
 import Input from '../../../form/Input';
-import Textarea from '../../../form/Textarea';
-import Title from '../../../ui/Title';
+import Textarea from '../../../form/TextArea';
 
 class Step1 extends Step {
 
@@ -167,7 +166,7 @@ class Step1 extends Step {
           onChange={value => this.changeMetadata({ info: { 'function': value } })}
           hint="Briefly describes the purpose of the data and what it represents"
           properties={{
-            name: 'functions',
+            name: 'function',
             label: 'Function',
             type: 'text',
             default: this.props.metadata.info.function
@@ -288,8 +287,6 @@ class Step1 extends Step {
         >
           {Textarea}
         </Field>
-
-
 
         <Field
           ref={(c) => { if (c) this.children.push(c); }}
