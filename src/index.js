@@ -47,5 +47,5 @@ export { default as Input } from './components/form/Input';
 export { default as Navigation } from './components/form/Navigation';
 export { default as RadioGroup } from './components/form/RadioGroup';
 export { default as Select } from './components/form/SelectInput';
-export { default as Textarea } from './components/form/TextArea';
+export { default as TextArea } from './components/form/TextArea';
 export { default as Token } from './components/form/Token';

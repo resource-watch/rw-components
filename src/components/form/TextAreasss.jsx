@@ -2,7 +2,7 @@ import React from 'react';
 
 import FormElement from './FormElement';
 
-class Textarea extends FormElement {
+class TextArea extends FormElement {
   /**
    * UI EVENTS
    * - triggerChange
@@ -30,10 +30,10 @@ class Textarea extends FormElement {
   }
 }
 
-Textarea.propTypes = {
+TextArea.propTypes = {
   properties: React.PropTypes.object.isRequired,
   validations: React.PropTypes.array,
   onChange: React.PropTypes.func
 };
 
-export default Textarea;
+export default TextArea;
