@@ -82,10 +82,7 @@ export const STATE_DEFAULT = {
     name: '',
     subtitle: '',
     application: [],
-    topics: [],
-    tags: [],
     provider: '',
-    connectorProvider: '',
     connectorType: '',
     connectorUrlHint: '',
 
@@ -99,4 +96,28 @@ export const STATE_DEFAULT = {
       country: []
     }
   }
+};
+
+
+export const FORM_ELEMENTS = {
+  elements: {
+    step1: {},
+    step2: {}
+  },
+  validate(step) {
+    const elements = this.elements[`step${step}`] || this.elements;
+    Object.keys(elements).forEach((k) => {
+      elements[k].validate();
+    });
+  },
+  isValid(step) {
+    const elements = this.elements[`step${step}`] || this.elements;
+    const valid = Object.keys(elements)
+      .map(k => elements[k].isValid())
+      .filter(v => v !== null)
+      .every(element => element);
+
+    return valid;
+  }
+
 };

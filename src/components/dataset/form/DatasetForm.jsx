@@ -3,10 +3,10 @@ import omit from 'lodash/omit';
 
 import { get, post } from '../../../utils/request';
 
-import { STATE_DEFAULT } from './constants';
+import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
 
-import Step1 from './steps/step-1';
-import Step2 from './steps/step-2';
+import Step1 from './steps/Step1';
+import Step2 from './steps/Step2';
 import Navigation from '../../form/Navigation';
 
 class DatasetForm extends React.Component {
@@ -63,11 +63,11 @@ class DatasetForm extends React.Component {
     event.preventDefault();
 
     // Validate the form
-    this.step.validate();
+    FORM_ELEMENTS.validate(this.state.step);
 
     // Set a timeout due to the setState function of react
     setTimeout(() => {
-      const valid = this.step.isValid();
+      const valid = FORM_ELEMENTS.isValid(this.state.step);
       if (valid) {
         if (this.state.step === this.state.stepLength && !this.state.submitting) {
           const dataset = this.state.dataset;
@@ -102,6 +102,8 @@ class DatasetForm extends React.Component {
                 submitting: false,
                 step: 1,
                 dataset: response.data.id
+              }, () => {
+                this.props.onSubmit && this.props.onSubmit();
               });
             },
             onError: (error) => {
@@ -147,7 +149,6 @@ class DatasetForm extends React.Component {
         {this.state.loading && 'loading'}
         {(this.state.step === 1 && !this.state.loading) &&
           <Step1
-            ref={(c) => { this.step = c; }}
             onChange={value => this.onChange(value)}
             form={this.state.form}
             dataset={this.state.dataset}
@@ -156,7 +157,6 @@ class DatasetForm extends React.Component {
 
         {(this.state.step === 2 && !this.state.loading) &&
           <Step2
-            ref={(v) => { this.step = v; }}
             onChange={value => this.onChange(value)}
             form={this.state.form}
             dataset={this.state.dataset}
@@ -179,7 +179,8 @@ class DatasetForm extends React.Component {
 DatasetForm.propTypes = {
   application: React.PropTypes.array,
   authorization: React.PropTypes.string,
-  dataset: React.PropTypes.string
+  dataset: React.PropTypes.string,
+  onSubmit: React.PropTypes.func
 };
 
 export default DatasetForm;

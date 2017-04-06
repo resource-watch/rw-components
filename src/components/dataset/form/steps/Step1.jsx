@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { APPLICATIONS, CONNECTOR_TYPES, CONNECTOR_TYPES_DICTIONARY } from '../constants';
+import { APPLICATIONS, CONNECTOR_TYPES, CONNECTOR_TYPES_DICTIONARY, FORM_ELEMENTS } from '../constants';
 
 import Step from './step';
 import Field from '../../../form/Field';
@@ -36,7 +36,7 @@ class Step1 extends Step {
       <fieldset className="c-field-container">
         {!this.state.form.authorization &&
           <Field
-            ref={(c) => { if (c) this.children.push(c); }}
+            ref={(c) => { if (c) FORM_ELEMENTS.elements.step1.authorization = c; }}
             onChange={value => this.props.onChange({ authorization: value })}
             validations={['required']}
             properties={{
@@ -52,7 +52,7 @@ class Step1 extends Step {
         }
 
         <Field
-          ref={(c) => { if (c) this.children.push(c); }}
+          ref={(c) => { if (c) FORM_ELEMENTS.elements.step1.name = c; }}
           onChange={value => this.props.onChange({ name: value })}
           validations={['required']}
           properties={{
@@ -67,7 +67,7 @@ class Step1 extends Step {
         </Field>
 
         <Field
-          ref={(c) => { if (c) this.children.push(c); }}
+          ref={(c) => { if (c) FORM_ELEMENTS.elements.step1.subtitle = c; }}
           onChange={value => this.props.onChange({ subtitle: value })}
           properties={{
             name: 'subtitle',
@@ -81,7 +81,7 @@ class Step1 extends Step {
 
         {!this.state.form.authorization &&
           <Field
-            ref={(c) => { if (c) this.children.push(c); }}
+            ref={(c) => { if (c) FORM_ELEMENTS.elements.step1.application = c; }}
             onChange={value => this.props.onChange({ application: value })}
             validations={['required']}
             options={APPLICATIONS}
@@ -96,25 +96,8 @@ class Step1 extends Step {
           </Field>
         }
 
-        {/* <Field
-          ref={(c) => { if (c) this.children.push(c); }}
-          onChange={value => this.props.onChange({ tags: value })}
-          validations={['required']}
-          hint="This will cover different vocabularies that represent this dataset.
-           Please write them comma separated: water,food"
-          properties={{
-            name: 'tags',
-            label: 'Tags',
-            type: 'text',
-            default: this.state.form.tags || [],
-            required: true
-          }}
-        >
-          {Token}
-        </Field> */}
-
         <Field
-          ref={(c) => { if (c) this.children.push(c); }}
+          ref={(c) => { if (c) FORM_ELEMENTS.elements.step1.connectorType = c; }}
           onChange={value => this.onConnectorTypeChange({ connectorType: value })}
           validations={['required']}
           blank
@@ -132,17 +115,16 @@ class Step1 extends Step {
 
         {provider &&
           <Field
-            ref={(c) => { if (c) this.children.push(c); }}
+            ref={(c) => { if (c) FORM_ELEMENTS.elements.step1.provider = c; }}
             onChange={value => this.props.onChange({ provider: value })}
             validations={['required']}
             blank
-            options={Object.keys(provider).map(
-              (key) => {
-                return {
-                  label: provider[key].label,
-                  value: provider[key].value
-                };
-              })}
+            options={Object.keys(provider).map(key => (
+              {
+                label: provider[key].label,
+                value: provider[key].value
+              }
+            ))}
             properties={{
               name: 'provider',
               label: 'Provider',

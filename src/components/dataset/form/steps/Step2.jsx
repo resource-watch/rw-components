@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CONNECTOR_TYPES_DICTIONARY } from '../constants';
+import { CONNECTOR_TYPES_DICTIONARY, FORM_ELEMENTS } from '../constants';
 
 import Step from './step';
 import Field from '../../../form/Field';
@@ -38,17 +38,20 @@ class Step2 extends Step {
   render() {
     const hint = this.getHint();
     const { provider, connectorType } = this.state.form;
+
     const isDocument = connectorType === 'document';
-    const showDataPath = (provider === 'json') || (provider === 'xml');
-    const dataPathRequired = (provider === 'xml');
+
+    const isJson = (provider === 'json');
+    const isXml = (provider === 'xml');
+    const isGee = (provider === 'gee');
 
 
     return (
       <fieldset className="c-field-container">
         <Field
-          ref={(c) => { if (c) this.children.push(c); }}
+          ref={(c) => { if (c) FORM_ELEMENTS.elements.step2.connectorUrl = c; }}
           onChange={value => this.props.onChange({ connectorUrl: value })}
-          validations={['required', 'url']}
+          validations={(isGee) ? ['required'] : ['required', 'url']}
           hint={hint}
           properties={{
             name: 'connectorUrl',
@@ -61,9 +64,9 @@ class Step2 extends Step {
           {Input}
         </Field>
 
-        { showDataPath &&
+        {(isJson || isXml) &&
           <Field
-            ref={(c) => { if (c) this.children.push(c); }}
+            ref={(c) => { if (c) FORM_ELEMENTS.elements.step2.dataPath = c; }}
             onChange={value => this.props.onChange({ dataPath: value })}
             hint="Name of the element that you want to import"
             properties={{
@@ -71,16 +74,16 @@ class Step2 extends Step {
               label: 'Data path',
               type: 'text',
               default: this.state.form.dataPath,
-              required: dataPathRequired
+              required: isXml
             }}
           >
             {Input}
           </Field>
         }
 
-        { isDocument &&
+        {isDocument &&
           <Field
-            ref={(c) => { if (c) this.children.push(c); }}
+            ref={(c) => { if (c) FORM_ELEMENTS.elements.step2.lat = c; }}
             onChange={value => this.onLegendChange({ lat: value })}
             hint="Name of column with latitude value"
             properties={{
@@ -93,9 +96,9 @@ class Step2 extends Step {
             {Input}
           </Field>
         }
-        { isDocument &&
+        {isDocument &&
           <Field
-            ref={(c) => { if (c) this.children.push(c); }}
+            ref={(c) => { if (c) FORM_ELEMENTS.elements.step2.long = c; }}
             onChange={value => this.onLegendChange({ long: value })}
             hint="Name of column with longitude value"
             properties={{
@@ -108,9 +111,9 @@ class Step2 extends Step {
             {Input}
           </Field>
         }
-        { isDocument === 'csv' &&
+        {isDocument &&
           <Field
-            ref={(c) => { if (c) this.children.push(c); }}
+            ref={(c) => { if (c) FORM_ELEMENTS.elements.step2.date = c; }}
             onChange={value => this.onLegendChange({ date: value })}
             hint="Name of columns with date value (ISO Format)"
             properties={{
@@ -123,9 +126,9 @@ class Step2 extends Step {
             {Input}
           </Field>
         }
-        { isDocument &&
+        {isDocument &&
           <Field
-            ref={(c) => { if (c) this.children.push(c); }}
+            ref={(c) => { if (c) FORM_ELEMENTS.elements.step2.country = c; }}
             onChange={value => this.onLegendChange({ country: value })}
             hint="Name of columns with country value (ISO3 code)"
             properties={{
