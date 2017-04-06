@@ -16,11 +16,11 @@ var _step = require('./step');
 
 var _step2 = _interopRequireDefault(_step);
 
-var _Field = require('../../../Form/Field');
+var _Field = require('../../../form/Field');
 
 var _Field2 = _interopRequireDefault(_Field);
 
-var _Input = require('../../../Form/Input');
+var _Input = require('../../../form/Input');
 
 var _Input2 = _interopRequireDefault(_Input);
 

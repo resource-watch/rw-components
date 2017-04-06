@@ -14,13 +14,13 @@ var _step = require('./step');
 
 var _step2 = _interopRequireDefault(_step);
 
-var _Title = require('../../../UI/Title');
+var _Title = require('../../../ui/Title');
 
 var _Title2 = _interopRequireDefault(_Title);
 
-var _Preview = require('../../Preview');
+var _WidgetPreview = require('../../preview/WidgetPreview');
 
-var _Preview2 = _interopRequireDefault(_Preview);
+var _WidgetPreview2 = _interopRequireDefault(_WidgetPreview);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50,7 +50,7 @@ var Step5 = function (_Step) {
           { className: '-primary -big' },
           'Preview'
         ),
-        _react2.default.createElement(_Preview2.default, {
+        _react2.default.createElement(_WidgetPreview2.default, {
           wizard: this.props.wizard
         })
       );

@@ -24,15 +24,15 @@ var _isEqual = require('lodash/isEqual');
 
 var _isEqual2 = _interopRequireDefault(_isEqual);
 
-var _TableHeader = require('./Header/TableHeader');
+var _TableHeader = require('./header/TableHeader');
 
 var _TableHeader2 = _interopRequireDefault(_TableHeader);
 
-var _TableContent = require('./Content/TableContent');
+var _TableContent = require('./content/TableContent');
 
 var _TableContent2 = _interopRequireDefault(_TableContent);
 
-var _TableFooter = require('./Footer/TableFooter');
+var _TableFooter = require('./footer/TableFooter');
 
 var _TableFooter2 = _interopRequireDefault(_TableFooter);
 

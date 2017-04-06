@@ -14,13 +14,13 @@ var _step = require('./step');
 
 var _step2 = _interopRequireDefault(_step);
 
-var _Title = require('../../../UI/Title');
+var _Title = require('../../../ui/Title');
 
 var _Title2 = _interopRequireDefault(_Title);
 
-var _Filter = require('../../../Dataset/Filter');
+var _DatasetFilter = require('../../../dataset/DatasetFilter');
 
-var _Filter2 = _interopRequireDefault(_Filter);
+var _DatasetFilter2 = _interopRequireDefault(_DatasetFilter);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -61,7 +61,7 @@ var Step4 = function (_Step) {
           { className: '-primary -big' },
           'Filter your dataset'
         ),
-        _react2.default.createElement(_Filter2.default, {
+        _react2.default.createElement(_DatasetFilter2.default, {
           dataset: wizard.dataset,
           onChange: this.triggerChange
         })

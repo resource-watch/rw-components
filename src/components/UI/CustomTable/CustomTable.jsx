@@ -3,9 +3,9 @@ import uniq from 'lodash/uniq';
 import flatten from 'lodash/flatten';
 import isEqual from 'lodash/isEqual';
 
-import TableHeader from './Header/TableHeader';
-import TableContent from './Content/TableContent';
-import TableFooter from './Footer/TableFooter';
+import TableHeader from './header/TableHeader';
+import TableContent from './content/TableContent';
+import TableFooter from './footer/TableFooter';
 
 export default class CustomTable extends React.Component {
 

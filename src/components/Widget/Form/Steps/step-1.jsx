@@ -1,11 +1,11 @@
 import React from 'react';
 
 import Step from './step';
-import Field from '../../../Form/Field';
-import Input from '../../../Form/Input';
-import Textarea from '../../../Form/Textarea';
-import Code from '../../../Form/Code';
-import Checkbox from '../../../Form/Checkbox';
+import Field from '../../../form/Field';
+import Input from '../../../form/Input';
+import Textarea from '../../../form/TextArea';
+import Code from '../../../form/Code';
+import Checkbox from '../../../form/Checkbox';
 
 class Step1 extends Step {
   constructor(props) {

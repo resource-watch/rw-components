@@ -3,8 +3,8 @@ import React from 'react';
 import { CONNECTOR_TYPES_DICTIONARY } from '../constants';
 
 import Step from './step';
-import Field from '../../../Form/Field';
-import Input from '../../../Form/Input';
+import Field from '../../../form/Field';
+import Input from '../../../form/Input';
 
 class Step2 extends Step {
   constructor(props) {

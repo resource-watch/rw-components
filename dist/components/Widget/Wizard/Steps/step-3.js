@@ -14,19 +14,19 @@ var _step = require('./step');
 
 var _step2 = _interopRequireDefault(_step);
 
-var _Field = require('../../../Form/Field');
+var _Field = require('../../../form/Field');
 
 var _Field2 = _interopRequireDefault(_Field);
 
-var _Input = require('../../../Form/Input');
+var _Input = require('../../../form/Input');
 
 var _Input2 = _interopRequireDefault(_Input);
 
-var _Textarea = require('../../../Form/Textarea');
+var _TextArea = require('../../../form/TextArea');
 
-var _Textarea2 = _interopRequireDefault(_Textarea);
+var _TextArea2 = _interopRequireDefault(_TextArea);
 
-var _Title = require('../../../UI/Title');
+var _Title = require('../../../ui/Title');
 
 var _Title2 = _interopRequireDefault(_Title);
 
@@ -164,7 +164,7 @@ var Step3 = function (_Step) {
               default: this.props.wizard.metadata.functions
             }
           },
-          _Textarea2.default
+          _TextArea2.default
         ),
         _react2.default.createElement(
           _Field2.default,
@@ -259,7 +259,7 @@ var Step3 = function (_Step) {
               default: this.props.wizard.metadata.cautions
             }
           },
-          _Textarea2.default
+          _TextArea2.default
         ),
         _react2.default.createElement(
           _Field2.default,
@@ -317,7 +317,7 @@ var Step3 = function (_Step) {
               default: this.props.wizard.metadata.overview
             }
           },
-          _Textarea2.default
+          _TextArea2.default
         ),
         _react2.default.createElement(
           _Field2.default,
@@ -336,7 +336,7 @@ var Step3 = function (_Step) {
               default: this.props.wizard.metadata.why
             }
           },
-          _Textarea2.default
+          _TextArea2.default
         ),
         _react2.default.createElement(
           _Field2.default,
@@ -355,7 +355,7 @@ var Step3 = function (_Step) {
               default: this.props.wizard.metadata.citation
             }
           },
-          _Textarea2.default
+          _TextArea2.default
         ),
         _react2.default.createElement(
           _Field2.default,
@@ -374,7 +374,7 @@ var Step3 = function (_Step) {
               default: this.props.wizard.metadata.other
             }
           },
-          _Textarea2.default
+          _TextArea2.default
         )
       );
     }

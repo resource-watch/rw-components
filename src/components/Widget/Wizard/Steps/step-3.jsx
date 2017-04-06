@@ -1,10 +1,10 @@
 import React from 'react';
 
 import Step from './step';
-import Field from '../../../Form/Field';
-import Input from '../../../Form/Input';
-import Textarea from '../../../Form/Textarea';
-import Title from '../../../UI/Title';
+import Field from '../../../form/Field';
+import Input from '../../../form/Input';
+import Textarea from '../../../form/TextArea';
+import Title from '../../../ui/Title';
 
 class Step3 extends Step {
 

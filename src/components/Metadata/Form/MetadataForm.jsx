@@ -3,9 +3,9 @@ import omit from 'lodash/omit';
 
 import { STATE_DEFAULT } from './constants';
 
-import Step1 from './Steps/Step1';
-import Title from '../../UI/Title';
-import Navigation from '../../Form/Navigation';
+import Step1 from './steps/Step1';
+import Title from '../../ui/Title';
+import Navigation from '../../form/Navigation';
 
 class MetadataForm extends React.Component {
   constructor(props) {

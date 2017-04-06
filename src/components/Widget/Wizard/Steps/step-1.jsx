@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Step from './step';
-import Title from '../../../UI/Title';
-import DatasetList from '../../../Dataset/List';
+import Title from '../../../ui/Title';
+import DatasetList from '../../../dataset/DatasetList';
 
 class Step1 extends Step {
   render() {
