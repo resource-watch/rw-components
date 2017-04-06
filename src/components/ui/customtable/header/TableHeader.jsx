@@ -10,7 +10,8 @@ export default class TableHeader extends React.Component {
       columnQueries,
       sort,
       onFilter,
-      onSort
+      onSort,
+      onSearch
     } = this.props;
     const actionsShowed = actions.list.filter(a => a.show);
 
@@ -30,6 +31,7 @@ export default class TableHeader extends React.Component {
                     sort={sort}
                     onFilter={onFilter}
                     onSort={onSort}
+                    onSearch={onSearch}
                   />
                 </span>
               </th>
@@ -52,7 +54,8 @@ TableHeader.propTypes = {
   filteredData: React.PropTypes.array,
   sort: React.PropTypes.object,
   onFilter: React.PropTypes.func,
-  onSort: React.PropTypes.func
+  onSort: React.PropTypes.func,
+  onSearch: React.PropTypes.func
 };
 
 TableHeader.defaultProps = {
@@ -61,5 +64,6 @@ TableHeader.defaultProps = {
   columnQueries: {},
   filteredData: [],
   onFilter: null,
-  onSort: null
+  onSort: null,
+  onSearch: null
 };

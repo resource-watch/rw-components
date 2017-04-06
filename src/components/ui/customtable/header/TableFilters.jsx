@@ -33,7 +33,7 @@ export default class TableFilters extends React.Component {
   componentWillReceiveProps(nextProps) {
     const selected = (nextProps.selected) ? nextProps.selected : nextProps.values;
     this.setState({
-      selected: (nextProps.selected) ? nextProps.selected : nextProps.values,
+      selected,
       values: nextProps.values
     });
   }
@@ -69,7 +69,7 @@ export default class TableFilters extends React.Component {
       window[closed ? 'addEventListener' : 'removeEventListener']('keyup', this.onKeyUp);
     });
 
-    this.setState({ closed: !closed, input: '' });
+    this.setState({ closed: !closed });
   }
 
   // WINDOW EVENTS
@@ -89,14 +89,20 @@ export default class TableFilters extends React.Component {
         break;
       }
       default: {
-
+        return true;
       }
     }
+    return true;
   }
 
   onChangeInput() {
     this.setState({
       input: this.input.value
+    }, () => {
+      this.props.onSearch && this.props.onSearch({
+        field: this.props.field,
+        value: this.input.value
+      });
     });
   }
 
@@ -107,6 +113,11 @@ export default class TableFilters extends React.Component {
 
     this.setState({
       input: ''
+    }, () => {
+      this.props.onSearch && this.props.onSearch({
+        field: this.props.field,
+        value: this.input.value
+      });
     });
   }
 
@@ -159,7 +170,7 @@ export default class TableFilters extends React.Component {
     const { selected, input, values } = this.state;
 
     const btnClass = classnames({
-      '-active': values && selected && values.length !== selected.length
+      '-active': (values && selected && values.length !== selected.length) || input
     });
 
     return (

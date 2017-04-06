@@ -48,7 +48,10 @@ export default class CustomTable extends React.Component {
 
     this.state = {
       pagination: props.pagination,
+      // Sort
       sort: {},
+      // Search
+      search: {},
       // Columns
       columnQueries: {},
       // Rows
@@ -59,6 +62,7 @@ export default class CustomTable extends React.Component {
     this.onChangePage = this.onChangePage.bind(this);
     this.onFilter = this.onFilter.bind(this);
     this.onSort = this.onSort.bind(this);
+    this.onSearch = this.onSearch.bind(this);
 
     this.onRowDelete = this.onRowDelete.bind(this);
     this.onToggleSelectedRow = this.onToggleSelectedRow.bind(this);
@@ -92,6 +96,8 @@ export default class CustomTable extends React.Component {
         ...CustomTable.setTableData(nextProps),
         // Sort
         sort: {},
+        // Search
+        search: {},
         // Columns
         columnQueries: {},
         // Rows
@@ -167,9 +173,18 @@ export default class CustomTable extends React.Component {
       field: s.field,
       value: s.value
     };
-    this.setState({
-      sort
-    }, () => this.onChangePage(0));
+    this.setState({ sort }, () => this.onChangePage(0));
+  }
+
+  onSearch(s) {
+    const search = {
+      field: s.field,
+      value: s.value
+    };
+    this.setState({ search }, () => {
+      this.filter();
+      this.onChangePage(0);
+    });
   }
 
   onChangePage(page) {
@@ -186,14 +201,22 @@ export default class CustomTable extends React.Component {
    * - filter
   */
   filter() {
-    const { columnQueries, pagination } = this.state;
+    const { columnQueries, search, pagination } = this.state;
 
     const filteredData = this.state.data.filter((row) => {
-      return Object.keys(columnQueries).map((field) => {
+      let filteredBySearch = true;
+
+      if (search.value) {
+        filteredBySearch = row[search.field].toString().toLowerCase().includes(search.value.toString().toLowerCase());
+      }
+
+      const filteredByQuery = Object.keys(columnQueries).map((field) => {
         return columnQueries[field].map((val) => {
           return row[field].toString().toLowerCase() === val.toString().toLowerCase();
         }).some(match => match);
       }).every(match => match);
+
+      return filteredByQuery && filteredBySearch;
     });
 
     const maxPage = Math.ceil(filteredData.length / pagination.pageSize);
@@ -227,6 +250,7 @@ export default class CustomTable extends React.Component {
             filteredData={this.state.filteredData}
             sort={this.state.sort}
             onFilter={this.onFilter}
+            onSearch={this.onSearch}
             onSort={this.onSort}
           />
 
