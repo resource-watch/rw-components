@@ -12,4 +12,4 @@
 *.log*
 
 # Compiled files
-# /dist
+/dist
