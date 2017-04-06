@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Step from './step';
-import Title from '../../../UI/Title';
-import DatasetFilter from '../../../Dataset/Filter';
+import Title from '../../../ui/Title';
+import DatasetFilter from '../../../dataset/DatasetFilter';
 
 class Step4 extends Step {
 

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Step from './step';
-import Title from '../../../UI/Title';
-import WidgetPreview from '../../Preview';
+import Title from '../../../ui/Title';
+import WidgetPreview from '../../preview/WidgetPreview';
 
 class Step5 extends Step {
   render() {

@@ -14,13 +14,13 @@ var _step = require('./step');
 
 var _step2 = _interopRequireDefault(_step);
 
-var _Title = require('../../../UI/Title');
+var _Title = require('../../../ui/Title');
 
 var _Title2 = _interopRequireDefault(_Title);
 
-var _List = require('../../../Widget/List');
+var _WidgetList = require('../../../widget/WidgetList');
 
-var _List2 = _interopRequireDefault(_List);
+var _WidgetList2 = _interopRequireDefault(_WidgetList);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54,7 +54,7 @@ var Step2 = function (_Step) {
           { className: '-primary -big' },
           'Select a widget or create a new one'
         ),
-        _react2.default.createElement(_List2.default, {
+        _react2.default.createElement(_WidgetList2.default, {
           ref: function ref(c) {
             if (c) _this2.children.push(c);
           },

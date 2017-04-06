@@ -40,115 +40,115 @@ Object.defineProperty(exports, 'request', {
   }
 });
 
-var _Card = require('./components/Dataset/Card');
+var _DatasetCard = require('./components/dataset/DatasetCard');
 
 Object.defineProperty(exports, 'DatasetCard', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Card).default;
+    return _interopRequireDefault(_DatasetCard).default;
   }
 });
 
-var _Filter = require('./components/Dataset/Filter');
+var _DatasetFilter = require('./components/dataset/DatasetFilter');
 
 Object.defineProperty(exports, 'DatasetFilter', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Filter).default;
+    return _interopRequireDefault(_DatasetFilter).default;
   }
 });
 
-var _FilterItem = require('./components/Dataset/FilterItem');
+var _DatasetFilterItem = require('./components/dataset/DatasetFilterItem');
 
 Object.defineProperty(exports, 'DatasetFilterItem', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_FilterItem).default;
+    return _interopRequireDefault(_DatasetFilterItem).default;
   }
 });
 
-var _Form = require('./components/Dataset/Form');
+var _DatasetForm = require('./components/dataset/form/DatasetForm');
 
 Object.defineProperty(exports, 'DatasetForm', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Form).default;
+    return _interopRequireDefault(_DatasetForm).default;
   }
 });
 
-var _List = require('./components/Dataset/List');
+var _DatasetList = require('./components/dataset/DatasetList');
 
 Object.defineProperty(exports, 'DatasetList', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_List).default;
+    return _interopRequireDefault(_DatasetList).default;
   }
 });
 
-var _Table = require('./components/Dataset/Table');
+var _DatasetTable = require('./components/dataset/table/DatasetTable');
 
 Object.defineProperty(exports, 'DatasetTable', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Table).default;
+    return _interopRequireDefault(_DatasetTable).default;
   }
 });
 
-var _Form2 = require('./components/Layer/Form');
+var _LayerForm = require('./components/layer/form/LayerForm');
 
 Object.defineProperty(exports, 'LayerForm', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Form2).default;
+    return _interopRequireDefault(_LayerForm).default;
   }
 });
 
-var _Card2 = require('./components/Widget/Card');
+var _WidgetCard = require('./components/widget/WidgetCard');
 
 Object.defineProperty(exports, 'WidgetCard', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Card2).default;
+    return _interopRequireDefault(_WidgetCard).default;
   }
 });
 
-var _Form3 = require('./components/Widget/Form');
+var _WidgetForm = require('./components/widget/form/WidgetForm');
 
 Object.defineProperty(exports, 'WidgetForm', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Form3).default;
+    return _interopRequireDefault(_WidgetForm).default;
   }
 });
 
-var _List2 = require('./components/Widget/List');
+var _WidgetList = require('./components/widget/WidgetList');
 
 Object.defineProperty(exports, 'WidgetList', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_List2).default;
+    return _interopRequireDefault(_WidgetList).default;
   }
 });
 
-var _Preview = require('./components/Widget/Preview');
+var _WidgetPreview = require('./components/widget/preview/WidgetPreview');
 
 Object.defineProperty(exports, 'WidgetPreview', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Preview).default;
+    return _interopRequireDefault(_WidgetPreview).default;
   }
 });
 
-var _Wizard = require('./components/Widget/Wizard');
+var _WidgetWizard = require('./components/widget/wizard/WidgetWizard');
 
 Object.defineProperty(exports, 'WidgetWizard', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Wizard).default;
+    return _interopRequireDefault(_WidgetWizard).default;
   }
 });
 
-var _VegaChart = require('./components/Widget/VegaChart');
+var _VegaChart = require('./components/widget/VegaChart');
 
 Object.defineProperty(exports, 'VegaChart', {
   enumerable: true,
@@ -157,7 +157,7 @@ Object.defineProperty(exports, 'VegaChart', {
   }
 });
 
-var _LayerChart = require('./components/Widget/LayerChart');
+var _LayerChart = require('./components/widget/LayerChart');
 
 Object.defineProperty(exports, 'LayerChart', {
   enumerable: true,
@@ -166,7 +166,7 @@ Object.defineProperty(exports, 'LayerChart', {
   }
 });
 
-var _MetadataForm = require('./components/Metadata/Form/MetadataForm');
+var _MetadataForm = require('./components/metadata/form/MetadataForm');
 
 Object.defineProperty(exports, 'MetadataForm', {
   enumerable: true,
@@ -175,7 +175,7 @@ Object.defineProperty(exports, 'MetadataForm', {
   }
 });
 
-var _Button = require('./components/UI/Button');
+var _Button = require('./components/ui/Button');
 
 Object.defineProperty(exports, 'Button', {
   enumerable: true,
@@ -184,7 +184,7 @@ Object.defineProperty(exports, 'Button', {
   }
 });
 
-var _ButtonContainer = require('./components/UI/ButtonContainer');
+var _ButtonContainer = require('./components/ui/ButtonContainer');
 
 Object.defineProperty(exports, 'ButtonContainer', {
   enumerable: true,
@@ -193,7 +193,7 @@ Object.defineProperty(exports, 'ButtonContainer', {
   }
 });
 
-var _Icon = require('./components/UI/Icon');
+var _Icon = require('./components/ui/Icon');
 
 Object.defineProperty(exports, 'Icon', {
   enumerable: true,
@@ -202,7 +202,7 @@ Object.defineProperty(exports, 'Icon', {
   }
 });
 
-var _Spinner = require('./components/UI/Spinner');
+var _Spinner = require('./components/ui/Spinner');
 
 Object.defineProperty(exports, 'Spinner', {
   enumerable: true,
@@ -211,16 +211,16 @@ Object.defineProperty(exports, 'Spinner', {
   }
 });
 
-var _Table2 = require('./components/UI/Table');
+var _Table = require('./components/ui/Table');
 
 Object.defineProperty(exports, 'Table', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Table2).default;
+    return _interopRequireDefault(_Table).default;
   }
 });
 
-var _Title = require('./components/UI/Title');
+var _Title = require('./components/ui/Title');
 
 Object.defineProperty(exports, 'Title', {
   enumerable: true,
@@ -229,7 +229,7 @@ Object.defineProperty(exports, 'Title', {
   }
 });
 
-var _Checkbox = require('./components/Form/Checkbox');
+var _Checkbox = require('./components/form/Checkbox');
 
 Object.defineProperty(exports, 'Checkbox', {
   enumerable: true,
@@ -238,7 +238,7 @@ Object.defineProperty(exports, 'Checkbox', {
   }
 });
 
-var _CheckboxGroup = require('./components/Form/CheckboxGroup');
+var _CheckboxGroup = require('./components/form/CheckboxGroup');
 
 Object.defineProperty(exports, 'CheckboxGroup', {
   enumerable: true,
@@ -247,7 +247,7 @@ Object.defineProperty(exports, 'CheckboxGroup', {
   }
 });
 
-var _Code = require('./components/Form/Code');
+var _Code = require('./components/form/Code');
 
 Object.defineProperty(exports, 'Code', {
   enumerable: true,
@@ -256,7 +256,7 @@ Object.defineProperty(exports, 'Code', {
   }
 });
 
-var _Field = require('./components/Form/Field');
+var _Field = require('./components/form/Field');
 
 Object.defineProperty(exports, 'Field', {
   enumerable: true,
@@ -265,7 +265,7 @@ Object.defineProperty(exports, 'Field', {
   }
 });
 
-var _FormElement = require('./components/Form/FormElement');
+var _FormElement = require('./components/form/FormElement');
 
 Object.defineProperty(exports, 'FormElement', {
   enumerable: true,
@@ -274,7 +274,7 @@ Object.defineProperty(exports, 'FormElement', {
   }
 });
 
-var _Input = require('./components/Form/Input');
+var _Input = require('./components/form/Input');
 
 Object.defineProperty(exports, 'Input', {
   enumerable: true,
@@ -283,7 +283,7 @@ Object.defineProperty(exports, 'Input', {
   }
 });
 
-var _Navigation = require('./components/Form/Navigation');
+var _Navigation = require('./components/form/Navigation');
 
 Object.defineProperty(exports, 'Navigation', {
   enumerable: true,
@@ -292,7 +292,7 @@ Object.defineProperty(exports, 'Navigation', {
   }
 });
 
-var _RadioGroup = require('./components/Form/RadioGroup');
+var _RadioGroup = require('./components/form/RadioGroup');
 
 Object.defineProperty(exports, 'RadioGroup', {
   enumerable: true,
@@ -301,25 +301,25 @@ Object.defineProperty(exports, 'RadioGroup', {
   }
 });
 
-var _Select = require('./components/Form/Select');
+var _SelectInput = require('./components/form/SelectInput');
 
 Object.defineProperty(exports, 'Select', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Select).default;
+    return _interopRequireDefault(_SelectInput).default;
   }
 });
 
-var _Textarea = require('./components/Form/Textarea');
+var _TextArea = require('./components/form/TextArea');
 
 Object.defineProperty(exports, 'Textarea', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_Textarea).default;
+    return _interopRequireDefault(_TextArea).default;
   }
 });
 
-var _Token = require('./components/Form/Token');
+var _Token = require('./components/form/Token');
 
 Object.defineProperty(exports, 'Token', {
   enumerable: true,

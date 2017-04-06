@@ -14,23 +14,23 @@ var _step = require('./step');
 
 var _step2 = _interopRequireDefault(_step);
 
-var _Field = require('../../../Form/Field');
+var _Field = require('../../../form/Field');
 
 var _Field2 = _interopRequireDefault(_Field);
 
-var _Input = require('../../../Form/Input');
+var _Input = require('../../../form/Input');
 
 var _Input2 = _interopRequireDefault(_Input);
 
-var _Textarea = require('../../../Form/Textarea');
+var _TextArea = require('../../../form/TextArea');
 
-var _Textarea2 = _interopRequireDefault(_Textarea);
+var _TextArea2 = _interopRequireDefault(_TextArea);
 
-var _Code = require('../../../Form/Code');
+var _Code = require('../../../form/Code');
 
 var _Code2 = _interopRequireDefault(_Code);
 
-var _Checkbox = require('../../../Form/Checkbox');
+var _Checkbox = require('../../../form/Checkbox');
 
 var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
@@ -141,7 +141,7 @@ var Step1 = function (_Step) {
               default: this.state.form.description
             }
           },
-          _Textarea2.default
+          _TextArea2.default
         ),
         _react2.default.createElement(
           _Field2.default,

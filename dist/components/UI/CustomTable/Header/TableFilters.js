@@ -18,15 +18,11 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _isEqual = require('lodash/isEqual');
-
-var _isEqual2 = _interopRequireDefault(_isEqual);
-
 var _Icon = require('../../Icon');
 
 var _Icon2 = _interopRequireDefault(_Icon);
 
-var _CheckboxGroup = require('../../../Form/CheckboxGroup');
+var _CheckboxGroup = require('../../../form/CheckboxGroup');
 
 var _CheckboxGroup2 = _interopRequireDefault(_CheckboxGroup);
 

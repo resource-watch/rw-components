@@ -3,11 +3,10 @@ import React from 'react';
 import { APPLICATIONS, CONNECTOR_TYPES, CONNECTOR_TYPES_DICTIONARY } from '../constants';
 
 import Step from './step';
-import Field from '../../../Form/Field';
-import Input from '../../../Form/Input';
-import Select from '../../../Form/Select';
-import Token from '../../../Form/Token';
-import CheckboxGroup from '../../../Form/CheckboxGroup';
+import Field from '../../../form/Field';
+import Input from '../../../form/Input';
+import Select from '../../../form/SelectInput';
+import CheckboxGroup from '../../../form/CheckboxGroup';
 
 class Step1 extends Step {
   constructor(props) {

@@ -18,15 +18,15 @@ var _omit2 = _interopRequireDefault(_omit);
 
 var _constants = require('./constants');
 
-var _Step = require('./Steps/Step1');
+var _Step = require('./steps/Step1');
 
 var _Step2 = _interopRequireDefault(_Step);
 
-var _Title = require('../../UI/Title');
+var _Title = require('../../ui/Title');
 
 var _Title2 = _interopRequireDefault(_Title);
 
-var _Navigation = require('../../Form/Navigation');
+var _Navigation = require('../../form/Navigation');
 
 var _Navigation2 = _interopRequireDefault(_Navigation);
 

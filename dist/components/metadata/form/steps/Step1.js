@@ -14,19 +14,19 @@ var _Step2 = require('./Step');
 
 var _Step3 = _interopRequireDefault(_Step2);
 
-var _Field = require('../../../Form/Field');
+var _Field = require('../../../form/Field');
 
 var _Field2 = _interopRequireDefault(_Field);
 
-var _Input = require('../../../Form/Input');
+var _Input = require('../../../form/Input');
 
 var _Input2 = _interopRequireDefault(_Input);
 
-var _Textarea = require('../../../Form/Textarea');
+var _Textarea = require('../../../form/Textarea');
 
 var _Textarea2 = _interopRequireDefault(_Textarea);
 
-var _Title = require('../../../UI/Title');
+var _Title = require('../../../ui/Title');
 
 var _Title2 = _interopRequireDefault(_Title);
 

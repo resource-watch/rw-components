@@ -1,9 +1,8 @@
 import React from 'react';
 import TetherComponent from 'react-tether';
 import classnames from 'classnames';
-import isEqual from 'lodash/isEqual';
 import Icon from '../../Icon';
-import CheckboxGroup from '../../../Form/CheckboxGroup';
+import CheckboxGroup from '../../../form/CheckboxGroup';
 
 export default class TableFilters extends React.Component {
   constructor(props) {
