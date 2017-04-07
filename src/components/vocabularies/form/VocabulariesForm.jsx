@@ -104,7 +104,7 @@ class VocabulariesForm extends React.Component {
               this.setState({ submitting: false });
               if (xmlhttp.status === 200 || xmlhttp.status === 201) {
                 const response = JSON.parse(xmlhttp.responseText);
-                const successMessage = `Vocabularies have been uploaded correctly`;
+                const successMessage = 'Vocabularies have been uploaded correctly';
                 console.info(response);
                 console.info(successMessage);
                 alert(successMessage);
@@ -133,7 +133,7 @@ class VocabulariesForm extends React.Component {
   createNewVocabulary() {
     const { vocabularies } = this.state;
     vocabularies.push({ attributes: { name: 'name', tags: [] } });
-    this.setState({ vocabularies: vocabularies });
+    this.setState({ vocabularies });
   }
 
   handleDissociateVocabulary(voc) {

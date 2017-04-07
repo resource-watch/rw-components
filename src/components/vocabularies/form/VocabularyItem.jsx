@@ -42,7 +42,6 @@ class VocabularyItem extends React.Component {
       vocabulary: value,
       tagSet
     });
-    debugger;
   }
 
   triggerDissociateVocabulary() {
@@ -77,11 +76,11 @@ class VocabularyItem extends React.Component {
               ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
               onChange={value => this.onTagsChange(value)}
               options={this.state.vocabulary.tags.map(
-                (tag) => { return { label: tag, value: tag }; }
+                tag => ({ label: tag, value: tag })
               )}
               validations={['required']}
               selected={this.state.vocabulary.tags.map(
-                (tag) => { return { label: tag, value: tag }; }
+                tag => ({ label: tag, value: tag })
               )}
               properties={{
                 name: 'tags',
@@ -90,7 +89,7 @@ class VocabularyItem extends React.Component {
                 multi: true,
                 required: true,
                 default: this.state.vocabulary.tags.map(
-                  (tag) => { return { label: tag, value: tag }; }
+                  tag => ({ label: tag, value: tag })
                 )
               }}
             >
@@ -106,10 +105,10 @@ class VocabularyItem extends React.Component {
             <Field
               ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
               onChange={value => this.onTagsChange(value)}
-              options={tagSet.map((val) => { return { label: val, value: val }; })}
+              options={tagSet.map(val => ({ label: val, value: val }))}
               validations={['required']}
               selected={this.state.selectedTags.map(
-                (tag) => { return { label: tag, value: tag }; }
+                tag => ({ label: tag, value: tag })
               )}
               properties={{
                 name: 'tags',

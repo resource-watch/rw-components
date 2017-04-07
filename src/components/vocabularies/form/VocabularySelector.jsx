@@ -49,13 +49,12 @@ class VocabularySelector extends React.Component {
 
   render() {
     const { selected } = this.state;
-    debugger;
     return (
       <Field
         ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
         onChange={value => this.triggerChange(value)}
         options={this.state.vocabularies.map(
-          (vocabulary) => { return { label: vocabulary.id, value: vocabulary }; }
+          vocabulary => ({ label: vocabulary.id, value: vocabulary })
         )}
         validations={['required']}
 
