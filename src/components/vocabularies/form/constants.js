@@ -6,10 +6,7 @@ export const STATE_DEFAULT = {
     authorization: '',
     status: 1
   },
-  vocabularies: [
-    { attributes: { name: 'name', tags: [] }
-    }
-  ]
+  vocabularies: []
 };
 
 export let FORM_ELEMENTS = {

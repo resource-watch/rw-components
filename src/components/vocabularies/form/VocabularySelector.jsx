@@ -30,7 +30,7 @@ class VocabularySelector extends React.Component {
         headers: [{ key: 'Content-Type', value: 'application/json' }],
         onSuccess: (response) => {
           this.setState({
-            vocabularies: response.data,
+            vocabularies: response.data.map(elem => elem.attributes),
             // Stop the loading
             loading: false
           });
@@ -43,7 +43,8 @@ class VocabularySelector extends React.Component {
   }
 
   triggerChange(value) {
-    this.setState({ selected: { label: value.id, value: value.id } });
+    const newSelected = value ? { label: value.name, value: value.name } : null;
+    this.setState({ selected: newSelected });
     this.props.onChange(value);
   }
 
@@ -54,7 +55,7 @@ class VocabularySelector extends React.Component {
         ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
         onChange={value => this.triggerChange(value)}
         options={this.state.vocabularies.map(
-          vocabulary => ({ label: vocabulary.id, value: vocabulary })
+          vocabulary => ({ label: vocabulary.name, value: vocabulary })
         )}
         validations={['required']}
 

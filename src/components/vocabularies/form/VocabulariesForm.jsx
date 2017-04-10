@@ -5,6 +5,7 @@ import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
 import Title from '../../ui/Title';
 import VocabularyItem from './VocabularyItem';
 import Button from '../../ui/Button';
+import { get, post } from '../../../utils/request';
 
 class VocabulariesForm extends React.Component {
 
@@ -33,33 +34,25 @@ class VocabulariesForm extends React.Component {
       // Start the loading
       this.setState({ loading: true });
 
-      const xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('GET', `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}?includes=vocabulary&cache=${Date.now()}`);
-      xmlhttp.setRequestHeader('Content-Type', 'application/json');
-      xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
-      xmlhttp.send();
-
-      xmlhttp.onreadystatechange = () => {
-        if (xmlhttp.readyState === 4) {
-          if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-            const response = JSON.parse(xmlhttp.responseText);
+      get(
+        {
+          url: `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}?includes=vocabulary&cache=${Date.now()}`,
+          headers: [{ key: 'Content-Type', value: 'application/json' }],
+          onSuccess: (response) => {
             const attrs = response.data.attributes;
-            let vocabularyArray = attrs.vocabulary;
-            if (attrs.vocabulary.length === 0) {
-              vocabularyArray = STATE_DEFAULT.vocabularies;
-            }
             this.setState({
               hasVocabularies: attrs.vocabulary.length !== 0,
               datasetName: attrs.name,
-              vocabularies: vocabularyArray,
+              vocabularies: attrs.vocabulary.map(elem => elem.attributes),
               // Stop the loading
               loading: false
             });
-          } else {
+          },
+          onError: () => {
             console.info('Error');
           }
         }
-      };
+      );
     }
   }
 
@@ -79,40 +72,33 @@ class VocabulariesForm extends React.Component {
         if (!this.state.submitting) {
           // Start the submitting
           this.setState({ submitting: true });
-          // Set the request
-          // Send the request
-          const xmlhttp = new XMLHttpRequest();
-          const xmlhttpOptions = {
-            // type: (this.state.hasVocabularies) ? 'PATCH' : 'POST',
-            type: 'POST',
-            authorization: this.state.form.authorization,
-            contentType: 'application/json',
-            omit: ['authorization']
-          };
-          xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/vocabulary`);
-          xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
-          xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
+
           const bodyObj = {};
-          this.state.vocabularies.map(elem =>
-            bodyObj[elem.attributes.name] = { tags: elem.attributes.tags }
-          );
+          this.state.vocabularies.forEach((elem) => {
+            bodyObj[elem.attributes.name] = { tags: elem.attributes.tags };
+          });
           const body = JSON.stringify(bodyObj);
-          xmlhttp.send(body);
-          xmlhttp.onreadystatechange = () => {
-            if (xmlhttp.readyState === 4) {
-              // Stop the submitting
-              this.setState({ submitting: false });
-              if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-                const response = JSON.parse(xmlhttp.responseText);
-                const successMessage = 'Vocabularies have been uploaded correctly';
+
+          post(
+            {
+              url: `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/vocabulary`,
+              headers: [
+                { key: 'Content-Type', value: 'application/json' },
+                { key: 'Authorization', value: this.state.form.authorization }
+              ],
+              body,
+              onSuccess: (response) => {
+                this.setState({ submitting: false });
+                const successMessage = 'Vocabularies have been updated correctly';
                 console.info(response);
                 console.info(successMessage);
                 alert(successMessage);
-              } else {
-                console.info('Error', xmlhttp);
+              },
+              onError: () => {
+                console.info('Error');
               }
             }
-          };
+          );
         }
       }, 0);
     }
@@ -120,24 +106,33 @@ class VocabulariesForm extends React.Component {
 
   onChange(vocabularyName, obj) {
     const vocabularies = this.state.vocabularies.slice(0);
+    let vocabularyFound = false;
     const newVocabularies = vocabularies.map((elem) => {
-      if (elem.attributes.name === vocabularyName) {
-        return { attributes: { name: obj.name, tags: obj.tags } };
+      if (elem.id === vocabularyName) {
+        vocabularyFound = true;
+        return obj;
       } else {
         return elem;
       }
     });
+    if (!vocabularyFound) {
+      const emptyVocabulary = newVocabularies.find(val => val.id === '');
+      emptyVocabulary.id = obj.id;
+      emptyVocabulary.attributes = obj.attributes;
+    }
     this.setState({ vocabularies: newVocabularies }, console.info('this.state', this.state));
   }
 
   createNewVocabulary() {
     const { vocabularies } = this.state;
-    vocabularies.push({ attributes: { name: 'name', tags: [] } });
+    vocabularies.push({ id: '', attributes: { name: '', tags: [] } });
     this.setState({ vocabularies });
   }
 
   handleDissociateVocabulary(voc) {
-    console.info('handleDissociateVocabulary', voc);
+    const { vocabularies } = this.state;
+    const newVocabularies = vocabularies.filter(elem => elem.id !== voc.name);
+    this.setState({ vocabularies: newVocabularies });
   }
 
   render() {
@@ -165,7 +160,7 @@ class VocabulariesForm extends React.Component {
             vocabularies.map((elem, i) =>
               <VocabularyItem
                 key={i}
-                vocabulary={elem.attributes}
+                vocabulary={elem}
                 onChange={this.onChange}
                 application={this.props.application}
                 authorization={this.props.authorization}

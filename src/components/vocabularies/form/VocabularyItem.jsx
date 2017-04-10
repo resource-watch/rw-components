@@ -23,6 +23,7 @@ class VocabularyItem extends React.Component {
     // BINDINGS
     this.onTagsChange = this.onTagsChange.bind(this);
     this.onVocabularyChange = this.onVocabularyChange.bind(this);
+    this.triggerDissociateVocabulary = this.triggerDissociateVocabulary.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -30,18 +31,22 @@ class VocabularyItem extends React.Component {
   }
 
   onTagsChange(vals) {
-    this.setState({ selectedTags: vals });
-    this.props.onChange(this.state.vocabulary.name,
-      { name: this.state.vocabulary.name, tags: vals });
+    console.info('onTagsChange');
+    const vocabularyUpdated = Object.assign(this.state.vocabulary, { tags: vals });
+
+    this.setState({
+      vocabulary: vocabularyUpdated,
+      selectedTags: vals
+    }, this.props.onChange(this.state.vocabulary.name, this.state.vocabulary));
   }
 
   onVocabularyChange(value) {
     const tagSet = uniqBy(
-      flatten(value.attributes.resources.map(res => res.tags)), e => e);
+      flatten(value.resources.map(res => res.tags)), e => e);
     this.setState({
       vocabulary: value,
       tagSet
-    });
+    }, () => this.props.onChange(value.id, value));
   }
 
   triggerDissociateVocabulary() {
@@ -122,11 +127,11 @@ class VocabularyItem extends React.Component {
               {Select}
             </Field>
             <Button
+              onClick={this.triggerDissociateVocabulary}
               properties={{
                 type: 'button',
                 name: 'dissociate',
-                className: '-primary',
-                onClick: this.triggerDissociateVocabulary
+                className: '-primary'
               }}
             >
               Dissociate Vocabulary
