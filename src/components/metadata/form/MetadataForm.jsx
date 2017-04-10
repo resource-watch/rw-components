@@ -91,10 +91,9 @@ class MetadataForm extends React.Component {
             key: 'Authorization',
             value: this.state.form.authorization
           }],
-          onSuccess: (response) => {
+          onSuccess: () => {
             const successMessage = 'Metadata has been uploaded correctly';
-            console.info(response);
-            console.info(successMessage);
+            alert(successMessage);
 
             this.props.onSubmit && this.props.onSubmit();
           },

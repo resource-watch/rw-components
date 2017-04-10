@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { FORM_ELEMENTS } from '../constants';
+import { FORM_ELEMENTS, LANGUAGE_OPTIONS } from '../constants';
 
 import Field from '../../../form/Field';
 import Input from '../../../form/Input';
+import Select from '../../../form/SelectInput';
 import TextArea from '../../../form/TextArea';
 import Checkbox from '../../../form/Checkbox';
 import Title from '../../../ui/Title';
@@ -66,6 +67,7 @@ class Step1 extends React.Component {
             ref={(c) => { if (c) FORM_ELEMENTS.elements.language = c; }}
             onChange={value => this.changeMetadata({ language: value })}
             validations={['required']}
+            options={LANGUAGE_OPTIONS}
             properties={{
               name: 'language',
               label: 'Data language',
@@ -74,7 +76,7 @@ class Step1 extends React.Component {
               default: this.props.metadata.language
             }}
           >
-            {Input}
+            {Select}
           </Field>
 
           <Field

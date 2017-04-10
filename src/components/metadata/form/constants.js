@@ -1,3 +1,10 @@
+export const LANGUAGE_OPTIONS = [
+  { label: 'English', value: 'en' },
+  { label: 'Español', value: 'es' },
+  { label: 'Français', value: 'fr' },
+  { label: 'Português', value: 'pt' }
+];
+
 export const STATE_DEFAULT = {
   step: 1,
   stepLength: 1,
