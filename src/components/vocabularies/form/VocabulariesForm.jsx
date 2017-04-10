@@ -4,8 +4,8 @@ import flatten from 'lodash/flatten';
 
 import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
 
-import Title from '../../ui/Title';
 import VocabularyItem from './VocabularyItem';
+import Title from '../../ui/Title';
 import Button from '../../ui/Button';
 import Spinner from '../../ui/Spinner';
 import { get, post } from '../../../utils/request';
