@@ -96,15 +96,7 @@ class DatasetForm extends React.Component {
               console.info(successMessage);
               alert(successMessage);
 
-              // Go back to first step and set the dataset
-              // This will trigger the PATCH function
-              this.setState({
-                submitting: false,
-                step: 1,
-                dataset: response.data.id
-              }, () => {
-                this.props.onSubmit && this.props.onSubmit();
-              });
+              this.props.onSubmit && this.props.onSubmit();
             },
             onError: (error) => {
               this.setState({ submitting: false });

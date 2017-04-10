@@ -1,7 +1,11 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import { STATE_DEFAULT } from './constants';
+import { Autobind } from 'es-decorators';
+
+import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
+
+import { get, post } from '../../../utils/request';
 
 import Step1 from './steps/Step1';
 import Title from '../../ui/Title';
@@ -22,9 +26,6 @@ class MetadataForm extends React.Component {
     });
 
     this.state = newState;
-
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
   }
 
   componentWillMount() {
@@ -32,30 +33,27 @@ class MetadataForm extends React.Component {
       // Start the loading
       this.setState({ loading: true });
 
-      const xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('GET', `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/?includes=metadata&cache=${Date.now()}`);
-      xmlhttp.setRequestHeader('Content-Type', 'application/json');
-      xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
-      xmlhttp.send();
+      get({
+        url: `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/?includes=metadata&cache=${Date.now()}`,
+        headers: [{
+          key: 'Content-Type',
+          value: 'application/json'
+        }],
+        onSuccess: (response) => {
+          const metadata = response.data.attributes.metadata;
 
-      xmlhttp.onreadystatechange = () => {
-        if (xmlhttp.readyState === 4) {
-          if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-            const response = JSON.parse(xmlhttp.responseText);
-            this.setState({
-              datasetName: response.data.attributes.name,
-              metadata: response.data.attributes.metadata &&
-                        response.data.attributes.metadata.length ?
-                        response.data.attributes.metadata[0].attributes :
-                        STATE_DEFAULT.metadata,
-              // Stop the loading
-              loading: false
-            });
-          } else {
-            console.info('Error');
-          }
+          this.setState({
+            datasetName: response.data.attributes.name,
+            metadata: (metadata && metadata.length) ? metadata[0].attributes : STATE_DEFAULT.metadata,
+            // Stop the loading
+            loading: false
+          });
+        },
+        onError: (error) => {
+          this.setState({ loading: false });
+          console.error(error);
         }
-      };
+      });
     }
   }
 
@@ -64,72 +62,59 @@ class MetadataForm extends React.Component {
    * - onSubmit
    * - onChange
   */
+  @Autobind
   onSubmit(event) {
     event.preventDefault();
 
     // Validate the form
-    this.step.validate();
+    FORM_ELEMENTS.validate();
 
     // Set a timeout due to the setState function of react
     setTimeout(() => {
-      const valid = this.step.isValid();
+      const valid = FORM_ELEMENTS.isValid();
       if (valid) {
-        if (this.state.step === this.state.stepLength && !this.state.submitting) {
-          // Start the submitting
-          this.setState({ submitting: true });
+        // Start the submitting
+        this.setState({ submitting: true });
 
-          // Set the request
-          // Send the request
-          const xmlhttp = new XMLHttpRequest();
-          const xmlhttpOptions = {
-            type: (this.state.datasetID && this.state.metadata.status) ? 'PATCH' : 'POST',
-            authorization: this.state.form.authorization,
-            contentType: 'application/json',
-            omit: ['authorization']
-          };
-
-          xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/metadata`);
-          xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
-          xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
-          const body = JSON.stringify({
-            language: this.state.form.language,
+        post({
+          type: (this.state.datasetID && this.state.metadata.status) ? 'PATCH' : 'POST',
+          url: `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/metadata`,
+          body: {
             application: this.state.form.application,
             // Remove unnecesary atributtes to prevent 'Unprocessable Entity error'
-            ...omit(this.state.metadata, xmlhttpOptions.omit)
-          });
-          xmlhttp.send(body);
+            ...omit(this.state.metadata, ['authorization'])
+          },
+          headers: [{
+            key: 'Content-Type',
+            value: 'application/json'
+          }, {
+            key: 'Authorization',
+            value: this.state.form.authorization
+          }],
+          onSuccess: (response) => {
+            const successMessage = 'Metadata has been uploaded correctly';
+            console.info(response);
+            console.info(successMessage);
 
-          xmlhttp.onreadystatechange = () => {
-            if (xmlhttp.readyState === 4) {
-              // Stop the submitting
-              this.setState({ submitting: false });
-
-              if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-                const response = JSON.parse(xmlhttp.responseText);
-                const successMessage = `Metadata has been uploaded correctly`;
-                console.info(response);
-                console.info(successMessage);
-                alert(successMessage);
-
-              } else {
-                console.info('Error', xmlhttp);
-              }
-            }
-          };
-        } else {
-          this.setState({
-            step: this.state.step + 1
-          }, () => console.info(this.state));
-        }
+            this.props.onSubmit && this.props.onSubmit();
+          },
+          onError: (error) => {
+            this.setState({ loading: false });
+            console.error(error);
+          }
+        });
       }
     }, 0);
   }
 
+  @Autobind
   onChange(obj) {
     const metadata = Object.assign({}, this.state.metadata, obj.metadata);
     this.setState({ metadata });
+    console.info(metadata);
   }
 
+  @Autobind
   onBack(step) {
     this.setState({ step });
   }
@@ -142,9 +127,8 @@ class MetadataForm extends React.Component {
         </Title>
         <form className="c-form" onSubmit={this.onSubmit} noValidate>
           {this.state.loading && 'loading'}
-          {(this.state.step === 1 && !this.state.loading) &&
+          {!this.state.loading &&
             <Step1
-              ref={(c) => { this.step = c; }}
               onChange={value => this.onChange(value)}
               metadata={this.state.metadata}
             />
@@ -165,10 +149,10 @@ class MetadataForm extends React.Component {
 }
 
 MetadataForm.propTypes = {
-  application: React.PropTypes.string,
-  authorization: React.PropTypes.string,
-  language: React.PropTypes.string,
-  dataset: React.PropTypes.string.isRequired
+  dataset: React.PropTypes.string.isRequired,
+  application: React.PropTypes.string.isRequired,
+  authorization: React.PropTypes.string.isRequired,
+  onSubmit: React.PropTypes.func
 };
 
 export default MetadataForm;

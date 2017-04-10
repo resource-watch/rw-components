@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import Checkbox from './Checkbox';
 
@@ -31,14 +32,14 @@ export default class CheckboxGroup extends React.Component {
     // Send objects
     const selectedObj = this.props.options.find(option => option.value === newItem.value);
     const newChecked = this.state.checked.slice(0);
+
     if (newItem.checked) {
       newChecked.push(selectedObj.value);
     } else {
       newChecked.splice(newChecked.indexOf(selectedObj.value), 1);
     }
-    this.setState({
-      checked: newChecked
-    });
+
+    this.setState({ checked: newChecked });
     this.props.onChange && this.props.onChange(newChecked);
   }
 
@@ -46,18 +47,27 @@ export default class CheckboxGroup extends React.Component {
     return this.props.options.map((option, i) => (
       <Checkbox
         key={i}
-        name={this.props.name}
-        value={option.value}
-        checked={this.state.checked.includes(option.value)}
-        label={option.label}
+        properties={{
+          name: this.props.name,
+          title: option.label,
+          checked: this.state.checked.includes(option.value),
+          value: option.value,
+          default: option.value
+        }}
         onChange={newSelected => this.onChange(newSelected)}
       />
       ));
   }
 
   render() {
+    const { className } = this.props;
+
+    const customClassName = classnames({
+      [className]: !!className
+    });
+
     return (
-      <div className={`c-checkbox-box ${this.props.className ? this.props.className : ''}`}>
+      <div className={`c-checkbox-box ${customClassName}`}>
         {this.props.title && <span className="checkbox-box-title">{this.props.title}</span>}
         {this.getCheckbox()}
       </div>

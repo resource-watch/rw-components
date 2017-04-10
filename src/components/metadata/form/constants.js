@@ -11,24 +11,31 @@ export const STATE_DEFAULT = {
   },
   metadata: {
     source: '',
-    license: '',
-    citation: '',
     description: '',
     name: '',
     info: {
-      functions: '',
-      cautions: '',
-      technical_title: '',
-      title: '',
-      subtitle: '',
-      license_link: '',
-      overview: '',
-      why: '',
-      other: '',
-      geographic_coverage: '',
-      spatial_resolution: '',
-      date_of_content: '',
-      frequency_of_updates: ''
     }
+  }
+};
+
+
+export const FORM_ELEMENTS = {
+  elements: {
+  },
+  validate() {
+    const elements = this.elements;
+    Object.keys(elements).forEach((k) => {
+      console.log(k);
+      elements[k].validate();
+    });
+  },
+  isValid() {
+    const elements = this.elements;
+    const valid = Object.keys(elements)
+      .map(k => elements[k].isValid())
+      .filter(v => v !== null)
+      .every(element => element);
+
+    return valid;
   }
 };

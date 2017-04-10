@@ -119,5 +119,4 @@ export const FORM_ELEMENTS = {
 
     return valid;
   }
-
 };

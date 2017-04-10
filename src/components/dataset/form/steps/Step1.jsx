@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { APPLICATIONS, CONNECTOR_TYPES, CONNECTOR_TYPES_DICTIONARY, FORM_ELEMENTS } from '../constants';
+import { CONNECTOR_TYPES, CONNECTOR_TYPES_DICTIONARY, FORM_ELEMENTS } from '../constants';
 
 import Step from './step';
 import Field from '../../../form/Field';
 import Input from '../../../form/Input';
 import Select from '../../../form/SelectInput';
-import CheckboxGroup from '../../../form/CheckboxGroup';
 
 class Step1 extends Step {
   constructor(props) {
@@ -78,23 +77,6 @@ class Step1 extends Step {
         >
           {Input}
         </Field>
-
-        {!this.state.form.authorization &&
-          <Field
-            ref={(c) => { if (c) FORM_ELEMENTS.elements.step1.application = c; }}
-            onChange={value => this.props.onChange({ application: value })}
-            validations={['required']}
-            options={APPLICATIONS}
-            selected={this.state.form.application}
-            properties={{
-              name: 'application',
-              label: 'Application',
-              required: true
-            }}
-          >
-            {CheckboxGroup}
-          </Field>
-        }
 
         <Field
           ref={(c) => { if (c) FORM_ELEMENTS.elements.step1.connectorType = c; }}
