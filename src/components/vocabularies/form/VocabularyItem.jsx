@@ -1,6 +1,4 @@
 import React from 'react';
-import uniqBy from 'lodash/uniqBy';
-import flatten from 'lodash/flatten';
 
 import Field from '../../form/Field';
 import Input from '../../form/Input';
@@ -32,7 +30,7 @@ class VocabularyItem extends React.Component {
     const vocabulary = props.vocabulary;
     this.setState({
       vocabulary,
-      selectedTags: vocabulary.tags
+      selectedTags: vocabulary.tags || []
     });
   }
 
@@ -47,17 +45,10 @@ class VocabularyItem extends React.Component {
   }
 
   onVocabularyChange(value) {
-    let tagSet = [];
-    if (value.tags) {
-      tagSet = value.tags;
-    } else {
-      tagSet = uniqBy(
-        flatten(value.resources.map(res => res.tags)), e => e);
-    }
-
     this.setState({
       vocabulary: value,
-      tagSet
+      tagSet: value.tagSet,
+      selectedTags: []
     }, () => this.props.onChange(value.id, value));
   }
 
@@ -66,7 +57,7 @@ class VocabularyItem extends React.Component {
   }
 
   render() {
-    const { readOnly } = this.props;
+    const { readOnly, allVocabularies } = this.props;
     const { tagSet, vocabulary, selectedTags } = this.state;
 
     return (
@@ -120,6 +111,7 @@ class VocabularyItem extends React.Component {
               onChange={this.onVocabularyChange}
               disableOnSelect
               vocabulary={vocabulary}
+              allVocabularies={allVocabularies}
             />
             <Field
               ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
@@ -163,6 +155,7 @@ class VocabularyItem extends React.Component {
 
 VocabularyItem.propTypes = {
   vocabulary: React.PropTypes.object,
+  allVocabularies: React.PropTypes.array,
   onChange: React.PropTypes.func,
   readOnly: React.PropTypes.bool,
   onDissociateVocabulary: React.PropTypes.func

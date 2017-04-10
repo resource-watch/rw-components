@@ -1,4 +1,6 @@
 import React from 'react';
+import uniqBy from 'lodash/uniqBy';
+import flatten from 'lodash/flatten';
 
 import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
 
@@ -14,6 +16,8 @@ class VocabulariesForm extends React.Component {
     const newState = Object.assign({}, STATE_DEFAULT, {
       datasetID: props.dataset,
       datasetName: '',
+      loading: true,
+      allVocabularies: [],
       form: Object.assign({}, STATE_DEFAULT.form, {
         application: props.application,
         authorization: props.authorization,
@@ -27,6 +31,9 @@ class VocabulariesForm extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.createNewVocabulary = this.createNewVocabulary.bind(this);
     this.handleDissociateVocabulary = this.handleDissociateVocabulary.bind(this);
+    this.loadVocabularies = this.loadVocabularies.bind(this);
+
+    this.loadVocabularies();
   }
 
   componentWillMount() {
@@ -108,7 +115,7 @@ class VocabulariesForm extends React.Component {
     const vocabularies = this.state.vocabularies.slice(0);
     let vocabularyFound = false;
     const newVocabularies = vocabularies.map((elem) => {
-      if (elem.id === vocabularyName) {
+      if (elem.name === vocabularyName) {
         vocabularyFound = true;
         return obj;
       } else {
@@ -116,8 +123,8 @@ class VocabulariesForm extends React.Component {
       }
     });
     if (!vocabularyFound) {
-      const emptyVocabulary = newVocabularies.find(val => val.id === '');
-      emptyVocabulary.id = obj.id;
+      const emptyVocabulary = newVocabularies.find(val => val.name === '');
+      emptyVocabulary.name = obj.name;
       emptyVocabulary.attributes = obj.attributes;
     }
     this.setState({ vocabularies: newVocabularies }, console.info('this.state', this.state));
@@ -133,11 +140,37 @@ class VocabulariesForm extends React.Component {
     const { vocabularies } = this.state;
     const newVocabularies = vocabularies.filter(elem => elem.name !== voc.name);
     this.setState({ vocabularies: newVocabularies });
-    debugger;
+  }
+
+  loadVocabularies() {
+    get(
+      {
+        url: 'https://api.resourcewatch.org/v1/vocabulary',
+        headers: [{ key: 'Content-Type', value: 'application/json' }],
+        onSuccess: (response) => {
+          this.setState({
+            allVocabularies: response.data
+              .map(elem => elem.attributes)
+              .map(elem =>
+                ({
+                  name: elem.name,
+                  tagSet: uniqBy(
+                    flatten(elem.resources.map(res => res.tags)), e => e)
+                })
+              ),
+            // Stop the loading
+            loading: false
+          });
+        },
+        onError: () => {
+          console.info('Error');
+        }
+      }
+    );
   }
 
   render() {
-    const { vocabularies } = this.state;
+    const { vocabularies, allVocabularies } = this.state;
     return (
       <div>
         <Title className="-huge -p-primary">
@@ -156,12 +189,12 @@ class VocabulariesForm extends React.Component {
           New Vocabulary
         </Button>
         <form className="c-form" onSubmit={this.onSubmit} noValidate>
-          {this.state.loading && 'loading'}
           {!this.state.loading && vocabularies.length > 0 &&
             vocabularies.map((elem, i) =>
               <VocabularyItem
                 key={i}
                 vocabulary={elem}
+                allVocabularies={allVocabularies}
                 onChange={this.onChange}
                 application={this.props.application}
                 authorization={this.props.authorization}

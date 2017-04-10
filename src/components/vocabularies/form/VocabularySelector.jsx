@@ -10,17 +10,20 @@ class VocabularySelector extends React.Component {
   constructor(props) {
     super(props);
 
-    const vocabulariesArray = [];
+    let vocabulariesArray = [];
     let disabledVal = false;
     let selectedVal = null;
-    const vocabularyName = props.vocabulary.name;
+    const { vocabulary, allVocabularies } = props;
 
-    if (vocabularyName !== '') {
-      vocabulariesArray.push(props.vocabulary);
-      disabledVal = true;
-      selectedVal = { label: vocabularyName, value: props.vocabulary };
+    if (allVocabularies) {
+      vocabulariesArray = allVocabularies;
     } else {
       this.loadVocabularies();
+    }
+
+    if (vocabulary.name !== '') {
+      disabledVal = true;
+      selectedVal = { label: vocabulary.name, value: vocabulary };
     }
 
     this.state = {
@@ -54,6 +57,7 @@ class VocabularySelector extends React.Component {
   }
 
   loadVocabularies() {
+    console.info('loadVocabularies()');
     get(
       {
         url: 'https://api.resourcewatch.org/v1/vocabulary',
@@ -113,7 +117,8 @@ VocabularySelector.propTypes = {
   authorization: React.PropTypes.string,
   language: React.PropTypes.string,
   disableOnSelect: React.PropTypes.boolean,
-  vocabulary: React.PropTypes.object
+  vocabulary: React.PropTypes.object,
+  allVocabularies: React.PropTypes.array
 };
 
 export default VocabularySelector;
