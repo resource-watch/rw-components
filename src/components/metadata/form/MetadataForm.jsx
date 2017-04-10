@@ -20,8 +20,7 @@ class MetadataForm extends React.Component {
       metadata: [],
       form: Object.assign({}, STATE_DEFAULT.form, {
         application: props.application,
-        authorization: props.authorization,
-        language: props.language
+        authorization: props.authorization
       })
     });
 

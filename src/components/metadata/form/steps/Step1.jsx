@@ -100,7 +100,7 @@ class Step1 extends React.Component {
 
           <Field
             ref={(c) => { if (c) FORM_ELEMENTS.elements.contact_person_name = c; }}
-            onChange={value => this.changeMetadata({ license: value })}
+            onChange={value => this.changeMetadata({ info: { contact_person_name: value } })}
             properties={{
               name: 'contact_person_name',
               label: 'Contact Person Name',
@@ -113,7 +113,7 @@ class Step1 extends React.Component {
 
           <Field
             ref={(c) => { if (c) FORM_ELEMENTS.elements.contact_person_email = c; }}
-            onChange={value => this.changeMetadata({ license: value })}
+            onChange={value => this.changeMetadata({ info: { contact_person_email: value } })}
             validations={['email']}
             properties={{
               name: 'contact_person_email',
@@ -163,6 +163,21 @@ class Step1 extends React.Component {
           </Field>
 
           <Field
+            ref={(c) => { if (c) FORM_ELEMENTS.elements.citation = c; }}
+            onChange={value => this.changeMetadata({ info: { citation: value } })}
+            hint="Unless otherwise specified on Data Sharing Agreement, format should be: Organization name. “Official data layer name as in the ODP.” Accessed through Resource Watch [date]. www.resourcewatch.org (should always end with: Accessed through Resource Watch on [date]. www.resourcewatch.org)"
+            properties={{
+              name: 'citation',
+              label: 'Citation',
+              type: 'text',
+              rows: '6',
+              default: this.props.metadata.info.citation
+            }}
+          >
+            {TextArea}
+          </Field>
+
+          <Field
             ref={(c) => { if (c) FORM_ELEMENTS.elements.geographic_coverage = c; }}
             onChange={value => this.changeMetadata({ info: { geographic_coverage: value } })}
             hint="Describes the spatial extent of the data set (Note: if Global, write Global. If for a select group of countries, list countries in alphabetical order, use Oxford comma, and include 'the' in country names, e.g., Republic of the Congo)"
@@ -170,10 +185,11 @@ class Step1 extends React.Component {
               name: 'geographic_coverage',
               label: 'Geographic Coverage',
               type: 'text',
+              rows: '6',
               default: this.props.metadata.info.geographic_coverage
             }}
           >
-            {Input}
+            {TextArea}
           </Field>
 
 
@@ -185,10 +201,11 @@ class Step1 extends React.Component {
               name: 'spatial_resolution',
               label: 'Spatial Resolution',
               type: 'text',
+              rows: '6',
               default: this.props.metadata.info.spatial_resolution
             }}
           >
-            {Input}
+            {TextArea}
           </Field>
 
           <Field
@@ -233,24 +250,9 @@ class Step1 extends React.Component {
           </Field>
 
           <Field
-            ref={(c) => { if (c) FORM_ELEMENTS.elements.citation = c; }}
-            onChange={value => this.changeMetadata({ info: { citation: value } })}
-            hint="Unless otherwise specified on Data Sharing Agreement, format should be: Organization name. “Official data layer name as in the ODP.” Accessed through Resource Watch [date]. www.resourcewatch.org (should always end with: Accessed through Resource Watch on [date]. www.resourcewatch.org)"
-            properties={{
-              name: 'citation',
-              label: 'Citation',
-              type: 'text',
-              rows: '6',
-              required: true,
-              default: this.props.metadata.info.citation
-            }}
-          >
-            {TextArea}
-          </Field>
-
-          <Field
             ref={(c) => { if (c) FORM_ELEMENTS.elements.license = c; }}
             onChange={value => this.changeMetadata({ info: { license: value } })}
+            hint="License under which data are published"
             properties={{
               name: 'license',
               label: 'License',
@@ -264,7 +266,6 @@ class Step1 extends React.Component {
           <Field
             ref={(c) => { if (c) FORM_ELEMENTS.elements.license_link = c; }}
             onChange={value => this.changeMetadata({ info: { license_link: value } })}
-            hint="License under which data are published"
             validations={['url']}
             properties={{
               name: 'license_link',
@@ -318,7 +319,7 @@ class Step1 extends React.Component {
               name: 'translated_title',
               label: 'Translated Title',
               type: 'text',
-              default: this.props.metadata.translated_title
+              default: this.props.metadata.info.translated_title
             }}
           >
             {Input}
