@@ -31,36 +31,10 @@ class VocabulariesForm extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.createNewVocabulary = this.createNewVocabulary.bind(this);
     this.handleDissociateVocabulary = this.handleDissociateVocabulary.bind(this);
-    this.loadVocabularies = this.loadVocabularies.bind(this);
+    this.loadAllVocabularies = this.loadAllVocabularies.bind(this);
+    this.loadDatasetVocabularies = this.loadDatasetVocabularies.bind(this);
 
-    this.loadVocabularies();
-  }
-
-  componentWillMount() {
-    if (this.state.datasetID) {
-      // Start the loading
-      this.setState({ loading: true });
-
-      get(
-        {
-          url: `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}?includes=vocabulary&cache=${Date.now()}`,
-          headers: [{ key: 'Content-Type', value: 'application/json' }],
-          onSuccess: (response) => {
-            const attrs = response.data.attributes;
-            this.setState({
-              hasVocabularies: attrs.vocabulary.length !== 0,
-              datasetName: attrs.name,
-              vocabularies: attrs.vocabulary.map(elem => elem.attributes),
-              // Stop the loading
-              loading: false
-            });
-          },
-          onError: () => {
-            console.info('Error');
-          }
-        }
-      );
-    }
+    this.loadAllVocabularies();
   }
 
   /**
@@ -113,6 +87,8 @@ class VocabulariesForm extends React.Component {
 
   onChange(vocabularyName, obj) {
     const vocabularies = this.state.vocabularies.slice(0);
+    const newAllVocabularies =
+      this.state.allVocabularies.filter(elem => elem.name !== obj.name);
     let vocabularyFound = false;
     const newVocabularies = vocabularies.map((elem) => {
       if (elem.name === vocabularyName) {
@@ -127,7 +103,10 @@ class VocabulariesForm extends React.Component {
       emptyVocabulary.name = obj.name;
       emptyVocabulary.attributes = obj.attributes;
     }
-    this.setState({ vocabularies: newVocabularies }, console.info('this.state', this.state));
+    this.setState({
+      vocabularies: newVocabularies,
+      allVocabularies: newAllVocabularies
+    }, console.info('this.state', this.state));
   }
 
   createNewVocabulary() {
@@ -139,10 +118,50 @@ class VocabulariesForm extends React.Component {
   handleDissociateVocabulary(voc) {
     const { vocabularies } = this.state;
     const newVocabularies = vocabularies.filter(elem => elem.name !== voc.name);
-    this.setState({ vocabularies: newVocabularies });
+    const newAllVocabularies = this.state.vocabularies.slice(0).push(voc);
+    this.setState({
+      vocabularies: newVocabularies,
+      allVocabularies: newAllVocabularies
+    });
   }
 
-  loadVocabularies() {
+  loadDatasetVocabularies() {
+    if (this.state.datasetID) {
+      // Start the loading
+      this.setState({ loading: true });
+
+      get(
+        {
+          url: `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}?includes=vocabulary&cache=${Date.now()}`,
+          headers: [{ key: 'Content-Type', value: 'application/json' }],
+          onSuccess: (response) => {
+            const attrs = response.data.attributes;
+            const vocabulary = attrs.vocabulary;
+            const { allVocabularies } = this.state;
+            const vocabularies = vocabulary.map(elem => elem.attributes);
+            const allVocabulariesNew = allVocabularies.filter((elem) => {
+              const vocabularyFound = !!vocabularies.find(tempVoc => tempVoc.name === elem.name);
+              return !vocabularyFound;
+            });
+            debugger;
+            this.setState({
+              hasVocabularies: vocabulary.length !== 0,
+              datasetName: attrs.name,
+              vocabularies,
+              allVocabularies: allVocabulariesNew,
+              // Stop the loading
+              loading: false
+            });
+          },
+          onError: () => {
+            console.info('Error');
+          }
+        }
+      );
+    }
+  }
+
+  loadAllVocabularies() {
     get(
       {
         url: 'https://api.resourcewatch.org/v1/vocabulary',
@@ -157,10 +176,8 @@ class VocabulariesForm extends React.Component {
                   tagSet: uniqBy(
                     flatten(elem.resources.map(res => res.tags)), e => e)
                 })
-              ),
-            // Stop the loading
-            loading: false
-          });
+              )
+          }, this.loadDatasetVocabularies());
         },
         onError: () => {
           console.info('Error');
