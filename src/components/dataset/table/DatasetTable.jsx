@@ -4,8 +4,8 @@ import Spinner from '../../ui/Spinner';
 import CustomTable from '../../ui/customtable/CustomTable';
 import DeleteAction from './actions/DeleteAction';
 import MetadataAction from './actions/MetadataAction';
-import StatusTD from './td/StatusTD';
 import VocabularyAction from './actions/VocabularyAction';
+import StatusTD from './td/StatusTD';
 
 class DatasetTable extends React.Component {
 
