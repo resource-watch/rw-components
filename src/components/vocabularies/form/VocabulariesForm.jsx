@@ -112,8 +112,10 @@ class VocabulariesForm extends React.Component {
 
   createNewVocabulary() {
     const { vocabularies } = this.state;
-    vocabularies.push({ name: '', tags: [] });
-    this.setState({ vocabularies });
+    if (!vocabularies.find(voc => voc.name === '')) {
+      vocabularies.push({ name: '', tags: [] });
+      this.setState({ vocabularies });
+    }
   }
 
   handleDissociateVocabulary(voc) {
