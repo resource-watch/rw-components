@@ -12,12 +12,11 @@ class VocabularyItem extends React.Component {
   constructor(props) {
     super(props);
 
-    const vocabulary = props.vocabulary;
-
+    const { vocabulary } = props;
     this.state = {
       vocabulary,
       selectedTags: vocabulary.tags,
-      tagSet: []
+      tagSet: vocabulary.tagSet
     };
 
     // BINDINGS

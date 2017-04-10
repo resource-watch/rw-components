@@ -7,6 +7,7 @@ import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
 import Title from '../../ui/Title';
 import VocabularyItem from './VocabularyItem';
 import Button from '../../ui/Button';
+import Spinner from '../../ui/Spinner';
 import { get, post } from '../../../utils/request';
 
 class VocabulariesForm extends React.Component {
@@ -56,18 +57,18 @@ class VocabulariesForm extends React.Component {
 
           const bodyObj = {};
           this.state.vocabularies.forEach((elem) => {
-            bodyObj[elem.attributes.name] = { tags: elem.attributes.tags };
+            bodyObj[elem.name] = { tags: elem.tags };
           });
-          const body = JSON.stringify(bodyObj);
 
           post(
             {
+              type: 'PUT',
               url: `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/vocabulary`,
               headers: [
                 { key: 'Content-Type', value: 'application/json' },
                 { key: 'Authorization', value: this.state.form.authorization }
               ],
-              body,
+              body: bodyObj,
               onSuccess: (response) => {
                 this.setState({ submitting: false });
                 const successMessage = 'Vocabularies have been updated correctly';
@@ -143,7 +144,6 @@ class VocabulariesForm extends React.Component {
               const vocabularyFound = !!vocabularies.find(tempVoc => tempVoc.name === elem.name);
               return !vocabularyFound;
             });
-            debugger;
             this.setState({
               hasVocabularies: vocabulary.length !== 0,
               datasetName: attrs.name,
@@ -167,16 +167,18 @@ class VocabulariesForm extends React.Component {
         url: 'https://api.resourcewatch.org/v1/vocabulary',
         headers: [{ key: 'Content-Type', value: 'application/json' }],
         onSuccess: (response) => {
+          const allVocabularies = response.data
+            .map(elem => elem.attributes)
+            .map(elem =>
+              ({
+                name: elem.name,
+                tagSet: uniqBy(
+                  flatten(elem.resources.map(res => res.tags)), e => e)
+              })
+            );
           this.setState({
-            allVocabularies: response.data
-              .map(elem => elem.attributes)
-              .map(elem =>
-                ({
-                  name: elem.name,
-                  tagSet: uniqBy(
-                    flatten(elem.resources.map(res => res.tags)), e => e)
-                })
-              )
+            allVocabularies,
+            allVocabulariesNotFiltered: allVocabularies.slice(0)
           }, this.loadDatasetVocabularies());
         },
         onError: () => {
@@ -187,7 +189,7 @@ class VocabulariesForm extends React.Component {
   }
 
   render() {
-    const { vocabularies, allVocabularies } = this.state;
+    const { vocabularies, allVocabularies, allVocabulariesNotFiltered } = this.state;
     return (
       <div>
         <Title className="-huge -p-primary">
@@ -196,21 +198,31 @@ class VocabulariesForm extends React.Component {
         <Title className="-p-primary">
           Vocabularies
         </Title>
-        <Button
-          onClick={this.createNewVocabulary}
-          properties={{
-            type: 'button',
-            className: '-primary'
-          }}
-        >
-          New Vocabulary
-        </Button>
+        {!this.state.loading &&
+          <Button
+            onClick={this.createNewVocabulary}
+            properties={{
+              type: 'button',
+              className: '-primary'
+            }}
+          >
+            New Vocabulary
+          </Button>
+        }
+        <Spinner
+          isLoading={this.state.loading}
+        />
         <form className="c-form" onSubmit={this.onSubmit} noValidate>
           {!this.state.loading && vocabularies.length > 0 &&
-            vocabularies.map((elem, i) =>
-              <VocabularyItem
+            vocabularies.map((elem, i) => {
+              const tempVoc = allVocabulariesNotFiltered.find(val => val.name === elem.name);
+              const elemWithTagSet = Object.assign(
+                elem,
+                { tagSet: tempVoc ? tempVoc.tagSet : [] }
+              );
+              return (<VocabularyItem
                 key={i}
-                vocabulary={elem}
+                vocabulary={elemWithTagSet}
                 allVocabularies={allVocabularies}
                 onChange={this.onChange}
                 application={this.props.application}
@@ -218,8 +230,8 @@ class VocabulariesForm extends React.Component {
                 language={this.props.language}
                 readOnly
                 onDissociateVocabulary={this.handleDissociateVocabulary}
-              />
-            )
+              />);
+            })
           }
           <ul className="c-field-buttons">
             <li>
