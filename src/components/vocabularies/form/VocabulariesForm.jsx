@@ -30,7 +30,7 @@ class VocabulariesForm extends React.Component {
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.createNewVocabulary = this.createNewVocabulary.bind(this);
+    this.triggerNewVocabulary = this.triggerNewVocabulary.bind(this);
     this.handleDissociateVocabulary = this.handleDissociateVocabulary.bind(this);
     this.loadAllVocabularies = this.loadAllVocabularies.bind(this);
     this.loadDatasetVocabularies = this.loadDatasetVocabularies.bind(this);
@@ -90,26 +90,22 @@ class VocabulariesForm extends React.Component {
     const vocabularies = this.state.vocabularies.slice(0);
     const newAllVocabularies =
       this.state.allVocabularies.filter(elem => elem.name !== obj.name);
-    let vocabularyFound = false;
+
     const newVocabularies = vocabularies.map((elem) => {
       if (elem.name === vocabularyName) {
-        vocabularyFound = true;
         return obj;
       } else {
         return elem;
       }
     });
-    if (!vocabularyFound) {
-      const emptyVocabulary = newVocabularies.find(val => val.name === '');
-      emptyVocabulary.name = obj.name;
-      emptyVocabulary.attributes = obj.attributes;
-    }
+
     this.setState({
       vocabularies: newVocabularies,
       allVocabularies: newAllVocabularies
+    });
   }
 
-  createNewVocabulary() {
+  triggerNewVocabulary() {
     const { vocabularies } = this.state;
     if (!vocabularies.find(voc => voc.name === '')) {
       vocabularies.push({ name: '', tags: [] });
@@ -119,10 +115,10 @@ class VocabulariesForm extends React.Component {
 
   handleDissociateVocabulary(voc) {
     const { vocabularies } = this.state;
-    const newVocabularies = vocabularies.filter(elem => elem.name !== voc.name);
-    const newAllVocabularies = this.state.vocabularies.slice(0).push(voc);
+    const filteredVocabularies = vocabularies.filter(elem => elem.name !== voc.name);
+    const newAllVocabularies = vocabularies.slice(0).push(voc);
     this.setState({
-      vocabularies: newVocabularies,
+      vocabularies: filteredVocabularies,
       allVocabularies: newAllVocabularies
     });
   }
@@ -141,15 +137,14 @@ class VocabulariesForm extends React.Component {
             const vocabulary = attrs.vocabulary;
             const { allVocabularies } = this.state;
             const vocabularies = vocabulary.map(elem => elem.attributes);
-            const allVocabulariesNew = allVocabularies.filter((elem) => {
+            const filteredVocabularies = allVocabularies.filter((elem) => {
               const vocabularyFound = !!vocabularies.find(tempVoc => tempVoc.name === elem.name);
               return !vocabularyFound;
             });
             this.setState({
-              hasVocabularies: vocabulary.length !== 0,
               datasetName: attrs.name,
               vocabularies,
-              allVocabularies: allVocabulariesNew,
+              allVocabularies: filteredVocabularies,
               // Stop the loading
               loading: false
             });
@@ -180,7 +175,7 @@ class VocabulariesForm extends React.Component {
           this.setState({
             allVocabularies,
             allVocabulariesNotFiltered: allVocabularies.slice(0)
-          }, this.loadDatasetVocabularies());
+          }, this.loadDatasetVocabularies);
         },
         onError: () => {
           console.info('Error');
@@ -201,7 +196,7 @@ class VocabulariesForm extends React.Component {
         </Title>
         {!this.state.loading &&
           <Button
-            onClick={this.createNewVocabulary}
+            onClick={this.triggerNewVocabulary}
             properties={{
               type: 'button',
               className: '-primary'

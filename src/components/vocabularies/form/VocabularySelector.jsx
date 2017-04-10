@@ -10,26 +10,13 @@ class VocabularySelector extends React.Component {
   constructor(props) {
     super(props);
 
-    let vocabulariesArray = [];
-    let disabledVal = false;
-    let selectedVal = null;
+
     const { vocabulary, allVocabularies } = props;
 
-    if (allVocabularies) {
-      vocabulariesArray = allVocabularies;
-    } else {
-      this.loadVocabularies();
-    }
-
-    if (vocabulary.name !== '') {
-      disabledVal = true;
-      selectedVal = { label: vocabulary.name, value: vocabulary };
-    }
-
     this.state = {
-      vocabularies: vocabulariesArray,
-      disabled: disabledVal,
-      selected: selectedVal,
+      vocabularies: allVocabularies || [],
+      disabled: false,
+      selected: null,
       form: {
         application: props.application,
         authorization: props.authorization,
@@ -40,6 +27,20 @@ class VocabularySelector extends React.Component {
     // BINDINGS
     this.triggerChange = this.triggerChange.bind(this);
     this.loadVocabularies = this.loadVocabularies.bind(this);
+  }
+
+  componentWillMount() {
+    const { vocabulary, allVocabularies } = this.props;
+
+    if (!allVocabularies) {
+      this.loadVocabularies();
+    }
+    if (vocabulary.name !== '') {
+      this.setState({
+        disabled: true,
+        selectedVal: { label: vocabulary.name, value: vocabulary }
+      });
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -57,7 +58,6 @@ class VocabularySelector extends React.Component {
   }
 
   loadVocabularies() {
-    console.info('loadVocabularies()');
     get(
       {
         url: 'https://api.resourcewatch.org/v1/vocabulary',
@@ -76,6 +76,10 @@ class VocabularySelector extends React.Component {
     );
   }
 
+  /**
+  * UI EVENTS
+  * triggerChange
+  */
   triggerChange(value) {
     const newSelected = value ? { label: value.name, value } : null;
     this.setState({

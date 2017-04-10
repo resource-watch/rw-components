@@ -34,7 +34,6 @@ class VocabularyItem extends React.Component {
   }
 
   onTagsChange(vals) {
-    console.info('onTagsChange');
     const vocabularyUpdated = Object.assign(this.state.vocabulary, { tags: vals });
 
     this.setState({
@@ -51,6 +50,10 @@ class VocabularyItem extends React.Component {
     }, () => this.props.onChange(value.id, value));
   }
 
+  /**
+  * UI EVENTS
+  * triggerDissociateVocabulary
+  */
   triggerDissociateVocabulary() {
     this.props.onDissociateVocabulary(this.state.vocabulary);
   }
@@ -61,49 +64,6 @@ class VocabularyItem extends React.Component {
 
     return (
       <fieldset className="c-field-container c-vocabulary-item">
-        {!readOnly &&
-          <div>
-            <Field
-              ref={(c) => { if (c) FORM_ELEMENTS.children.name = c; }}
-              onChange={value =>
-                this.props.onChange(this.state.vocabulary.name,
-                  { name: value, tags: this.state.vocabulary.tags })}
-              validations={['required']}
-              properties={{
-                name: 'name',
-                label: 'Name',
-                type: 'text',
-                required: true,
-                default: this.state.vocabulary.name
-              }}
-            >
-              {Input}
-            </Field>
-            <Field
-              ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
-              onChange={value => this.onTagsChange(value)}
-              options={this.state.vocabulary.tags.map(
-                tag => ({ label: tag, value: tag })
-              )}
-              validations={['required']}
-              selected={this.state.vocabulary.tags.map(
-                tag => ({ label: tag, value: tag })
-              )}
-              properties={{
-                name: 'tags',
-                label: 'tags',
-                creatable: true,
-                multi: true,
-                required: true,
-                default: this.state.vocabulary.tags.map(
-                  tag => ({ label: tag, value: tag })
-                )
-              }}
-            >
-              {Select}
-            </Field>
-          </div>
-        }
         {readOnly &&
           <div>
             <VocabularySelector
