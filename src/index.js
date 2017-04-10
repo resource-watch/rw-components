@@ -29,6 +29,10 @@ export { default as LayerChart } from './components/widget/LayerChart';
 // Metadata
 export { default as MetadataForm } from './components/metadata/form/MetadataForm';
 
+// Vocabularies
+export { default as VocabulariesForm } from './components/vocabularies/form/VocabulariesForm';
+export { default as VocabularyItem } from './components/vocabularies/form/VocabularyItem';
+
 // UI
 export { default as Button } from './components/ui/Button';
 export { default as ButtonContainer } from './components/ui/ButtonContainer';
