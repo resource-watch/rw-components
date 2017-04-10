@@ -91,13 +91,21 @@ class VocabulariesForm extends React.Component {
     const newAllVocabularies =
       this.state.allVocabularies.filter(elem => elem.name !== obj.name);
 
+    let vocabularyFound = false;
     const newVocabularies = vocabularies.map((elem) => {
       if (elem.name === vocabularyName) {
+        vocabularyFound = true;
         return obj;
       } else {
         return elem;
       }
     });
+
+    if (!vocabularyFound) {
+      const emptyVocabulary = newVocabularies.find(val => val.name === '');
+      emptyVocabulary.name = obj.name;
+      emptyVocabulary.attributes = obj.attributes;
+    }
 
     this.setState({
       vocabularies: newVocabularies,
@@ -206,6 +214,7 @@ class VocabulariesForm extends React.Component {
           </Button>
         }
         <Spinner
+          className="-light"
           isLoading={this.state.loading}
         />
         <form className="c-form" onSubmit={this.onSubmit} noValidate>
@@ -224,7 +233,6 @@ class VocabulariesForm extends React.Component {
                 application={this.props.application}
                 authorization={this.props.authorization}
                 language={this.props.language}
-                readOnly
                 onDissociateVocabulary={this.handleDissociateVocabulary}
               />);
             })

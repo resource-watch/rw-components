@@ -47,7 +47,7 @@ class VocabularyItem extends React.Component {
       vocabulary: value,
       tagSet: value.tagSet,
       selectedTags: []
-    }, () => this.props.onChange(value.id, value));
+    }, () => this.props.onChange(value.name, value));
   }
 
   /**
@@ -59,54 +59,50 @@ class VocabularyItem extends React.Component {
   }
 
   render() {
-    const { readOnly, allVocabularies } = this.props;
+    const { allVocabularies } = this.props;
     const { tagSet, vocabulary, selectedTags } = this.state;
 
     return (
       <fieldset className="c-field-container c-vocabulary-item">
-        {readOnly &&
-          <div>
-            <VocabularySelector
-              onChange={this.onVocabularyChange}
-              disableOnSelect
-              vocabulary={vocabulary}
-              allVocabularies={allVocabularies}
-            />
-            <Field
-              ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
-              onChange={value => this.onTagsChange(value)}
-              options={tagSet.map(val => ({ label: val, value: val }))}
-              validations={['required']}
-              selected={selectedTags.map(
-                tag => ({ label: tag, value: tag })
-              )}
-              properties={{
-                name: 'tags',
-                label: 'tags',
-                multi: true,
-                required: true,
-                default: selectedTags.map(
-                  tag => ({ label: tag, value: tag })
-                ),
-                value: selectedTags.map(
-                  tag => ({ label: tag, value: tag })
-                )
-              }}
-            >
-              {Select}
-            </Field>
-            <Button
-              onClick={this.triggerDissociateVocabulary}
-              properties={{
-                type: 'button',
-                name: 'dissociate',
-                className: '-primary'
-              }}
-            >
-              Dissociate Vocabulary
-            </Button>
-          </div>
-        }
+        <VocabularySelector
+          onChange={this.onVocabularyChange}
+          disableOnSelect
+          vocabulary={vocabulary}
+          allVocabularies={allVocabularies}
+        />
+        <Field
+          ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
+          onChange={value => this.onTagsChange(value)}
+          options={tagSet.map(val => ({ label: val, value: val }))}
+          validations={['required']}
+          selected={selectedTags.map(
+            tag => ({ label: tag, value: tag })
+          )}
+          properties={{
+            name: 'tags',
+            label: 'tags',
+            multi: true,
+            required: true,
+            default: selectedTags.map(
+              tag => ({ label: tag, value: tag })
+            ),
+            value: selectedTags.map(
+              tag => ({ label: tag, value: tag })
+            )
+          }}
+        >
+          {Select}
+        </Field>
+        <Button
+          onClick={this.triggerDissociateVocabulary}
+          properties={{
+            type: 'button',
+            name: 'dissociate',
+            className: '-primary'
+          }}
+        >
+          Dissociate Vocabulary
+        </Button>
       </fieldset>
     );
   }
@@ -116,7 +112,6 @@ VocabularyItem.propTypes = {
   vocabulary: React.PropTypes.object,
   allVocabularies: React.PropTypes.array,
   onChange: React.PropTypes.func,
-  readOnly: React.PropTypes.bool,
   onDissociateVocabulary: React.PropTypes.func
 };
 

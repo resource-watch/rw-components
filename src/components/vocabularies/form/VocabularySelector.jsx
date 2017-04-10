@@ -10,7 +10,6 @@ class VocabularySelector extends React.Component {
   constructor(props) {
     super(props);
 
-
     const { vocabulary, allVocabularies } = props;
 
     this.state = {
@@ -38,7 +37,7 @@ class VocabularySelector extends React.Component {
     if (vocabulary.name !== '') {
       this.setState({
         disabled: true,
-        selectedVal: { label: vocabulary.name, value: vocabulary }
+        selected: { label: vocabulary.name, value: vocabulary }
       });
     }
   }
