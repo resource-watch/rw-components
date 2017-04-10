@@ -10,8 +10,23 @@ class VocabularySelector extends React.Component {
   constructor(props) {
     super(props);
 
+    const vocabulariesArray = [];
+    let disabledVal = false;
+    let selectedVal = null;
+    const vocabularyName = props.vocabulary.name;
+
+    if (vocabularyName !== '') {
+      vocabulariesArray.push(props.vocabulary);
+      disabledVal = true;
+      selectedVal = { label: vocabularyName, value: props.vocabulary };
+    } else {
+      this.loadVocabularies();
+    }
+
     this.state = {
-      vocabularies: [],
+      vocabularies: vocabulariesArray,
+      disabled: disabledVal,
+      selected: selectedVal,
       form: {
         application: props.application,
         authorization: props.authorization,
@@ -21,9 +36,24 @@ class VocabularySelector extends React.Component {
 
     // BINDINGS
     this.triggerChange = this.triggerChange.bind(this);
+    this.loadVocabularies = this.loadVocabularies.bind(this);
   }
 
-  componentWillMount() {
+  componentWillReceiveProps(props) {
+    const selectedVal = { label: props.vocabulary.name, value: props.vocabulary };
+    this.setState({
+      vocabularies: [props.vocabulary],
+      disabled: true,
+      selected: selectedVal,
+      form: {
+        application: props.application,
+        authorization: props.authorization,
+        language: props.language
+      }
+    });
+  }
+
+  loadVocabularies() {
     get(
       {
         url: 'https://api.resourcewatch.org/v1/vocabulary',
@@ -43,13 +73,16 @@ class VocabularySelector extends React.Component {
   }
 
   triggerChange(value) {
-    const newSelected = value ? { label: value.name, value: value.name } : null;
-    this.setState({ selected: newSelected });
+    const newSelected = value ? { label: value.name, value } : null;
+    this.setState({
+      selected: newSelected,
+      disabled: this.props.disableOnSelect
+    });
     this.props.onChange(value);
   }
 
   render() {
-    const { selected } = this.state;
+    const { selected, disabled } = this.state;
     return (
       <Field
         ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
@@ -64,7 +97,8 @@ class VocabularySelector extends React.Component {
           label: 'Vocabulary',
           required: true,
           value: selected,
-          default: selected
+          default: selected,
+          disabled
         }}
       >
         {Select}
@@ -77,7 +111,9 @@ VocabularySelector.propTypes = {
   onChange: React.PropTypes.func,
   application: React.PropTypes.string,
   authorization: React.PropTypes.string,
-  language: React.PropTypes.string
+  language: React.PropTypes.string,
+  disableOnSelect: React.PropTypes.boolean,
+  vocabulary: React.PropTypes.object
 };
 
 export default VocabularySelector;

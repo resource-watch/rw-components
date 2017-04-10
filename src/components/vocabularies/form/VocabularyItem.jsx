@@ -14,9 +14,11 @@ class VocabularyItem extends React.Component {
   constructor(props) {
     super(props);
 
+    const vocabulary = props.vocabulary;
+
     this.state = {
-      vocabulary: props.vocabulary,
-      selectedTags: [],
+      vocabulary,
+      selectedTags: vocabulary.tags,
       tagSet: []
     };
 
@@ -27,7 +29,11 @@ class VocabularyItem extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState({ vocabulary: props.vocabulary });
+    const vocabulary = props.vocabulary;
+    this.setState({
+      vocabulary,
+      selectedTags: vocabulary.tags
+    });
   }
 
   onTagsChange(vals) {
@@ -41,8 +47,14 @@ class VocabularyItem extends React.Component {
   }
 
   onVocabularyChange(value) {
-    const tagSet = uniqBy(
-      flatten(value.resources.map(res => res.tags)), e => e);
+    let tagSet = [];
+    if (value.tags) {
+      tagSet = value.tags;
+    } else {
+      tagSet = uniqBy(
+        flatten(value.resources.map(res => res.tags)), e => e);
+    }
+
     this.setState({
       vocabulary: value,
       tagSet
@@ -55,7 +67,7 @@ class VocabularyItem extends React.Component {
 
   render() {
     const { readOnly } = this.props;
-    const { tagSet } = this.state;
+    const { tagSet, vocabulary, selectedTags } = this.state;
 
     return (
       <fieldset className="c-field-container c-vocabulary-item">
@@ -106,13 +118,15 @@ class VocabularyItem extends React.Component {
           <div>
             <VocabularySelector
               onChange={this.onVocabularyChange}
+              disableOnSelect
+              vocabulary={vocabulary}
             />
             <Field
               ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
               onChange={value => this.onTagsChange(value)}
               options={tagSet.map(val => ({ label: val, value: val }))}
               validations={['required']}
-              selected={this.state.selectedTags.map(
+              selected={selectedTags.map(
                 tag => ({ label: tag, value: tag })
               )}
               properties={{
@@ -120,8 +134,12 @@ class VocabularyItem extends React.Component {
                 label: 'tags',
                 multi: true,
                 required: true,
-                default: this.state.selectedTags,
-                value: this.state.selectedTags
+                default: selectedTags.map(
+                  tag => ({ label: tag, value: tag })
+                ),
+                value: selectedTags.map(
+                  tag => ({ label: tag, value: tag })
+                )
               }}
             >
               {Select}
