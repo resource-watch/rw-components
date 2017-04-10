@@ -107,7 +107,6 @@ class VocabulariesForm extends React.Component {
     this.setState({
       vocabularies: newVocabularies,
       allVocabularies: newAllVocabularies
-    }, console.info('this.state', this.state));
   }
 
   createNewVocabulary() {
