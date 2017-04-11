@@ -1,4 +1,5 @@
 import React from 'react';
+import { Autobind } from 'es-decorators';
 
 import Field from '../../form/Field';
 import Select from '../../form/SelectInput';
@@ -10,7 +11,7 @@ class VocabularySelector extends React.Component {
   constructor(props) {
     super(props);
 
-    const { vocabulary, allVocabularies } = props;
+    const { allVocabularies } = props;
 
     this.state = {
       vocabularies: allVocabularies || [],
@@ -22,12 +23,13 @@ class VocabularySelector extends React.Component {
         language: props.language
       }
     };
-
-    // BINDINGS
-    this.triggerChange = this.triggerChange.bind(this);
-    this.loadVocabularies = this.loadVocabularies.bind(this);
   }
 
+  /**
+   * COMPONENT LIFECYCLE
+   * - componentWillMount
+   * - componentWillReceiveProps
+  */
   componentWillMount() {
     const { vocabulary, allVocabularies } = this.props;
 
@@ -41,7 +43,6 @@ class VocabularySelector extends React.Component {
       });
     }
   }
-
   componentWillReceiveProps(props) {
     const selectedVal = { label: props.vocabulary.name, value: props.vocabulary };
     this.setState({
@@ -56,6 +57,25 @@ class VocabularySelector extends React.Component {
     });
   }
 
+  /**
+  * UI EVENTS
+  * triggerChange
+  */
+  @Autobind
+  triggerChange(value) {
+    const newSelected = value ? { label: value.name, value } : null;
+    this.setState({
+      selected: newSelected,
+      disabled: this.props.disableOnSelect
+    });
+    this.props.onChange(value);
+  }
+
+  /**
+  * HELPER FUNCTIONS
+  * loadVocabularies
+  */
+  @Autobind
   loadVocabularies() {
     get(
       {
@@ -73,19 +93,6 @@ class VocabularySelector extends React.Component {
         }
       }
     );
-  }
-
-  /**
-  * UI EVENTS
-  * triggerChange
-  */
-  triggerChange(value) {
-    const newSelected = value ? { label: value.name, value } : null;
-    this.setState({
-      selected: newSelected,
-      disabled: this.props.disableOnSelect
-    });
-    this.props.onChange(value);
   }
 
   render() {
