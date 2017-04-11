@@ -126,7 +126,7 @@ VocabularySelector.propTypes = {
   application: React.PropTypes.string,
   authorization: React.PropTypes.string,
   language: React.PropTypes.string,
-  disableOnSelect: React.PropTypes.boolean,
+  disableOnSelect: React.PropTypes.bool,
   vocabulary: React.PropTypes.object,
   allVocabularies: React.PropTypes.array
 };
