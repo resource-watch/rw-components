@@ -110,9 +110,12 @@ class VocabulariesForm extends React.Component {
   }
   @Autobind
   handleDissociateVocabulary(voc) {
-    const { vocabularies } = this.state;
+    const { vocabularies, allVocabularies } = this.state;
     const filteredVocabularies = vocabularies.filter(elem => elem.name !== voc.name);
-    const newAllVocabularies = vocabularies.slice(0).push(voc);
+    const newAllVocabularies = allVocabularies.slice(0);
+    if (voc.name !== '') {
+      newAllVocabularies.push(voc);
+    }
     this.setState({
       vocabularies: filteredVocabularies,
       allVocabularies: newAllVocabularies
