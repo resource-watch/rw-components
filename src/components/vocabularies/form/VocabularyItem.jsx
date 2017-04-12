@@ -64,47 +64,49 @@ class VocabularyItem extends React.Component {
     const { tagSet, vocabulary, selectedTags } = this.state;
 
     return (
-      <fieldset className="c-field-container c-vocabulary-item">
-        <VocabularySelector
-          onChange={this.triggerVocabularyChange}
-          disableOnSelect
-          vocabulary={vocabulary}
-          allVocabularies={allVocabularies}
-        />
-        <Field
-          ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
-          onChange={value => this.triggerTagsChange(value)}
-          options={tagSet.map(val => ({ label: val, value: val }))}
-          validations={['required']}
-          selected={selectedTags.map(
-            tag => ({ label: tag, value: tag })
-          )}
-          properties={{
-            name: 'tags',
-            label: 'tags',
-            multi: true,
-            required: true,
-            default: selectedTags.map(
+      <div className={`c-vocabulary-item`}>
+        <fieldset className="c-field-container">
+          <VocabularySelector
+            onChange={this.triggerVocabularyChange}
+            disableOnSelect
+            vocabulary={vocabulary}
+            allVocabularies={allVocabularies}
+          />
+          <Field
+            ref={(c) => { if (c) FORM_ELEMENTS.children.tags = c; }}
+            onChange={value => this.triggerTagsChange(value)}
+            options={tagSet.map(val => ({ label: val, value: val }))}
+            validations={['required']}
+            selected={selectedTags.map(
               tag => ({ label: tag, value: tag })
-            ),
-            value: selectedTags.map(
-              tag => ({ label: tag, value: tag })
-            )
-          }}
-        >
-          {Select}
-        </Field>
-        <Button
-          onClick={this.triggerDissociateVocabulary}
-          properties={{
-            type: 'button',
-            name: 'dissociate',
-            className: '-primary'
-          }}
-        >
-          Dissociate Vocabulary
-        </Button>
-      </fieldset>
+            )}
+            properties={{
+              name: 'tags',
+              label: 'tags',
+              multi: true,
+              required: true,
+              default: selectedTags.map(
+                tag => ({ label: tag, value: tag })
+              ),
+              value: selectedTags.map(
+                tag => ({ label: tag, value: tag })
+              )
+            }}
+          >
+            {Select}
+          </Field>
+          <Button
+            onClick={this.triggerDissociateVocabulary}
+            properties={{
+              type: 'button',
+              name: 'dissociate',
+              className: '-primary'
+            }}
+          >
+            Dissociate Vocabulary
+          </Button>
+        </fieldset>
+      </div>
     );
   }
 }

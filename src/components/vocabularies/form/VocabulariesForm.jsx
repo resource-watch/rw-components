@@ -195,9 +195,9 @@ class VocabulariesForm extends React.Component {
         <Title className="-huge -p-primary">
           {this.state.datasetName}
         </Title>
-        <Title className="-p-primary">
+        <h1 className="-p-primary">
           Vocabularies
-        </Title>
+        </h1>
         {!this.state.loading &&
           <Button
             onClick={this.triggerNewVocabulary}
@@ -214,26 +214,33 @@ class VocabulariesForm extends React.Component {
           isLoading={this.state.loading}
         />
         <form className="c-form" onSubmit={this.triggerSubmit} noValidate>
-          {!this.state.loading && vocabularies.length > 0 &&
-            vocabularies.map((elem, i) => {
-              const tempVoc = allVocabulariesNotFiltered.find(val => val.name === elem.name);
-              const elemWithTagSet = Object.assign(
-                elem,
-                { tagSet: tempVoc ? tempVoc.tagSet : [] }
-              );
-              return (<VocabularyItem
-                key={i}
-                index={i}
-                vocabulary={elemWithTagSet}
-                allVocabularies={allVocabularies}
-                onChange={this.triggerChange}
-                application={this.props.application}
-                authorization={this.props.authorization}
-                language={this.props.language}
-                onDissociateVocabulary={this.handleDissociateVocabulary}
-              />);
-            })
-          }
+          <div className="row">
+            {!this.state.loading && vocabularies.length > 0 &&
+              vocabularies.map((elem, i) => {
+                const tempVoc = allVocabulariesNotFiltered.find(val => val.name === elem.name);
+                const elemWithTagSet = Object.assign(
+                  elem,
+                  { tagSet: tempVoc ? tempVoc.tagSet : [] }
+                );
+                return (
+                  <div
+                    className="small-6 medium-4 column"
+                    key={i}
+                  >
+                    <VocabularyItem
+                      index={i}
+                      vocabulary={elemWithTagSet}
+                      allVocabularies={allVocabularies}
+                      onChange={this.triggerChange}
+                      application={this.props.application}
+                      authorization={this.props.authorization}
+                      language={this.props.language}
+                      onDissociateVocabulary={this.handleDissociateVocabulary}
+                    />
+                  </div>);
+              })
+            }
+          </div>
           <ul className="c-field-buttons">
             <li>
               <Button
