@@ -20,6 +20,7 @@ export const STATE_DEFAULT = {
     source: '',
     description: '',
     name: '',
+    language: 'en',
     info: {
     }
   }

@@ -72,6 +72,7 @@ class Step1 extends React.Component {
               name: 'language',
               label: 'Data language',
               type: 'text',
+              disabled: true,
               required: true,
               default: this.props.metadata.language
             }}
