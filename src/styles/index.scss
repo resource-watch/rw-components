@@ -1,6 +1,11 @@
 // Reset
 @import "../../node_modules/normalize.css/normalize";
 
+// Foundation
+@import 'foundation_settings';
+@import '../../node_modules/foundation-sites/scss/foundation';
+@include foundation-flex-grid;
+
 // Common files
 @import "./config";
 @import "./base";
@@ -39,3 +44,6 @@
 @import "./components/widget/card";
 @import "./components/widget/list";
 @import "./components/widget/chart";
+
+// Vocabularies
+@import "./components/vocabularies/vocabulary_item";
