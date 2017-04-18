@@ -33,7 +33,6 @@ export const FORM_ELEMENTS = {
   validate() {
     const elements = this.elements;
     Object.keys(elements).forEach((k) => {
-      console.log(k);
       elements[k].validate();
     });
   },

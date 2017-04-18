@@ -1,17 +1,22 @@
 import React from 'react';
 
-class VocabularyAction extends React.Component {
+class MetadataAction extends React.Component {
+
+  parseHref() {
+    const { action, data } = this.props;
+    const id = data.id;
+    const path = action.path;
+
+    return path.replace(':id', id);
+  }
 
   render() {
-    const { data, href } = this.props;
+    const { data } = this.props;
     return (
       <span>
-        {
-          (data.status === 'saved') &&
-          <a
-            href={href}
-          >
-          Vocabularies
+        {(data.status === 'saved') &&
+          <a href={this.parseHref()}>
+            Vocabularies
           </a>
         }
       </span>
@@ -19,9 +24,9 @@ class VocabularyAction extends React.Component {
   }
 }
 
-VocabularyAction.propTypes = {
+MetadataAction.propTypes = {
   data: React.PropTypes.object,
-  href: React.PropTypes.string
+  action: React.PropTypes.object
 };
 
-export default VocabularyAction;
+export default MetadataAction;

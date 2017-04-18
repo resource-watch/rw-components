@@ -20,6 +20,7 @@ export { default as LayerForm } from './components/layer/form/LayerForm';
 // Widget
 export { default as WidgetCard } from './components/widget/WidgetCard';
 export { default as WidgetForm } from './components/widget/form/WidgetForm';
+export { default as WidgetTable } from './components/widget/table/WidgetTable';
 export { default as WidgetList } from './components/widget/WidgetList';
 export { default as WidgetPreview } from './components/widget/preview/WidgetPreview';
 export { default as WidgetWizard } from './components/widget/wizard/WidgetWizard';
