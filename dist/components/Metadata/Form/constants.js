@@ -3,6 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var LANGUAGE_OPTIONS = exports.LANGUAGE_OPTIONS = [{ label: 'English', value: 'en' }, { label: 'Español', value: 'es' }, { label: 'Français', value: 'fr' }, { label: 'Português', value: 'pt' }];
+
 var STATE_DEFAULT = exports.STATE_DEFAULT = {
   step: 1,
   stepLength: 1,
@@ -16,24 +18,32 @@ var STATE_DEFAULT = exports.STATE_DEFAULT = {
   },
   metadata: {
     source: '',
-    license: '',
-    citation: '',
     description: '',
     name: '',
-    info: {
-      functions: '',
-      cautions: '',
-      technical_title: '',
-      title: '',
-      subtitle: '',
-      license_link: '',
-      overview: '',
-      why: '',
-      other: '',
-      geographic_coverage: '',
-      spatial_resolution: '',
-      date_of_content: '',
-      frequency_of_updates: ''
-    }
+    language: 'en',
+    info: {}
+  }
+};
+
+var FORM_ELEMENTS = exports.FORM_ELEMENTS = {
+  elements: {},
+  validate: function validate() {
+    var elements = this.elements;
+    Object.keys(elements).forEach(function (k) {
+      console.log(k);
+      elements[k].validate();
+    });
+  },
+  isValid: function isValid() {
+    var elements = this.elements;
+    var valid = Object.keys(elements).map(function (k) {
+      return elements[k].isValid();
+    }).filter(function (v) {
+      return v !== null;
+    }).every(function (element) {
+      return element;
+    });
+
+    return valid;
   }
 };
