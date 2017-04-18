@@ -21,10 +21,12 @@ export default class TableContent extends React.Component {
     let data = this.props.filteredData;
 
     if (!data.length) {
+      const length = (actions.show) ? columns.length + 1 : columns.length;
+
       return (
         <tbody>
           <tr>
-            <td colSpan={columns.length}>No results found</td>
+            <td colSpan={length}>No results found</td>
           </tr>
         </tbody>
       );

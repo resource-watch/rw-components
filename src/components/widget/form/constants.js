@@ -12,8 +12,9 @@ export const STATE_DEFAULT = {
     sourceUrl: '',
     authors: '',
     widgetConfig: {},
-    status: 1,
     default: false,
+    status: 1,
+    verified: true,
     published: true
   }
 };

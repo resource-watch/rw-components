@@ -37,7 +37,7 @@ class WidgetForm extends React.Component {
         }],
         onSuccess: (response) => {
           this.setState({
-            form: this.setFormFromParams(response.data.attributes),
+            form: this.setFormFromParams(omit(response.data.attributes, ['status', 'published', 'verified'])),
             // Stop the loading
             loading: false
           });
@@ -72,9 +72,7 @@ class WidgetForm extends React.Component {
         post({
           type: (this.state.dataset && this.state.widget) ? 'PATCH' : 'POST',
           url: `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget || ''}`,
-          body: {
-            widget: omit(this.state.form, ['authorization'])
-          },
+          body: omit(this.state.form, ['authorization']),
           headers: [{
             key: 'Content-Type',
             value: 'application/json'

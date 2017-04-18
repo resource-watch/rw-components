@@ -14,7 +14,7 @@ class DeleteAction extends React.Component {
     const { data } = this.props;
     e && e.preventDefault() && e.stopPropagation();
 
-    if (confirm(`Are you sure that you want to delete the widget: "${data.name}" `)) {
+    if (data.dataset && data.id && confirm(`Are you sure that you want to delete the widget: "${data.name}" `)) {
       remove({
         url: `https://api.resourcewatch.org/v1/dataset/${data.dataset}/widget/${data.id}`,
         headers: [{
