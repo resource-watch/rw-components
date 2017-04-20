@@ -13,10 +13,6 @@ export default class TableContent extends React.Component {
     };
   }
 
-  setIndividualActionPath(path, id) {
-    return path.replace(':id', id);
-  }
-
   render() {
     const { actions, columns, sort, rowSelection } = this.props;
     const { bottom, top } = this.getPageBounds();
@@ -25,10 +21,12 @@ export default class TableContent extends React.Component {
     let data = this.props.filteredData;
 
     if (!data.length) {
+      const length = (actions.show) ? columns.length + 1 : columns.length;
+
       return (
         <tbody>
           <tr>
-            <td colSpan={columns.length}>No results found</td>
+            <td colSpan={length}>No results found</td>
           </tr>
         </tbody>
       );
@@ -61,7 +59,7 @@ export default class TableContent extends React.Component {
                 const value = row[col.value];
                 const td = col.td ?
                   <col.td key={i} value={value} /> :
-                  <td key={i} className={col.className || ''}>{value}</td>;
+                  <td key={i} className={col.className || ''}>{(value.toString) ? value.toString() : value}</td>;
                 return td;
               }
               )}
@@ -74,7 +72,7 @@ export default class TableContent extends React.Component {
                           <li key={j}>
                             <ac.component
                               {...ac.componentProps}
-                              href={this.setIndividualActionPath(ac.path, row.id)}
+                              action={ac}
                               data={row}
                               onRowDelete={this.props.onRowDelete}
                               onToggleSelectedRow={this.props.onToggleSelectedRow}
@@ -84,7 +82,7 @@ export default class TableContent extends React.Component {
                       }
                       return (
                         <li key={j}>
-                          <a href={this.setIndividualActionPath(ac.path, row.id)} >
+                          <a href={ac.path} >
                             {ac.name}
                           </a>
                         </li>

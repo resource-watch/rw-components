@@ -155,6 +155,7 @@ export default class TableFilters extends React.Component {
   */
   getFilteredValues() {
     const { values, input } = this.state;
+    if (!values) { return []; }
 
     const filteredValues = values.filter((val) => {
       if (input) {

@@ -5,6 +5,7 @@ import CustomTable from '../../ui/customtable/CustomTable';
 import DeleteAction from './actions/DeleteAction';
 import MetadataAction from './actions/MetadataAction';
 import VocabularyAction from './actions/VocabularyAction';
+import WidgetAction from './actions/WidgetAction';
 import StatusTD from './td/StatusTD';
 
 class DatasetTable extends React.Component {
@@ -63,10 +64,11 @@ class DatasetTable extends React.Component {
           actions={{
             show: true,
             list: [
-              { name: 'Edit', path: 'datasets/:id/edit', show: true },
-              { name: 'Remove', path: 'datasets/:id/remove', component: DeleteAction, componentProps: { authorization: this.props.authorization } },
-              { name: 'Metadata', path: 'datasets/:id/metadata', component: MetadataAction },
-              { name: 'Vocabularies', path: 'datasets/:id/vocabularies', component: VocabularyAction }
+              { name: 'Edit', path: '/datasets/:id/edit', show: true },
+              { name: 'Remove', path: '/datasets/:id/remove', component: DeleteAction, componentProps: { authorization: this.props.authorization } },
+              { name: 'Metadata', path: '/datasets/:id/metadata', component: MetadataAction },
+              { name: 'Vocabularies', path: '/datasets/:id/vocabularies', component: VocabularyAction },
+              { name: 'Widgets', path: '/datasets/:id/widgets', component: WidgetAction }
             ]
           }}
           data={this.state.datasets}
@@ -86,17 +88,8 @@ class DatasetTable extends React.Component {
 
 DatasetTable.defaultProps = {
   application: ['rw'],
-  columns: [
-    { label: 'name', value: 'name' },
-    { label: 'provider', value: 'provider' }
-  ],
-  actions: {
-    show: true,
-    list: [
-      { name: 'Edit', path: 'datasets/:id/edit', show: true },
-      { name: 'Remove', path: 'datasets/:id/remove', show: true }
-    ]
-  }
+  columns: [],
+  actions: {}
 };
 
 DatasetTable.propTypes = {
