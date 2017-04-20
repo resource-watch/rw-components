@@ -41,6 +41,8 @@ export { default as Icon } from './components/ui/Icon';
 export { default as Spinner } from './components/ui/Spinner';
 export { default as Table } from './components/ui/Table';
 export { default as Title } from './components/ui/Title';
+export { default as Modal } from './components/ui/modal/Modal';
+
 
 // Form
 export { default as Checkbox } from './components/form/Checkbox';
@@ -54,3 +56,6 @@ export { default as RadioGroup } from './components/form/RadioGroup';
 export { default as Select } from './components/form/SelectInput';
 export { default as TextArea } from './components/form/TextArea';
 export { default as Token } from './components/form/Token';
+
+// Reducers
+export { closeModal, toggleModal, modalLoading, setModalOptions, modalReducer } from './components/ui/modal/reducer';
