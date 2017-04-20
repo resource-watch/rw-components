@@ -6,6 +6,7 @@ import DeleteAction from './actions/DeleteAction';
 import MetadataAction from './actions/MetadataAction';
 import VocabularyAction from './actions/VocabularyAction';
 import WidgetAction from './actions/WidgetAction';
+import EditAction from './actions/EditAction';
 import StatusTD from './td/StatusTD';
 
 class DatasetTable extends React.Component {
@@ -64,7 +65,7 @@ class DatasetTable extends React.Component {
           actions={{
             show: true,
             list: [
-              { name: 'Edit', path: '/datasets/:id/edit', show: true },
+              { name: 'Edit', path: '/datasets/:id/edit', show: true, component: EditAction },
               { name: 'Remove', path: '/datasets/:id/remove', component: DeleteAction, componentProps: { authorization: this.props.authorization } },
               { name: 'Metadata', path: '/datasets/:id/metadata', component: MetadataAction },
               { name: 'Vocabularies', path: '/datasets/:id/vocabularies', component: VocabularyAction },
