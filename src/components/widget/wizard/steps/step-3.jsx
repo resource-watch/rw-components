@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Step from './step';
+import Step from '../../form/steps/Step1';
 import Field from '../../../form/Field';
 import Input from '../../../form/Input';
 import Textarea from '../../../form/TextArea';

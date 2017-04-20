@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Step from './step';
+import Step from '../../form/steps/Step1';
 import Title from '../../../ui/Title';
 import WidgetPreview from '../../preview/WidgetPreview';
 

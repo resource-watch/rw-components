@@ -29,6 +29,10 @@ import CheckboxGroup from '../src/components/form/CheckboxGroup';
 import RadioGroup from '../src/components/form/RadioGroup';
 import Navigation from '../src/components/form/Navigation';
 
+// UI
+import Modal from '../src/components/ui/modal/Modal';
+import Title from '../src/components/ui/Title';
+
 storiesOf('Dataset', module)
   .add('Form', () => {
     return (
@@ -267,3 +271,13 @@ storiesOf('Form Elements', module)
       />
     );
   })
+
+  storiesOf('UI', module)
+    .add('Modal', () => {
+      return (
+        <Modal
+          open={true}
+          options={{ children: Title, childrenProps: { children: <h1>Modal</h1> } }}
+        />
+      );
+    })
