@@ -10,9 +10,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _step = require('./step');
+var _Step2 = require('../../form/steps/Step1');
 
-var _step2 = _interopRequireDefault(_step);
+var _Step3 = _interopRequireDefault(_Step2);
 
 var _Title = require('../../../ui/Title');
 
@@ -70,7 +70,7 @@ var Step2 = function (_Step) {
   }]);
 
   return Step2;
-}(_step2.default);
+}(_Step3.default);
 
 Step2.propTypes = {
   wizard: _react2.default.PropTypes.object,
