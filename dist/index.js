@@ -121,6 +121,15 @@ Object.defineProperty(exports, 'WidgetForm', {
   }
 });
 
+var _WidgetTable = require('./components/widget/table/WidgetTable');
+
+Object.defineProperty(exports, 'WidgetTable', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_WidgetTable).default;
+  }
+});
+
 var _WidgetList = require('./components/widget/WidgetList');
 
 Object.defineProperty(exports, 'WidgetList', {
@@ -247,6 +256,15 @@ Object.defineProperty(exports, 'Title', {
   }
 });
 
+var _Modal = require('./components/ui/modal/Modal');
+
+Object.defineProperty(exports, 'Modal', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_Modal).default;
+  }
+});
+
 var _Checkbox = require('./components/form/Checkbox');
 
 Object.defineProperty(exports, 'Checkbox', {
@@ -343,6 +361,39 @@ Object.defineProperty(exports, 'Token', {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_Token).default;
+  }
+});
+
+var _reducer = require('./components/ui/modal/reducer');
+
+Object.defineProperty(exports, 'closeModal', {
+  enumerable: true,
+  get: function get() {
+    return _reducer.closeModal;
+  }
+});
+Object.defineProperty(exports, 'toggleModal', {
+  enumerable: true,
+  get: function get() {
+    return _reducer.toggleModal;
+  }
+});
+Object.defineProperty(exports, 'modalLoading', {
+  enumerable: true,
+  get: function get() {
+    return _reducer.modalLoading;
+  }
+});
+Object.defineProperty(exports, 'setModalOptions', {
+  enumerable: true,
+  get: function get() {
+    return _reducer.setModalOptions;
+  }
+});
+Object.defineProperty(exports, 'modalReducer', {
+  enumerable: true,
+  get: function get() {
+    return _reducer.modalReducer;
   }
 });
 

@@ -26,14 +26,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var TableFooter = function (_React$Component) {
   _inherits(TableFooter, _React$Component);
 
-  function TableFooter(props) {
+  function TableFooter() {
     _classCallCheck(this, TableFooter);
 
-    return _possibleConstructorReturn(this, (TableFooter.__proto__ || Object.getPrototypeOf(TableFooter)).call(this, props));
+    return _possibleConstructorReturn(this, (TableFooter.__proto__ || Object.getPrototypeOf(TableFooter)).apply(this, arguments));
   }
 
   _createClass(TableFooter, [{
     key: 'onChangePage',
+
+
+    // UI EVENTS
+    // - onChangePage
     value: function onChangePage(page) {
       this.props.onChangePage && this.props.onChangePage(page - 1);
     }
@@ -46,7 +50,7 @@ var TableFooter = function (_React$Component) {
           pagination = _props.pagination,
           showTotalPages = _props.showTotalPages;
 
-      var maxPage = Math.ceil(pagination.total / pagination.pageSize);
+      var maxPage = Math.ceil(pagination.total / pagination.pageSize) || 1;
 
       return _react2.default.createElement(
         'div',
@@ -89,6 +93,8 @@ exports.default = TableFooter;
 
 TableFooter.propTypes = {
   pagination: _react2.default.PropTypes.object,
+  showTotalPages: _react2.default.PropTypes.bool,
+  // FUNCTIONS
   onChangePage: _react2.default.PropTypes.func
 };
 
@@ -99,6 +105,7 @@ TableFooter.defaultProps = {
     page: 1,
     total: null
   },
-  onPrevPage: null,
-  onNextPage: null
+  showTotalPages: false,
+  // FUNCTIONS
+  onChangePage: null
 };

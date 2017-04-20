@@ -18,50 +18,52 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var MetadataAction = function (_React$Component) {
-  _inherits(MetadataAction, _React$Component);
+var EditAction = function (_React$Component) {
+  _inherits(EditAction, _React$Component);
 
-  function MetadataAction() {
-    _classCallCheck(this, MetadataAction);
+  function EditAction() {
+    _classCallCheck(this, EditAction);
 
-    return _possibleConstructorReturn(this, (MetadataAction.__proto__ || Object.getPrototypeOf(MetadataAction)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (EditAction.__proto__ || Object.getPrototypeOf(EditAction)).apply(this, arguments));
   }
 
-  _createClass(MetadataAction, [{
+  _createClass(EditAction, [{
     key: 'parseHref',
     value: function parseHref() {
       var _props = this.props,
           action = _props.action,
           data = _props.data;
+      var id = data.id,
+          dataset = data.dataset;
 
-      var id = data.id;
       var path = action.path;
+      // I know, improvable
+      path = path.replace(':dataset_id', dataset);
+      path = path.replace(':id', id);
 
-      return path.replace(':id', id);
+      return path;
     }
   }, {
     key: 'render',
     value: function render() {
-      var data = this.props.data;
-
       return _react2.default.createElement(
         'span',
         null,
-        data.status === 'saved' && _react2.default.createElement(
+        _react2.default.createElement(
           'a',
           { href: this.parseHref() },
-          'Metadata'
+          'Edit'
         )
       );
     }
   }]);
 
-  return MetadataAction;
+  return EditAction;
 }(_react2.default.Component);
 
-MetadataAction.propTypes = {
+EditAction.propTypes = {
   data: _react2.default.PropTypes.object,
   action: _react2.default.PropTypes.object
 };
 
-exports.default = MetadataAction;
+exports.default = EditAction;

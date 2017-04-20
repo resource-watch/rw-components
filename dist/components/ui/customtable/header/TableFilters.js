@@ -232,6 +232,9 @@ var TableFilters = function (_React$Component) {
           values = _state2.values,
           input = _state2.input;
 
+      if (!values) {
+        return [];
+      }
 
       var filteredValues = values.filter(function (val) {
         if (input) {

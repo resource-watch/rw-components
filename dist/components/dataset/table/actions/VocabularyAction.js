@@ -18,42 +18,50 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var VocabularyAction = function (_React$Component) {
-  _inherits(VocabularyAction, _React$Component);
+var MetadataAction = function (_React$Component) {
+  _inherits(MetadataAction, _React$Component);
 
-  function VocabularyAction() {
-    _classCallCheck(this, VocabularyAction);
+  function MetadataAction() {
+    _classCallCheck(this, MetadataAction);
 
-    return _possibleConstructorReturn(this, (VocabularyAction.__proto__ || Object.getPrototypeOf(VocabularyAction)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (MetadataAction.__proto__ || Object.getPrototypeOf(MetadataAction)).apply(this, arguments));
   }
 
-  _createClass(VocabularyAction, [{
+  _createClass(MetadataAction, [{
+    key: 'parseHref',
+    value: function parseHref() {
+      var _props = this.props,
+          action = _props.action,
+          data = _props.data;
+
+      var id = data.id;
+      var path = action.path;
+
+      return path.replace(':id', id);
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          data = _props.data,
-          href = _props.href;
+      var data = this.props.data;
 
       return _react2.default.createElement(
         'span',
         null,
         data.status === 'saved' && _react2.default.createElement(
           'a',
-          {
-            href: href
-          },
+          { href: this.parseHref() },
           'Vocabularies'
         )
       );
     }
   }]);
 
-  return VocabularyAction;
+  return MetadataAction;
 }(_react2.default.Component);
 
-VocabularyAction.propTypes = {
+MetadataAction.propTypes = {
   data: _react2.default.PropTypes.object,
-  href: _react2.default.PropTypes.string
+  action: _react2.default.PropTypes.object
 };
 
-exports.default = VocabularyAction;
+exports.default = MetadataAction;

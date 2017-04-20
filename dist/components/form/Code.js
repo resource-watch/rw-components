@@ -80,6 +80,9 @@ var Code = function (_FormElement) {
         theme: 'github',
         value: this.state.value,
         tabSize: 2,
+        width: '100%',
+        wrapEnabled: true,
+        showPrintMargin: false,
         editorProps: { $blockScrolling: true },
         onChange: this.triggerChange
       });

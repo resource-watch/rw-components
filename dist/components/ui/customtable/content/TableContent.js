@@ -50,11 +50,6 @@ var TableContent = function (_React$Component) {
       };
     }
   }, {
-    key: 'setIndividualActionPath',
-    value: function setIndividualActionPath(path, id) {
-      return path.replace(':id', id);
-    }
-  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
@@ -76,6 +71,8 @@ var TableContent = function (_React$Component) {
       var data = this.props.filteredData;
 
       if (!data.length) {
+        var length = actions.show ? columns.length + 1 : columns.length;
+
         return _react2.default.createElement(
           'tbody',
           null,
@@ -84,7 +81,7 @@ var TableContent = function (_React$Component) {
             null,
             _react2.default.createElement(
               'td',
-              { colSpan: columns.length },
+              { colSpan: length },
               'No results found'
             )
           )
@@ -119,7 +116,7 @@ var TableContent = function (_React$Component) {
               var td = col.td ? _react2.default.createElement(col.td, { key: i, value: value }) : _react2.default.createElement(
                 'td',
                 { key: i, className: col.className || '' },
-                value
+                value.toString ? value.toString() : value
               );
               return td;
             }),
@@ -135,7 +132,7 @@ var TableContent = function (_React$Component) {
                       'li',
                       { key: j },
                       _react2.default.createElement(ac.component, _extends({}, ac.componentProps, {
-                        href: _this2.setIndividualActionPath(ac.path, row.id),
+                        action: ac,
                         data: row,
                         onRowDelete: _this2.props.onRowDelete,
                         onToggleSelectedRow: _this2.props.onToggleSelectedRow
@@ -147,7 +144,7 @@ var TableContent = function (_React$Component) {
                     { key: j },
                     _react2.default.createElement(
                       'a',
-                      { href: _this2.setIndividualActionPath(ac.path, row.id) },
+                      { href: ac.path },
                       ac.name
                     )
                   );

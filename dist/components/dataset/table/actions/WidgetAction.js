@@ -50,7 +50,7 @@ var MetadataAction = function (_React$Component) {
         data.status === 'saved' && _react2.default.createElement(
           'a',
           { href: this.parseHref() },
-          'Metadata'
+          'Widgets'
         )
       );
     }

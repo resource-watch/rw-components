@@ -10,9 +10,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _step = require('./step');
-
-var _step2 = _interopRequireDefault(_step);
+var _constants = require('../constants');
 
 var _Field = require('../../../form/Field');
 
@@ -42,19 +40,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Step1 = function (_Step) {
-  _inherits(Step1, _Step);
+var Step1 = function (_React$Component) {
+  _inherits(Step1, _React$Component);
 
-  function Step1(props) {
+  function Step1() {
     _classCallCheck(this, Step1);
 
-    var _this = _possibleConstructorReturn(this, (Step1.__proto__ || Object.getPrototypeOf(Step1)).call(this, props));
-
-    _this.state = {
-      dataset: props.dataset,
-      form: props.form
-    };
-    return _this;
+    return _possibleConstructorReturn(this, (Step1.__proto__ || Object.getPrototypeOf(Step1)).apply(this, arguments));
   }
 
   _createClass(Step1, [{
@@ -65,11 +57,11 @@ var Step1 = function (_Step) {
       return _react2.default.createElement(
         'fieldset',
         { className: 'c-field-container' },
-        !this.state.form.authorization && _react2.default.createElement(
+        !this.props.form.authorization && _react2.default.createElement(
           _Field2.default,
           {
             ref: function ref(c) {
-              if (c) _this2.children.push(c);
+              if (c) _constants.FORM_ELEMENTS.elements.authorization = c;
             },
             onChange: function onChange(value) {
               return _this2.props.onChange({ authorization: value });
@@ -80,7 +72,7 @@ var Step1 = function (_Step) {
               label: 'Authorization token',
               type: 'text',
               required: true,
-              default: this.state.form.authorization || ''
+              default: this.props.form.authorization || ''
             }
           },
           _Input2.default
@@ -89,7 +81,7 @@ var Step1 = function (_Step) {
           _Field2.default,
           {
             ref: function ref(c) {
-              if (c) _this2.children.push(c);
+              if (c) _constants.FORM_ELEMENTS.elements.name = c;
             },
             onChange: function onChange(value) {
               return _this2.props.onChange({ name: value });
@@ -100,7 +92,7 @@ var Step1 = function (_Step) {
               label: 'Title',
               type: 'text',
               required: true,
-              default: this.state.form.name
+              default: this.props.form.name
             }
           },
           _Input2.default
@@ -109,7 +101,7 @@ var Step1 = function (_Step) {
           _Field2.default,
           {
             ref: function ref(c) {
-              if (c) _this2.children.push(c);
+              if (c) _constants.FORM_ELEMENTS.elements.queryUrl = c;
             },
             onChange: function onChange(value) {
               return _this2.props.onChange({ queryUrl: value });
@@ -120,7 +112,7 @@ var Step1 = function (_Step) {
               label: 'Query url',
               type: 'text',
               required: true,
-              default: this.state.form.queryUrl
+              default: this.props.form.queryUrl
             }
           },
           _Input2.default
@@ -129,7 +121,7 @@ var Step1 = function (_Step) {
           _Field2.default,
           {
             ref: function ref(c) {
-              if (c) _this2.children.push(c);
+              if (c) _constants.FORM_ELEMENTS.elements.description = c;
             },
             onChange: function onChange(value) {
               return _this2.props.onChange({ description: value });
@@ -138,7 +130,8 @@ var Step1 = function (_Step) {
               name: 'description',
               label: 'Description',
               type: 'textarea',
-              default: this.state.form.description
+              rows: '6',
+              default: this.props.form.description
             }
           },
           _TextArea2.default
@@ -147,7 +140,7 @@ var Step1 = function (_Step) {
           _Field2.default,
           {
             ref: function ref(c) {
-              if (c) _this2.children.push(c);
+              if (c) _constants.FORM_ELEMENTS.elements.authors = c;
             },
             onChange: function onChange(value) {
               return _this2.props.onChange({ authors: value });
@@ -156,7 +149,7 @@ var Step1 = function (_Step) {
               name: 'authors',
               label: 'Authors',
               type: 'text',
-              default: this.state.form.authors
+              default: this.props.form.authors
             }
           },
           _Input2.default
@@ -165,7 +158,7 @@ var Step1 = function (_Step) {
           _Field2.default,
           {
             ref: function ref(c) {
-              if (c) _this2.children.push(c);
+              if (c) _constants.FORM_ELEMENTS.elements.source = c;
             },
             onChange: function onChange(value) {
               return _this2.props.onChange({ source: value });
@@ -174,7 +167,7 @@ var Step1 = function (_Step) {
               name: 'source',
               label: 'Source',
               type: 'text',
-              default: this.state.form.source
+              default: this.props.form.source
             }
           },
           _Input2.default
@@ -183,7 +176,7 @@ var Step1 = function (_Step) {
           _Field2.default,
           {
             ref: function ref(c) {
-              if (c) _this2.children.push(c);
+              if (c) _constants.FORM_ELEMENTS.elements.sourceUrl = c;
             },
             onChange: function onChange(value) {
               return _this2.props.onChange({ sourceUrl: value });
@@ -193,7 +186,7 @@ var Step1 = function (_Step) {
               name: 'sourceUrl',
               label: 'Source url',
               type: 'text',
-              default: this.state.form.sourceUrl
+              default: this.props.form.sourceUrl
             }
           },
           _Input2.default
@@ -202,7 +195,7 @@ var Step1 = function (_Step) {
           _Field2.default,
           {
             ref: function ref(c) {
-              if (c) _this2.children.push(c);
+              if (c) _constants.FORM_ELEMENTS.elements.widgetConfig = c;
             },
             onChange: function onChange(value) {
               return _this2.props.onChange({ widgetConfig: value });
@@ -211,7 +204,7 @@ var Step1 = function (_Step) {
               name: 'widgetConfig',
               label: 'Widget config',
               type: 'textarea',
-              default: this.state.form.widgetConfig
+              default: this.props.form.widgetConfig
             }
           },
           _Code2.default
@@ -220,16 +213,18 @@ var Step1 = function (_Step) {
           _Field2.default,
           {
             ref: function ref(c) {
-              if (c) _this2.children.push(c);
+              if (c) _constants.FORM_ELEMENTS.elements.default = c;
             },
             onChange: function onChange(value) {
-              return _this2.props.onChange({ default: value });
+              return _this2.props.onChange({ default: value.checked });
             },
-            option: { label: 'Default' },
+            validations: ['required'],
             properties: {
               name: 'default',
-              label: 'Do you want to set this widget as the default one. (Only one default widget per dataset is allowed at a time)',
-              default: [this.state.form.default]
+              label: 'Default',
+              value: 'default',
+              title: 'Do you want to set this widget as the default one. (Only one default widget per dataset is allowed at a time)',
+              checked: this.props.form.default
             }
           },
           _Checkbox2.default
@@ -239,10 +234,9 @@ var Step1 = function (_Step) {
   }]);
 
   return Step1;
-}(_step2.default);
+}(_react2.default.Component);
 
 Step1.propTypes = {
-  dataset: _react2.default.PropTypes.string,
   form: _react2.default.PropTypes.object,
   onChange: _react2.default.PropTypes.func
 };

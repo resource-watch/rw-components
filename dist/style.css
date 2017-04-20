@@ -1495,6 +1495,77 @@ body {
   .c-table-tooltip.-footer .tooltip-content .content:after {
     bottom: 40px; }
 
+.c-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.16s cubic-bezier(0.47, 0, 0.745, 0.715);
+  z-index: 1000;
+  visibility: visible;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .c-modal.-hidden {
+    opacity: 0;
+    visibility: hidden; }
+    .c-modal.-hidden .modal-container {
+      transform: translateY(-35px); }
+  .c-modal .modal-container {
+    transition: transform 0.24s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translateY(0);
+    display: flex;
+    position: relative;
+    width: calc(100% - 50px);
+    max-width: 1040px;
+    background: white;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    z-index: 1; }
+  .c-modal .modal-content {
+    position: relative;
+    width: 100%;
+    max-height: 85vh;
+    min-height: 150px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 0 7px 15px 0 rgba(0, 0, 0, 0.15); }
+  .c-modal .modal-close {
+    fill: #000;
+    display: block;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    cursor: pointer;
+    z-index: 2;
+    /* Otherwise, it won't be reachable */ }
+    .c-modal .modal-close:hover {
+      fill: #fff; }
+  .c-modal .modal-backdrop {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0; }
+  .c-modal.-menu .modal-container {
+    background: #c32d7b; }
+  .c-modal.-menu .modal-content {
+    padding: 64px; }
+  .c-modal.-menu .modal-close {
+    fill: white;
+    width: 80px;
+    height: 80px; }
+    .c-modal.-menu .modal-close svg {
+      width: 32px;
+      height: 32px; }
+  .c-modal.-medium .modal-container {
+    max-width: 900px; }
+
 .c-form {
   padding: 20px 0; }
 

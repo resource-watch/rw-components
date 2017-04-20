@@ -30,7 +30,6 @@ var FORM_ELEMENTS = exports.FORM_ELEMENTS = {
   validate: function validate() {
     var elements = this.elements;
     Object.keys(elements).forEach(function (k) {
-      console.log(k);
       elements[k].validate();
     });
   },
