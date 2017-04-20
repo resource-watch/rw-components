@@ -18,6 +18,7 @@
   "extends": "vizzuality",
   "rules": {
     "max-len": 0,
+    "no-unused-expressions": 0,
     "react/no-array-index-key": 0
   }
 }

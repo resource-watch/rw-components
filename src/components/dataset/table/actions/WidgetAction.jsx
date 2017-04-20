@@ -16,7 +16,7 @@ class MetadataAction extends React.Component {
       <span>
         {(data.status === 'saved') &&
           <a href={this.parseHref()}>
-            Metadata
+            Widgets
           </a>
         }
       </span>

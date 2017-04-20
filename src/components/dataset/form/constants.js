@@ -43,22 +43,22 @@ export const CONNECTOR_TYPES_DICTIONARY = {
     csv: {
       label: 'CSV',
       value: 'csv',
-      connectorUrlHint: 'Format specification: https://en.wikipedia.org/wiki/Comma-separated_values'
+      connectorUrlHint: 'Format specification: <a href="https://en.wikipedia.org/wiki/Comma-separated_values" target="_blank" >https://en.wikipedia.org/wiki/Comma-separated_values</a>'
     },
     json: {
       label: 'JSON',
       value: 'json',
-      connectorUrlHint: 'Format specification: http://www.json.org/'
+      connectorUrlHint: 'Format specification: <a href="http://www.json.org/" target="_blank" >http://www.json.org/</a>'
     },
     tsv: {
       label: 'TSV',
       value: 'tsv',
-      connectorUrlHint: 'Format specification: https://en.wikipedia.org/wiki/Tab-separated_values'
+      connectorUrlHint: 'Format specification: <a href="https://en.wikipedia.org/wiki/Tab-separated_values" target="_blank" >https://en.wikipedia.org/wiki/Tab-separated_values</a>'
     },
     xml: {
       label: 'XML',
       value: 'xml',
-      connectorUrlHint: 'Format specification: https://www.w3.org/TR/REC-xml/'
+      connectorUrlHint: 'Format specification: <a href="https://www.w3.org/TR/REC-xml/" target="_blank" >https://www.w3.org/TR/REC-xml/</a>'
     }
   },
   wms: {
@@ -71,7 +71,7 @@ export const CONNECTOR_TYPES_DICTIONARY = {
 };
 
 export const STATE_DEFAULT = {
-  step: 1,
+  step: 2,
   stepLength: 2,
   submitting: false,
   loading: false,
@@ -79,11 +79,11 @@ export const STATE_DEFAULT = {
   form: {
     authorization: '',
     // STEP 1
-    name: '',
+    name: 'Testing CSV',
     subtitle: '',
     application: [],
-    provider: '',
-    connectorType: '',
+    provider: 'csv',
+    connectorType: 'document',
     connectorUrlHint: '',
 
     // STEP 2

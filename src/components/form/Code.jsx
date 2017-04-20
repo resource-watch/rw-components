@@ -43,6 +43,9 @@ class Code extends FormElement {
         theme="github"
         value={this.state.value}
         tabSize={2}
+        width="100%"
+        wrapEnabled
+        showPrintMargin={false}
         editorProps={{ $blockScrolling: true }}
         onChange={this.triggerChange}
       />

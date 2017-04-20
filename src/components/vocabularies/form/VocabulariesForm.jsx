@@ -1,6 +1,7 @@
 import React from 'react';
 import uniqBy from 'lodash/uniqBy';
 import flatten from 'lodash/flatten';
+import { Autobind } from 'es-decorators';
 
 import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
 
@@ -27,23 +28,25 @@ class VocabulariesForm extends React.Component {
     });
 
     this.state = newState;
+  }
 
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.triggerNewVocabulary = this.triggerNewVocabulary.bind(this);
-    this.handleDissociateVocabulary = this.handleDissociateVocabulary.bind(this);
-    this.loadAllVocabularies = this.loadAllVocabularies.bind(this);
-    this.loadDatasetVocabularies = this.loadDatasetVocabularies.bind(this);
-
+  /**
+   * COMPONENT LIFECYCLE
+   * - componentWillMount
+  */
+  componentWillMount() {
     this.loadAllVocabularies();
   }
 
   /**
    * UI EVENTS
-   * - onSubmit
-   * - onChange
+   * - triggerSubmit
+   * - triggerChange
+   * - triggerNewVocabulary
+   * - handleDissociateVocabulary
   */
-  onSubmit(event) {
+  @Autobind
+  triggerSubmit(event) {
     event.preventDefault();
 
     FORM_ELEMENTS.validate();
@@ -85,34 +88,19 @@ class VocabulariesForm extends React.Component {
       }, 0);
     }
   }
-
-  onChange(vocabularyName, obj) {
+  @Autobind
+  triggerChange(vocabulary, index) {
     const vocabularies = this.state.vocabularies.slice(0);
     const newAllVocabularies =
-      this.state.allVocabularies.filter(elem => elem.name !== obj.name);
+      this.state.allVocabularies.filter(elem => elem.name !== vocabulary.name);
 
-    let vocabularyFound = false;
-    const newVocabularies = vocabularies.map((elem) => {
-      if (elem.name === vocabularyName) {
-        vocabularyFound = true;
-        return obj;
-      } else {
-        return elem;
-      }
-    });
-
-    if (!vocabularyFound) {
-      const emptyVocabulary = newVocabularies.find(val => val.name === '');
-      emptyVocabulary.name = obj.name;
-      emptyVocabulary.attributes = obj.attributes;
-    }
-
+    vocabularies.splice(index, 1, vocabulary);
     this.setState({
-      vocabularies: newVocabularies,
+      vocabularies,
       allVocabularies: newAllVocabularies
     });
   }
-
+  @Autobind
   triggerNewVocabulary() {
     const { vocabularies } = this.state;
     if (!vocabularies.find(voc => voc.name === '')) {
@@ -120,17 +108,25 @@ class VocabulariesForm extends React.Component {
       this.setState({ vocabularies });
     }
   }
-
+  @Autobind
   handleDissociateVocabulary(voc) {
-    const { vocabularies } = this.state;
+    const { vocabularies, allVocabularies } = this.state;
     const filteredVocabularies = vocabularies.filter(elem => elem.name !== voc.name);
-    const newAllVocabularies = vocabularies.slice(0).push(voc);
+    const newAllVocabularies = allVocabularies.slice(0);
+    if (voc.name !== '') {
+      newAllVocabularies.push(voc);
+    }
     this.setState({
       vocabularies: filteredVocabularies,
       allVocabularies: newAllVocabularies
     });
   }
-
+  /**
+  * HELPER FUNCTIONS
+  * - loadDatasetVocabularies
+  * - loadAllVocabularies
+  */
+  @Autobind
   loadDatasetVocabularies() {
     if (this.state.datasetID) {
       // Start the loading
@@ -164,7 +160,7 @@ class VocabulariesForm extends React.Component {
       );
     }
   }
-
+  @Autobind
   loadAllVocabularies() {
     get(
       {
@@ -199,9 +195,9 @@ class VocabulariesForm extends React.Component {
         <Title className="-huge -p-primary">
           {this.state.datasetName}
         </Title>
-        <Title className="-p-primary">
+        <h1 className="-p-primary">
           Vocabularies
-        </Title>
+        </h1>
         {!this.state.loading &&
           <Button
             onClick={this.triggerNewVocabulary}
@@ -217,26 +213,34 @@ class VocabulariesForm extends React.Component {
           className="-light"
           isLoading={this.state.loading}
         />
-        <form className="c-form" onSubmit={this.onSubmit} noValidate>
-          {!this.state.loading && vocabularies.length > 0 &&
-            vocabularies.map((elem, i) => {
-              const tempVoc = allVocabulariesNotFiltered.find(val => val.name === elem.name);
-              const elemWithTagSet = Object.assign(
-                elem,
-                { tagSet: tempVoc ? tempVoc.tagSet : [] }
-              );
-              return (<VocabularyItem
-                key={i}
-                vocabulary={elemWithTagSet}
-                allVocabularies={allVocabularies}
-                onChange={this.onChange}
-                application={this.props.application}
-                authorization={this.props.authorization}
-                language={this.props.language}
-                onDissociateVocabulary={this.handleDissociateVocabulary}
-              />);
-            })
-          }
+        <form className="c-form" onSubmit={this.triggerSubmit} noValidate>
+          <div className="row">
+            {!this.state.loading && vocabularies.length > 0 &&
+              vocabularies.map((elem, i) => {
+                const tempVoc = allVocabulariesNotFiltered.find(val => val.name === elem.name);
+                const elemWithTagSet = Object.assign(
+                  elem,
+                  { tagSet: tempVoc ? tempVoc.tagSet : [] }
+                );
+                return (
+                  <div
+                    className="small-6 medium-4 column"
+                    key={i}
+                  >
+                    <VocabularyItem
+                      index={i}
+                      vocabulary={elemWithTagSet}
+                      allVocabularies={allVocabularies}
+                      onChange={this.triggerChange}
+                      application={this.props.application}
+                      authorization={this.props.authorization}
+                      language={this.props.language}
+                      onDissociateVocabulary={this.handleDissociateVocabulary}
+                    />
+                  </div>);
+              })
+            }
+          </div>
           <ul className="c-field-buttons">
             <li>
               <Button

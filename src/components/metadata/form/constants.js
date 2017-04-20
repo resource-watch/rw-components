@@ -20,6 +20,7 @@ export const STATE_DEFAULT = {
     source: '',
     description: '',
     name: '',
+    language: 'en',
     info: {
     }
   }
@@ -32,7 +33,6 @@ export const FORM_ELEMENTS = {
   validate() {
     const elements = this.elements;
     Object.keys(elements).forEach((k) => {
-      console.log(k);
       elements[k].validate();
     });
   },

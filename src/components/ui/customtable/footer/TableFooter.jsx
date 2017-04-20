@@ -3,17 +3,15 @@ import Paginator from '../../Paginator';
 
 export default class TableFooter extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
+  // UI EVENTS
+  // - onChangePage
   onChangePage(page) {
     this.props.onChangePage && this.props.onChangePage(page - 1);
   }
 
   render() {
     const { pagination, showTotalPages } = this.props;
-    const maxPage = Math.ceil(pagination.total / pagination.pageSize);
+    const maxPage = Math.ceil(pagination.total / pagination.pageSize) || 1;
 
     return (
       <div className="table-footer">
@@ -37,6 +35,8 @@ export default class TableFooter extends React.Component {
 
 TableFooter.propTypes = {
   pagination: React.PropTypes.object,
+  showTotalPages: React.PropTypes.bool,
+  // FUNCTIONS
   onChangePage: React.PropTypes.func
 };
 
@@ -47,6 +47,7 @@ TableFooter.defaultProps = {
     page: 1,
     total: null
   },
-  onPrevPage: null,
-  onNextPage: null
+  showTotalPages: false,
+  // FUNCTIONS
+  onChangePage: null
 };

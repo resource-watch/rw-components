@@ -1,15 +1,17 @@
 import React from 'react';
 import omit from 'lodash/omit';
 
-import { STATE_DEFAULT } from './constants';
+import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
 
-import Step1 from './steps/step-1';
+import { get, post } from '../../../utils/request';
+
+import Step1 from './steps/Step1';
 import Navigation from '../../form/Navigation';
 
 class WidgetForm extends React.Component {
   constructor(props) {
     super(props);
-    const newState = Object.assign({}, STATE_DEFAULT, {
+    this.state = Object.assign({}, STATE_DEFAULT, {
       dataset: props.dataset,
       widget: props.widget,
       form: Object.assign({}, STATE_DEFAULT.form, {
@@ -17,8 +19,6 @@ class WidgetForm extends React.Component {
         authorization: props.authorization
       })
     });
-
-    this.state = newState;
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -29,27 +29,24 @@ class WidgetForm extends React.Component {
       // Start the loading
       this.setState({ loading: true });
 
-      const xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('GET', `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget}?cache=${Date.now()}`);
-      xmlhttp.setRequestHeader('Content-Type', 'application/json');
-      xmlhttp.setRequestHeader('Authorization', this.state.form.authorization);
-      xmlhttp.send();
-
-      xmlhttp.onreadystatechange = () => {
-        if (xmlhttp.readyState === 4) {
-          if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-            const response = JSON.parse(xmlhttp.responseText);
-            this.setState({
-              dataset: response.data.id,
-              form: this.setFormFromParams(response.data.attributes),
-              // Stop the loading
-              loading: false
-            });
-          } else {
-            console.info('Error');
-          }
+      get({
+        url: `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget}?cache=${Date.now()}`,
+        headers: [{
+          key: 'Content-Type',
+          value: 'application/json'
+        }],
+        onSuccess: (response) => {
+          this.setState({
+            form: this.setFormFromParams(omit(response.data.attributes, ['status', 'published', 'verified'])),
+            // Stop the loading
+            loading: false
+          });
+        },
+        onError: (error) => {
+          this.setState({ loading: false });
+          console.error(error);
         }
-      };
+      });
     }
   }
 
@@ -62,61 +59,38 @@ class WidgetForm extends React.Component {
     event.preventDefault();
 
     // Validate the form
-    this.step.validate();
+    FORM_ELEMENTS.validate();
 
     // Set a timeout due to the setState function of react
     setTimeout(() => {
-      const valid = this.step.isValid();
+      const valid = FORM_ELEMENTS.isValid();
+
       if (valid) {
-        if (this.state.step === this.state.stepLength && !this.state.submitting) {
-          // Start the submitting
-          this.setState({ submitting: true });
+        // Start the submitting
+        this.setState({ submitting: true });
 
-          // Set the request
-          // Send the request
-          const xmlhttp = new XMLHttpRequest();
-          const xmlhttpOptions = {
-            type: (this.state.dataset && this.state.widget) ? 'PATCH' : 'POST',
-            authorization: this.state.form.authorization,
-            contentType: 'application/json',
-            omit: ['authorization']
-          };
-          xmlhttp.open(xmlhttpOptions.type, `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget || ''}`);
-          xmlhttp.setRequestHeader('Content-Type', xmlhttpOptions.contentType);
-          xmlhttp.setRequestHeader('Authorization', xmlhttpOptions.authorization);
-          xmlhttp.send(JSON.stringify({
-            // Remove unnecesary atributtes to prevent 'Unprocessable Entity error'
-            widget: omit(this.state.form, xmlhttpOptions.omit)
-          }));
+        post({
+          type: (this.state.dataset && this.state.widget) ? 'PATCH' : 'POST',
+          url: `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget || ''}`,
+          body: omit(this.state.form, ['authorization']),
+          headers: [{
+            key: 'Content-Type',
+            value: 'application/json'
+          }, {
+            key: 'Authorization',
+            value: this.state.form.authorization
+          }],
+          onSuccess: () => {
+            const successMessage = 'Widget has been uploaded correctly';
+            alert(successMessage);
 
-          xmlhttp.onreadystatechange = () => {
-            if (xmlhttp.readyState === 4) {
-              // Stop the submitting
-              this.setState({ submitting: false });
-
-              if (xmlhttp.status === 200 || xmlhttp.status === 201) {
-                const response = JSON.parse(xmlhttp.responseText);
-                const successMessage = `The widget "${response.data.id}" - "${response.data.attributes.name}" has been uploaded correctly`;
-                console.info(response);
-                console.info(successMessage);
-                alert(successMessage);
-
-                // Go back to first step and set the dataset
-                // This will trigger the PATCH function
-                this.setState({
-                  step: 1,
-                  widget: response.data.id
-                });
-              } else {
-                console.info('Error');
-              }
-            }
-          };
-        } else {
-          this.setState({
-            step: this.state.step + 1
-          }, () => console.info(this.state));
-        }
+            this.props.onSubmit && this.props.onSubmit();
+          },
+          onError: (error) => {
+            this.setState({ loading: false });
+            console.error(error);
+          }
+        });
       }
     }, 0);
   }
@@ -153,7 +127,6 @@ class WidgetForm extends React.Component {
             ref={(c) => { this.step = c; }}
             onChange={value => this.onChange(value)}
             form={this.state.form}
-            dataset={this.state.dataset}
           />
         }
 
@@ -174,7 +147,8 @@ WidgetForm.propTypes = {
   application: React.PropTypes.array,
   authorization: React.PropTypes.string,
   dataset: React.PropTypes.string.isRequired,
-  widget: React.PropTypes.string
+  widget: React.PropTypes.string,
+  onSubmit: React.PropTypes.func
 };
 
 export default WidgetForm;
