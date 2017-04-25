@@ -71,7 +71,7 @@ export const CONNECTOR_TYPES_DICTIONARY = {
 };
 
 export const STATE_DEFAULT = {
-  step: 2,
+  step: 1,
   stepLength: 2,
   submitting: false,
   loading: false,
@@ -79,11 +79,11 @@ export const STATE_DEFAULT = {
   form: {
     authorization: '',
     // STEP 1
-    name: 'Testing CSV',
+    name: '',
     subtitle: '',
     application: [],
-    provider: 'csv',
-    connectorType: 'document',
+    provider: '',
+    connectorType: '',
     connectorUrlHint: '',
 
     // STEP 2
