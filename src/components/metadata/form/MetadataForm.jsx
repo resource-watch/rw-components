@@ -43,7 +43,8 @@ class MetadataForm extends React.Component {
 
           this.setState({
             datasetName: response.data.attributes.name,
-            metadata: (metadata && metadata.length) ? metadata[0].attributes : STATE_DEFAULT.metadata,
+            form: (metadata && metadata.length) ? this.setFormFromParams(metadata[0].attributes) : this.state.form,
+            metadata,
             // Stop the loading
             loading: false
           });
@@ -75,13 +76,21 @@ class MetadataForm extends React.Component {
         // Start the submitting
         this.setState({ submitting: true });
 
+        // Check if the metadata alerady exists
+        const isPresent = !!this.state.metadata.find((m) => {
+          const hasLang = m.attributes.language === this.state.form.language;
+          const hasApp = m.attributes.application === this.state.form.application;
+
+          return hasLang && hasApp;
+        });
+
         post({
-          type: (this.state.datasetID && this.state.metadata.status) ? 'PATCH' : 'POST',
+          type: (this.state.datasetID && isPresent) ? 'PATCH' : 'POST',
           url: `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/metadata`,
           body: {
             application: this.state.form.application,
             // Remove unnecesary atributtes to prevent 'Unprocessable Entity error'
-            ...omit(this.state.metadata, ['authorization'])
+            ...omit(this.state.form, ['authorization'])
           },
           headers: [{
             key: 'Content-Type',
@@ -107,15 +116,30 @@ class MetadataForm extends React.Component {
 
   @Autobind
   onChange(obj) {
-    const metadata = Object.assign({}, this.state.metadata, obj.metadata);
-    this.setState({ metadata });
-    console.info(metadata);
+    const form = Object.assign({}, this.state.form, obj.form);
+    this.setState({ form });
+    console.info(form);
   }
 
   @Autobind
   onBack(step) {
     this.setState({ step });
   }
+
+  // HELPERS
+  setFormFromParams(params) {
+    const form = Object.keys(this.state.form);
+    const newForm = {};
+
+    form.forEach((f) => {
+      if (params[f] || this.state.form[f]) {
+        newForm[f] = params[f] || this.state.form[f];
+      }
+    });
+
+    return newForm;
+  }
+
 
   render() {
     return (
@@ -128,7 +152,7 @@ class MetadataForm extends React.Component {
           {!this.state.loading &&
             <Step1
               onChange={value => this.onChange(value)}
-              metadata={this.state.metadata}
+              form={this.state.form}
             />
           }
 
