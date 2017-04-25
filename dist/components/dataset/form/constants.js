@@ -59,7 +59,7 @@ var CONNECTOR_TYPES_DICTIONARY = exports.CONNECTOR_TYPES_DICTIONARY = {
 };
 
 var STATE_DEFAULT = exports.STATE_DEFAULT = {
-  step: 2,
+  step: 1,
   stepLength: 2,
   submitting: false,
   loading: false,
@@ -67,11 +67,11 @@ var STATE_DEFAULT = exports.STATE_DEFAULT = {
   form: {
     authorization: '',
     // STEP 1
-    name: 'Testing CSV',
+    name: '',
     subtitle: '',
     application: [],
-    provider: 'csv',
-    connectorType: 'document',
+    provider: '',
+    connectorType: '',
     connectorUrlHint: '',
 
     // STEP 2
