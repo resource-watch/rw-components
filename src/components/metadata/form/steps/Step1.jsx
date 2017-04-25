@@ -87,7 +87,7 @@ class Step1 extends React.Component {
               name: 'wri_funded',
               label: 'WRI funded',
               title: 'Is this dataset funded by WRI?',
-              default: this.props.form.info.wri_funded
+              checked: this.props.form.info.wri_funded
             }}
           >
             {Checkbox}
