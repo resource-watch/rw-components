@@ -12,17 +12,17 @@ import Title from '../../../ui/Title';
 class Step1 extends React.Component {
 
   changeMetadata(obj) {
-    const { metadata } = this.props;
+    const { form } = this.props;
     let newMetadata;
 
     if (obj.info) {
-      const info = { ...metadata.info, ...obj.info };
-      newMetadata = { ...metadata, ...{ info } };
+      const info = { ...form.info, ...obj.info };
+      newMetadata = { ...form, ...{ info } };
     } else {
-      newMetadata = { ...metadata, ...obj };
+      newMetadata = { ...form, ...obj };
     }
 
-    this.props.onChange({ metadata: newMetadata });
+    this.props.onChange({ form: newMetadata });
   }
 
   render() {
@@ -42,7 +42,7 @@ class Step1 extends React.Component {
               label: 'Title',
               type: 'text',
               required: true,
-              default: this.props.metadata.name
+              default: this.props.form.name
             }}
           >
             {Input}
@@ -57,7 +57,7 @@ class Step1 extends React.Component {
               label: 'Description',
               rows: '6',
               required: true,
-              default: this.props.metadata.description
+              default: this.props.form.description
             }}
           >
             {TextArea}
@@ -74,7 +74,7 @@ class Step1 extends React.Component {
               type: 'text',
               disabled: true,
               required: true,
-              default: this.props.metadata.language
+              default: this.props.form.language
             }}
           >
             {Select}
@@ -87,7 +87,7 @@ class Step1 extends React.Component {
               name: 'wri_funded',
               label: 'WRI funded',
               title: 'Is this dataset funded by WRI?',
-              default: this.props.metadata.info.wri_funded
+              default: this.props.form.info.wri_funded
             }}
           >
             {Checkbox}
@@ -106,7 +106,7 @@ class Step1 extends React.Component {
               name: 'contact_person_name',
               label: 'Contact Person Name',
               type: 'text',
-              default: this.props.metadata.info.contact_person_name
+              default: this.props.form.info.contact_person_name
             }}
           >
             {Input}
@@ -120,7 +120,7 @@ class Step1 extends React.Component {
               name: 'contact_person_email',
               label: 'Contact Person Email',
               type: 'text',
-              default: this.props.metadata.info.contact_person_email
+              default: this.props.form.info.contact_person_email
             }}
           >
             {Input}
@@ -142,7 +142,7 @@ class Step1 extends React.Component {
               label: 'Function',
               type: 'text',
               rows: '6',
-              default: this.props.metadata.info.function
+              default: this.props.form.info.function
             }}
           >
             {TextArea}
@@ -157,7 +157,7 @@ class Step1 extends React.Component {
               label: 'Cautions',
               type: 'text',
               rows: '6',
-              default: this.props.metadata.info.cautions
+              default: this.props.form.info.cautions
             }}
           >
             {TextArea}
@@ -172,7 +172,7 @@ class Step1 extends React.Component {
               label: 'Citation',
               type: 'text',
               rows: '6',
-              default: this.props.metadata.info.citation
+              default: this.props.form.info.citation
             }}
           >
             {TextArea}
@@ -187,7 +187,7 @@ class Step1 extends React.Component {
               label: 'Geographic Coverage',
               type: 'text',
               rows: '6',
-              default: this.props.metadata.info.geographic_coverage
+              default: this.props.form.info.geographic_coverage
             }}
           >
             {TextArea}
@@ -203,7 +203,7 @@ class Step1 extends React.Component {
               label: 'Spatial Resolution',
               type: 'text',
               rows: '6',
-              default: this.props.metadata.info.spatial_resolution
+              default: this.props.form.info.spatial_resolution
             }}
           >
             {TextArea}
@@ -217,7 +217,7 @@ class Step1 extends React.Component {
               name: 'date_of_content',
               label: 'Date of Content',
               type: 'text',
-              default: this.props.metadata.info.date_of_content
+              default: this.props.form.info.date_of_content
             }}
           >
             {Input}
@@ -231,7 +231,7 @@ class Step1 extends React.Component {
               name: 'frequency_of_updates',
               label: 'Frequency of Updates',
               type: 'text',
-              default: this.props.metadata.info.frequency_of_updates
+              default: this.props.form.info.frequency_of_updates
             }}
           >
             {Input}
@@ -244,7 +244,7 @@ class Step1 extends React.Component {
               name: 'scientific_paper',
               label: 'Scientific Paper',
               type: 'text',
-              default: this.props.metadata.info.scientific_paper
+              default: this.props.form.info.scientific_paper
             }}
           >
             {Input}
@@ -258,7 +258,7 @@ class Step1 extends React.Component {
               name: 'license',
               label: 'License',
               type: 'text',
-              default: this.props.metadata.info.license
+              default: this.props.form.info.license
             }}
           >
             {Input}
@@ -272,7 +272,7 @@ class Step1 extends React.Component {
               name: 'license_link',
               label: 'License link',
               type: 'text',
-              default: this.props.metadata.info.license_link
+              default: this.props.form.info.license_link
             }}
           >
             {Input}
@@ -286,7 +286,7 @@ class Step1 extends React.Component {
               name: 'source_organization',
               label: 'Source Organization',
               type: 'text',
-              default: this.props.metadata.info.source_organization
+              default: this.props.form.info.source_organization
             }}
           >
             {Input}
@@ -300,7 +300,7 @@ class Step1 extends React.Component {
               name: 'source_organization_link',
               label: 'Source Organization Link',
               type: 'text',
-              default: this.props.metadata.info.source_organization_link
+              default: this.props.form.info.source_organization_link
             }}
           >
             {Input}
@@ -320,7 +320,7 @@ class Step1 extends React.Component {
               name: 'translated_title',
               label: 'Translated Title',
               type: 'text',
-              default: this.props.metadata.info.translated_title
+              default: this.props.form.info.translated_title
             }}
           >
             {Input}
@@ -335,7 +335,7 @@ class Step1 extends React.Component {
               label: 'Translated Function',
               type: 'text',
               rows: '6',
-              default: this.props.metadata.info.translated_function
+              default: this.props.form.info.translated_function
             }}
           >
             {TextArea}
@@ -350,7 +350,7 @@ class Step1 extends React.Component {
               label: 'Translated Description',
               type: 'text',
               rows: '6',
-              default: this.props.metadata.info.translated_description
+              default: this.props.form.info.translated_description
             }}
           >
             {TextArea}
@@ -371,7 +371,7 @@ class Step1 extends React.Component {
               name: 'learn_more_link',
               label: 'Learn More link',
               type: 'text',
-              default: this.props.metadata.info.learn_more_link
+              default: this.props.form.info.learn_more_link
             }}
           >
             {Input}
@@ -385,7 +385,7 @@ class Step1 extends React.Component {
               name: 'data_download_link',
               label: 'Data Download link',
               type: 'text',
-              default: this.props.metadata.info.data_download_link
+              default: this.props.form.info.data_download_link
             }}
           >
             {Input}
@@ -399,7 +399,7 @@ class Step1 extends React.Component {
               name: 'data_visualization_link',
               label: 'Data Visualization link',
               type: 'text',
-              default: this.props.metadata.info.data_visualization_link
+              default: this.props.form.info.data_visualization_link
             }}
           >
             {Input}
@@ -411,7 +411,7 @@ class Step1 extends React.Component {
 }
 
 Step1.propTypes = {
-  metadata: React.PropTypes.object,
+  form: React.PropTypes.object,
   onChange: React.PropTypes.func
 };
 
