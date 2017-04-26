@@ -70,7 +70,7 @@ class VocabulariesForm extends React.Component {
     e.preventDefault();
     this.setState({ submitting: true });
     post({
-      url: 'https://api.resourcewatch.org/v1/vocabulary/vocabularyName',
+      url: 'https://api.resourcewatch.org/v1/vocabulary',
       headers: [{
         key: 'Content-Type', value: 'application/json'
       }, {
@@ -79,7 +79,7 @@ class VocabulariesForm extends React.Component {
       body: { name: this.state.newVocabularyName },
       onSuccess: (data) => {
         const vocabularies = this.state.vocabularies.slice(0);
-        vocabularies.push({ name: data.id });
+        vocabularies.push({ name: data.data[0].id });
         this.setState({
           vocabularies,
           submitting: false,
