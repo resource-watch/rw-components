@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'react-select';
+import { Select, Creatable } from 'react-select';
 import FormElement from './FormElement';
 
 class SelectInput extends FormElement {
@@ -26,23 +26,36 @@ class SelectInput extends FormElement {
   }
 
   render() {
-    const { options, properties } = this.props;
+    const { options, properties, creatable } = this.props;
 
-    return (
-      <Select
-        {...properties}
-        options={options}
-        id={`select-${properties.name}`}
-        value={this.state.value}
-        onChange={this.triggerChange}
-      />
-    );
+    if (creatable) {
+      return (
+        <Select
+          {...properties}
+          options={options}
+          id={`select-${properties.name}`}
+          value={this.state.value}
+          onChange={this.triggerChange}
+        />
+      );
+    } else {
+      return (
+        <Creatable
+          {...properties}
+          options={options}
+          id={`select-${properties.name}`}
+          value={this.state.value}
+          onChange={this.triggerChange}
+        />
+      );
+    }
   }
 }
 
 SelectInput.propTypes = {
   properties: React.PropTypes.object.isRequired,
   options: React.PropTypes.array.isRequired,
+  creatable: React.PropTypes.bool,
   onChange: React.PropTypes.func
 };
 

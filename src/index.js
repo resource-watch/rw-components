@@ -13,6 +13,7 @@ export { default as DatasetFilterItem } from './components/dataset/DatasetFilter
 export { default as DatasetForm } from './components/dataset/form/DatasetForm';
 export { default as DatasetList } from './components/dataset/DatasetList';
 export { default as DatasetTable } from './components/dataset/table/DatasetTable';
+export { default as DatasetVocabulariesForm } from './components/dataset/vocabularies/DatasetVocabulariesForm';
 
 // Layer
 export { default as LayerForm } from './components/layer/form/LayerForm';
@@ -31,8 +32,9 @@ export { default as LayerChart } from './components/widget/LayerChart';
 export { default as MetadataForm } from './components/metadata/form/MetadataForm';
 
 // Vocabularies
-export { default as VocabulariesForm } from './components/vocabularies/form/VocabulariesForm';
 export { default as VocabularyItem } from './components/vocabularies/form/VocabularyItem';
+export { default as VocabulariesTable } from './components/vocabularies/table/VocabulariesTable';
+export { default as VocabulariesForm } from './components/vocabularies/form/VocabulariesForm';
 
 // UI
 export { default as Button } from './components/ui/Button';
