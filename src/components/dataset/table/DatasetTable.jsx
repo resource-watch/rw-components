@@ -66,7 +66,7 @@ class DatasetTable extends React.Component {
               { name: 'Edit', path: '/datasets/:id/edit', show: true, component: EditAction },
               { name: 'Remove', path: '/datasets/:id/remove', component: DeleteAction, componentProps: { authorization: this.props.authorization } },
               { name: 'Metadata', path: '/datasets/:id/metadata', component: MetadataAction },
-              { name: 'Vocabularies', path: '/datasets/:id/vocabularies', component: VocabularyAction },
+              { name: 'Vocabularies', path: '/datasets/:id/dataset_vocabularies', component: VocabularyAction },
               { name: 'Widgets', path: '/datasets/:id/widgets', component: WidgetAction }
             ]
           }}
