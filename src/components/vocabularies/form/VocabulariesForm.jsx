@@ -77,10 +77,14 @@ class VocabulariesForm extends React.Component {
         key: 'Authorization', value: this.props.authorization
       }],
       body: { name: this.state.newVocabularyName },
-      onSuccess: (response) => {
+      onSuccess: (data) => {
         const vocabularies = this.state.vocabularies.slice(0);
-        console.info('response', response);
-        this.setState({ vocabularies, submitting: false });
+        vocabularies.push({ name: data.id });
+        this.setState({
+          vocabularies,
+          submitting: false,
+          newVocabularyForm: false
+        });
       },
       onError: () => {
         this.setState({ message: 'Error creating the vocabulary', submitting: false });
