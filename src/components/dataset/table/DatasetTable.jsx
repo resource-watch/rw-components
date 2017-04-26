@@ -27,8 +27,6 @@ class DatasetTable extends React.Component {
   /**
    * HELPERS
    * - getDatasets
-   * - validate
-   * - isValid
   */
   getDatasets() {
     const { application } = this.props;
