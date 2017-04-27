@@ -85,6 +85,7 @@ class VocabularyItem extends React.Component {
               label: 'tags',
               multi: true,
               required: true,
+              creatable: true,
               default: selectedTags.map(
                 tag => ({ label: tag, value: tag })
               ),

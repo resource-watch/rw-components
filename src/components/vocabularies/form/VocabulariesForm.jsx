@@ -1,13 +1,13 @@
 import React from 'react';
-import uniqBy from 'lodash/uniqBy';
-import flatten from 'lodash/flatten';
 import { Autobind } from 'es-decorators';
+import sortBy from 'lodash/sortBy';
 
 import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
 
-import VocabularyItem from './VocabularyItem';
-import Title from '../../ui/Title';
 import Button from '../../ui/Button';
+import Field from '../../form/Field';
+import Input from '../../form/Input';
+import VocabulariesTable from '../table/VocabulariesTable';
 import Spinner from '../../ui/Spinner';
 import { get, post } from '../../../utils/request';
 
@@ -16,10 +16,11 @@ class VocabulariesForm extends React.Component {
   constructor(props) {
     super(props);
     const newState = Object.assign({}, STATE_DEFAULT, {
-      datasetID: props.dataset,
-      datasetName: '',
       loading: true,
-      allVocabularies: [],
+      submitting: false,
+      vocabularies: [],
+      newVocabularyName: '',
+      newVocabularyForm: false,
       form: Object.assign({}, STATE_DEFAULT.form, {
         application: props.application,
         authorization: props.authorization,
@@ -30,232 +31,143 @@ class VocabulariesForm extends React.Component {
     this.state = newState;
   }
 
+  componentDidMount() {
+    this.getVocabularies();
+  }
+
   /**
-   * COMPONENT LIFECYCLE
-   * - componentWillMount
+   * HELPERS
+   * - getVocabularies
   */
-  componentWillMount() {
-    this.loadAllVocabularies();
+  getVocabularies() {
+    const url = 'https://api.resourcewatch.org/v1/vocabulary';
+
+    get({
+      url,
+      headers: [],
+      onSuccess: (response) => {
+        const vocabularies = sortBy(response.data.map(vocabulary =>
+          ({ name: vocabulary.id })
+        ), 'id');
+        this.setState({ vocabularies, loading: false });
+      },
+      onError: () => {
+        this.setState({ message: 'Error loading vocabularies', loading: false });
+      }
+    });
   }
 
   /**
    * UI EVENTS
-   * - triggerSubmit
-   * - triggerChange
    * - triggerNewVocabulary
-   * - handleDissociateVocabulary
   */
-  @Autobind
-  triggerSubmit(event) {
-    event.preventDefault();
-
-    FORM_ELEMENTS.validate();
-
-    if (FORM_ELEMENTS.isFormValid()) {
-      // Set a timeout due to the setState function of react
-      setTimeout(() => {
-        if (!this.state.submitting) {
-          // Start the submitting
-          this.setState({ submitting: true });
-
-          const bodyObj = {};
-          this.state.vocabularies.forEach((elem) => {
-            bodyObj[elem.name] = { tags: elem.tags };
-          });
-
-          post(
-            {
-              type: 'PUT',
-              url: `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}/vocabulary`,
-              headers: [
-                { key: 'Content-Type', value: 'application/json' },
-                { key: 'Authorization', value: this.state.form.authorization }
-              ],
-              body: bodyObj,
-              onSuccess: (response) => {
-                this.setState({ submitting: false });
-                const successMessage = 'Vocabularies have been updated correctly';
-                console.info(response);
-                console.info(successMessage);
-                alert(successMessage);
-              },
-              onError: () => {
-                console.info('Error');
-              }
-            }
-          );
-        }
-      }, 0);
-    }
-  }
-  @Autobind
-  triggerChange(vocabulary, index) {
-    const vocabularies = this.state.vocabularies.slice(0);
-    const newAllVocabularies =
-      this.state.allVocabularies.filter(elem => elem.name !== vocabulary.name);
-
-    vocabularies.splice(index, 1, vocabulary);
-    this.setState({
-      vocabularies,
-      allVocabularies: newAllVocabularies
-    });
-  }
   @Autobind
   triggerNewVocabulary() {
-    const { vocabularies } = this.state;
-    if (!vocabularies.find(voc => voc.name === '')) {
-      vocabularies.push({ name: '', tags: [] });
-      this.setState({ vocabularies });
-    }
+    this.setState({ newVocabularyForm: true });
   }
   @Autobind
-  handleDissociateVocabulary(voc) {
-    const { vocabularies, allVocabularies } = this.state;
-    const filteredVocabularies = vocabularies.filter(elem => elem.name !== voc.name);
-    const newAllVocabularies = allVocabularies.slice(0);
-    if (voc.name !== '') {
-      newAllVocabularies.push(voc);
-    }
-    this.setState({
-      vocabularies: filteredVocabularies,
-      allVocabularies: newAllVocabularies
+  triggerSubmitNewVocabulary(e) {
+    e.preventDefault();
+    this.setState({ submitting: true });
+    post({
+      url: 'https://api.resourcewatch.org/v1/vocabulary',
+      headers: [{
+        key: 'Content-Type', value: 'application/json'
+      }, {
+        key: 'Authorization', value: this.props.authorization
+      }],
+      body: { name: this.state.newVocabularyName },
+      onSuccess: (data) => {
+        const vocabularies = this.state.vocabularies.slice(0);
+        vocabularies.push({ name: data.data[0].id });
+        this.setState({
+          vocabularies,
+          submitting: false,
+          newVocabularyForm: false
+        });
+      },
+      onError: () => {
+        this.setState({ message: 'Error creating the vocabulary', submitting: false });
+      }
     });
   }
-  /**
-  * HELPER FUNCTIONS
-  * - loadDatasetVocabularies
-  * - loadAllVocabularies
-  */
   @Autobind
-  loadDatasetVocabularies() {
-    if (this.state.datasetID) {
-      // Start the loading
-      this.setState({ loading: true });
-
-      get(
-        {
-          url: `https://api.resourcewatch.org/v1/dataset/${this.state.datasetID}?includes=vocabulary&cache=${Date.now()}`,
-          headers: [{ key: 'Content-Type', value: 'application/json' }],
-          onSuccess: (response) => {
-            const attrs = response.data.attributes;
-            const vocabulary = attrs.vocabulary;
-            const { allVocabularies } = this.state;
-            const vocabularies = vocabulary.map(elem => elem.attributes);
-            const filteredVocabularies = allVocabularies.filter((elem) => {
-              const vocabularyFound = !!vocabularies.find(tempVoc => tempVoc.name === elem.name);
-              return !vocabularyFound;
-            });
-            this.setState({
-              datasetName: attrs.name,
-              vocabularies,
-              allVocabularies: filteredVocabularies,
-              // Stop the loading
-              loading: false
-            });
-          },
-          onError: () => {
-            console.info('Error');
-          }
-        }
-      );
-    }
+  triggerCancelNewVocabulary() {
+    this.setState({ newVocabularyForm: false });
   }
   @Autobind
-  loadAllVocabularies() {
-    get(
-      {
-        url: 'https://api.resourcewatch.org/v1/vocabulary',
-        headers: [{ key: 'Content-Type', value: 'application/json' }],
-        onSuccess: (response) => {
-          const allVocabularies = response.data
-            .map(elem => elem.attributes)
-            .map(elem =>
-              ({
-                name: elem.name,
-                tagSet: uniqBy(
-                  flatten(elem.resources.map(res => res.tags)), e => e)
-              })
-            );
-          this.setState({
-            allVocabularies,
-            allVocabulariesNotFiltered: allVocabularies.slice(0)
-          }, this.loadDatasetVocabularies);
-        },
-        onError: () => {
-          console.info('Error');
-        }
-      }
-    );
+  changeVocabularyName(value) {
+    this.setState({ newVocabularyName: value });
   }
 
   render() {
-    const { vocabularies, allVocabularies, allVocabulariesNotFiltered } = this.state;
+    const { application, authorization } = this.props;
+    const { vocabularies, loading, newVocabularyForm, submitting } = this.state;
     return (
-      <div>
-        <Title className="-huge -p-primary">
-          {this.state.datasetName}
-        </Title>
+      <div className="c-vocabularies-form">
         <h1 className="-p-primary">
           Vocabularies
         </h1>
-        {!this.state.loading &&
-          <Button
-            onClick={this.triggerNewVocabulary}
-            properties={{
-              type: 'button',
-              className: '-primary'
-            }}
-          >
-            New Vocabulary
-          </Button>
-        }
-        <Spinner
-          className="-light"
-          isLoading={this.state.loading}
-        />
-        <form className="c-form" onSubmit={this.triggerSubmit} noValidate>
-          <div className="row">
-            {!this.state.loading && vocabularies.length > 0 &&
-              vocabularies.map((elem, i) => {
-                const tempVoc = allVocabulariesNotFiltered.find(val => val.name === elem.name);
-                const elemWithTagSet = Object.assign(
-                  elem,
-                  { tagSet: tempVoc ? tempVoc.tagSet : [] }
-                );
-                return (
-                  <div
-                    className="small-6 medium-4 column"
-                    key={i}
-                  >
-                    <VocabularyItem
-                      index={i}
-                      vocabulary={elemWithTagSet}
-                      allVocabularies={allVocabularies}
-                      onChange={this.triggerChange}
-                      application={this.props.application}
-                      authorization={this.props.authorization}
-                      language={this.props.language}
-                      onDissociateVocabulary={this.handleDissociateVocabulary}
-                    />
-                  </div>);
-              })
-            }
+        {!loading && !newVocabularyForm &&
+          <div className="actions">
+            <Button
+              onClick={this.triggerNewVocabulary}
+              properties={{
+                type: 'button',
+                className: '-primary -end'
+              }}
+            >
+              New Vocabulary
+            </Button>
           </div>
-          <ul className="c-field-buttons">
-            <li>
-              <Button
+        }
+        {newVocabularyForm &&
+          <div className="new-vocabulary-form">
+            <form className="c-form" onSubmit={this.triggerSubmitNewVocabulary}>
+              <Spinner className="-light" isLoading={this.state.submitting} />
+              <Field
+                ref={(c) => { if (c) FORM_ELEMENTS.name = c; }}
+                onChange={value => this.changeVocabularyName(value)}
+                validations={['required']}
                 properties={{
-                  type: 'submit',
-                  name: 'commit',
-                  disabled: this.state.loading,
-                  className: `-primary ${this.state.loading ? '-disabled' : ''}`
+                  name: 'name',
+                  label: 'Vocabulary name',
+                  type: 'text',
+                  required: true,
+                  default: ''
                 }}
               >
-                Submit
-              </Button>
-            </li>
-          </ul>
-        </form>
+                {Input}
+              </Field>
+              <div className="button-bar">
+                <Button
+                  onClick={this.triggerCancelNewVocabulary}
+                  properties={{
+                    type: 'button',
+                    className: '-secondary -end'
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  properties={{
+                    type: 'submit',
+                    disabled: submitting,
+                    className: '-primary -end'
+                  }}
+                >
+                  Submit
+                </Button>
+              </div>
+            </form>
+          </div>
+        }
+        <Spinner className="-light" isLoading={this.state.loading} />
+        <VocabulariesTable
+          vocabularies={vocabularies}
+          application={application}
+          authorization={authorization}
+        />
       </div>
     );
   }
@@ -264,8 +176,7 @@ class VocabulariesForm extends React.Component {
 VocabulariesForm.propTypes = {
   application: React.PropTypes.string,
   authorization: React.PropTypes.string,
-  language: React.PropTypes.string,
-  dataset: React.PropTypes.string.isRequired
+  language: React.PropTypes.string
 };
 
 export default VocabulariesForm;
