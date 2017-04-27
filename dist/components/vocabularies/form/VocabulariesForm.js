@@ -12,29 +12,29 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _uniqBy = require('lodash/uniqBy');
-
-var _uniqBy2 = _interopRequireDefault(_uniqBy);
-
-var _flatten = require('lodash/flatten');
-
-var _flatten2 = _interopRequireDefault(_flatten);
-
 var _esDecorators = require('es-decorators');
 
+var _sortBy = require('lodash/sortBy');
+
+var _sortBy2 = _interopRequireDefault(_sortBy);
+
 var _constants = require('./constants');
-
-var _VocabularyItem = require('./VocabularyItem');
-
-var _VocabularyItem2 = _interopRequireDefault(_VocabularyItem);
-
-var _Title = require('../../ui/Title');
-
-var _Title2 = _interopRequireDefault(_Title);
 
 var _Button = require('../../ui/Button');
 
 var _Button2 = _interopRequireDefault(_Button);
+
+var _Field = require('../../form/Field');
+
+var _Field2 = _interopRequireDefault(_Field);
+
+var _Input = require('../../form/Input');
+
+var _Input2 = _interopRequireDefault(_Input);
+
+var _VocabulariesTable = require('../table/VocabulariesTable');
+
+var _VocabulariesTable2 = _interopRequireDefault(_VocabulariesTable);
 
 var _Spinner = require('../../ui/Spinner');
 
@@ -88,10 +88,11 @@ var VocabulariesForm = (_class = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (VocabulariesForm.__proto__ || Object.getPrototypeOf(VocabulariesForm)).call(this, props));
 
     var newState = Object.assign({}, _constants.STATE_DEFAULT, {
-      datasetID: props.dataset,
-      datasetName: '',
       loading: true,
-      allVocabularies: [],
+      submitting: false,
+      vocabularies: [],
+      newVocabularyName: '',
+      newVocabularyForm: false,
       form: Object.assign({}, _constants.STATE_DEFAULT.form, {
         application: props.application,
         authorization: props.authorization,
@@ -103,291 +104,198 @@ var VocabulariesForm = (_class = function (_React$Component) {
     return _this;
   }
 
-  /**
-   * COMPONENT LIFECYCLE
-   * - componentWillMount
-  */
-
-
   _createClass(VocabulariesForm, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.loadAllVocabularies();
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.getVocabularies();
+    }
+
+    /**
+     * HELPERS
+     * - getVocabularies
+    */
+
+  }, {
+    key: 'getVocabularies',
+    value: function getVocabularies() {
+      var _this2 = this;
+
+      var url = 'https://api.resourcewatch.org/v1/vocabulary';
+
+      (0, _request.get)({
+        url: url,
+        headers: [],
+        onSuccess: function onSuccess(response) {
+          var vocabularies = (0, _sortBy2.default)(response.data.map(function (vocabulary) {
+            return { name: vocabulary.id };
+          }), 'id');
+          _this2.setState({ vocabularies: vocabularies, loading: false });
+        },
+        onError: function onError() {
+          _this2.setState({ message: 'Error loading vocabularies', loading: false });
+        }
+      });
     }
 
     /**
      * UI EVENTS
-     * - triggerSubmit
-     * - triggerChange
      * - triggerNewVocabulary
-     * - handleDissociateVocabulary
     */
 
-  }, {
-    key: 'triggerSubmit',
-    value: function triggerSubmit(event) {
-      var _this2 = this;
-
-      event.preventDefault();
-
-      _constants.FORM_ELEMENTS.validate();
-
-      if (_constants.FORM_ELEMENTS.isFormValid()) {
-        // Set a timeout due to the setState function of react
-        setTimeout(function () {
-          if (!_this2.state.submitting) {
-            // Start the submitting
-            _this2.setState({ submitting: true });
-
-            var bodyObj = {};
-            _this2.state.vocabularies.forEach(function (elem) {
-              bodyObj[elem.name] = { tags: elem.tags };
-            });
-
-            (0, _request.post)({
-              type: 'PUT',
-              url: 'https://api.resourcewatch.org/v1/dataset/' + _this2.state.datasetID + '/vocabulary',
-              headers: [{ key: 'Content-Type', value: 'application/json' }, { key: 'Authorization', value: _this2.state.form.authorization }],
-              body: bodyObj,
-              onSuccess: function onSuccess(response) {
-                _this2.setState({ submitting: false });
-                var successMessage = 'Vocabularies have been updated correctly';
-                console.info(response);
-                console.info(successMessage);
-                alert(successMessage);
-              },
-              onError: function onError() {
-                console.info('Error');
-              }
-            });
-          }
-        }, 0);
-      }
-    }
-  }, {
-    key: 'triggerChange',
-    value: function triggerChange(vocabulary, index) {
-      var vocabularies = this.state.vocabularies.slice(0);
-      var newAllVocabularies = this.state.allVocabularies.filter(function (elem) {
-        return elem.name !== vocabulary.name;
-      });
-
-      vocabularies.splice(index, 1, vocabulary);
-      this.setState({
-        vocabularies: vocabularies,
-        allVocabularies: newAllVocabularies
-      });
-    }
   }, {
     key: 'triggerNewVocabulary',
     value: function triggerNewVocabulary() {
-      var vocabularies = this.state.vocabularies;
-
-      if (!vocabularies.find(function (voc) {
-        return voc.name === '';
-      })) {
-        vocabularies.push({ name: '', tags: [] });
-        this.setState({ vocabularies: vocabularies });
-      }
+      this.setState({ newVocabularyForm: true });
     }
   }, {
-    key: 'handleDissociateVocabulary',
-    value: function handleDissociateVocabulary(voc) {
-      var _state = this.state,
-          vocabularies = _state.vocabularies,
-          allVocabularies = _state.allVocabularies;
-
-      var filteredVocabularies = vocabularies.filter(function (elem) {
-        return elem.name !== voc.name;
-      });
-      var newAllVocabularies = allVocabularies.slice(0);
-      if (voc.name !== '') {
-        newAllVocabularies.push(voc);
-      }
-      this.setState({
-        vocabularies: filteredVocabularies,
-        allVocabularies: newAllVocabularies
-      });
-    }
-    /**
-    * HELPER FUNCTIONS
-    * - loadDatasetVocabularies
-    * - loadAllVocabularies
-    */
-
-  }, {
-    key: 'loadDatasetVocabularies',
-    value: function loadDatasetVocabularies() {
+    key: 'triggerSubmitNewVocabulary',
+    value: function triggerSubmitNewVocabulary(e) {
       var _this3 = this;
 
-      if (this.state.datasetID) {
-        // Start the loading
-        this.setState({ loading: true });
-
-        (0, _request.get)({
-          url: 'https://api.resourcewatch.org/v1/dataset/' + this.state.datasetID + '?includes=vocabulary&cache=' + Date.now(),
-          headers: [{ key: 'Content-Type', value: 'application/json' }],
-          onSuccess: function onSuccess(response) {
-            var attrs = response.data.attributes;
-            var vocabulary = attrs.vocabulary;
-            var allVocabularies = _this3.state.allVocabularies;
-
-            var vocabularies = vocabulary.map(function (elem) {
-              return elem.attributes;
-            });
-            var filteredVocabularies = allVocabularies.filter(function (elem) {
-              var vocabularyFound = !!vocabularies.find(function (tempVoc) {
-                return tempVoc.name === elem.name;
-              });
-              return !vocabularyFound;
-            });
-            _this3.setState({
-              datasetName: attrs.name,
-              vocabularies: vocabularies,
-              allVocabularies: filteredVocabularies,
-              // Stop the loading
-              loading: false
-            });
-          },
-          onError: function onError() {
-            console.info('Error');
-          }
-        });
-      }
-    }
-  }, {
-    key: 'loadAllVocabularies',
-    value: function loadAllVocabularies() {
-      var _this4 = this;
-
-      (0, _request.get)({
+      e.preventDefault();
+      this.setState({ submitting: true });
+      (0, _request.post)({
         url: 'https://api.resourcewatch.org/v1/vocabulary',
-        headers: [{ key: 'Content-Type', value: 'application/json' }],
-        onSuccess: function onSuccess(response) {
-          var allVocabularies = response.data.map(function (elem) {
-            return elem.attributes;
-          }).map(function (elem) {
-            return {
-              name: elem.name,
-              tagSet: (0, _uniqBy2.default)((0, _flatten2.default)(elem.resources.map(function (res) {
-                return res.tags;
-              })), function (e) {
-                return e;
-              })
-            };
+        headers: [{
+          key: 'Content-Type', value: 'application/json'
+        }, {
+          key: 'Authorization', value: this.props.authorization
+        }],
+        body: { name: this.state.newVocabularyName },
+        onSuccess: function onSuccess(data) {
+          var vocabularies = _this3.state.vocabularies.slice(0);
+          vocabularies.push({ name: data.data[0].id });
+          _this3.setState({
+            vocabularies: vocabularies,
+            submitting: false,
+            newVocabularyForm: false
           });
-          _this4.setState({
-            allVocabularies: allVocabularies,
-            allVocabulariesNotFiltered: allVocabularies.slice(0)
-          }, _this4.loadDatasetVocabularies);
         },
         onError: function onError() {
-          console.info('Error');
+          _this3.setState({ message: 'Error creating the vocabulary', submitting: false });
         }
       });
     }
   }, {
+    key: 'triggerCancelNewVocabulary',
+    value: function triggerCancelNewVocabulary() {
+      this.setState({ newVocabularyForm: false });
+    }
+  }, {
+    key: 'changeVocabularyName',
+    value: function changeVocabularyName(value) {
+      this.setState({ newVocabularyName: value });
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _this5 = this;
+      var _this4 = this;
 
-      var _state2 = this.state,
-          vocabularies = _state2.vocabularies,
-          allVocabularies = _state2.allVocabularies,
-          allVocabulariesNotFiltered = _state2.allVocabulariesNotFiltered;
+      var _props = this.props,
+          application = _props.application,
+          authorization = _props.authorization;
+      var _state = this.state,
+          vocabularies = _state.vocabularies,
+          loading = _state.loading,
+          newVocabularyForm = _state.newVocabularyForm,
+          submitting = _state.submitting;
 
       return _react2.default.createElement(
         'div',
-        null,
-        _react2.default.createElement(
-          _Title2.default,
-          { className: '-huge -p-primary' },
-          this.state.datasetName
-        ),
+        { className: 'c-vocabularies-form' },
         _react2.default.createElement(
           'h1',
           { className: '-p-primary' },
           'Vocabularies'
         ),
-        !this.state.loading && _react2.default.createElement(
-          _Button2.default,
-          {
-            onClick: this.triggerNewVocabulary,
-            properties: {
-              type: 'button',
-              className: '-primary'
-            }
-          },
-          'New Vocabulary'
+        !loading && !newVocabularyForm && _react2.default.createElement(
+          'div',
+          { className: 'actions' },
+          _react2.default.createElement(
+            _Button2.default,
+            {
+              onClick: this.triggerNewVocabulary,
+              properties: {
+                type: 'button',
+                className: '-primary -end'
+              }
+            },
+            'New Vocabulary'
+          )
         ),
-        _react2.default.createElement(_Spinner2.default, {
-          className: '-light',
-          isLoading: this.state.loading
-        }),
-        _react2.default.createElement(
-          'form',
-          { className: 'c-form', onSubmit: this.triggerSubmit, noValidate: true },
+        newVocabularyForm && _react2.default.createElement(
+          'div',
+          { className: 'new-vocabulary-form' },
           _react2.default.createElement(
-            'div',
-            { className: 'row' },
-            !this.state.loading && vocabularies.length > 0 && vocabularies.map(function (elem, i) {
-              var tempVoc = allVocabulariesNotFiltered.find(function (val) {
-                return val.name === elem.name;
-              });
-              var elemWithTagSet = Object.assign(elem, { tagSet: tempVoc ? tempVoc.tagSet : [] });
-              return _react2.default.createElement(
-                'div',
-                {
-                  className: 'small-6 medium-4 column',
-                  key: i
-                },
-                _react2.default.createElement(_VocabularyItem2.default, {
-                  index: i,
-                  vocabulary: elemWithTagSet,
-                  allVocabularies: allVocabularies,
-                  onChange: _this5.triggerChange,
-                  application: _this5.props.application,
-                  authorization: _this5.props.authorization,
-                  language: _this5.props.language,
-                  onDissociateVocabulary: _this5.handleDissociateVocabulary
-                })
-              );
-            })
-          ),
-          _react2.default.createElement(
-            'ul',
-            { className: 'c-field-buttons' },
+            'form',
+            { className: 'c-form', onSubmit: this.triggerSubmitNewVocabulary },
+            _react2.default.createElement(_Spinner2.default, { className: '-light', isLoading: this.state.submitting }),
             _react2.default.createElement(
-              'li',
-              null,
+              _Field2.default,
+              {
+                ref: function ref(c) {
+                  if (c) _constants.FORM_ELEMENTS.name = c;
+                },
+                onChange: function onChange(value) {
+                  return _this4.changeVocabularyName(value);
+                },
+                validations: ['required'],
+                properties: {
+                  name: 'name',
+                  label: 'Vocabulary name',
+                  type: 'text',
+                  required: true,
+                  default: ''
+                }
+              },
+              _Input2.default
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'button-bar' },
+              _react2.default.createElement(
+                _Button2.default,
+                {
+                  onClick: this.triggerCancelNewVocabulary,
+                  properties: {
+                    type: 'button',
+                    className: '-secondary -end'
+                  }
+                },
+                'Cancel'
+              ),
               _react2.default.createElement(
                 _Button2.default,
                 {
                   properties: {
                     type: 'submit',
-                    name: 'commit',
-                    disabled: this.state.loading,
-                    className: '-primary ' + (this.state.loading ? '-disabled' : '')
+                    disabled: submitting,
+                    className: '-primary -end'
                   }
                 },
                 'Submit'
               )
             )
           )
-        )
+        ),
+        _react2.default.createElement(_Spinner2.default, { className: '-light', isLoading: this.state.loading }),
+        _react2.default.createElement(_VocabulariesTable2.default, {
+          vocabularies: vocabularies,
+          application: application,
+          authorization: authorization
+        })
       );
     }
   }]);
 
   return VocabulariesForm;
-}(_react2.default.Component), (_applyDecoratedDescriptor(_class.prototype, 'triggerSubmit', [_esDecorators.Autobind], Object.getOwnPropertyDescriptor(_class.prototype, 'triggerSubmit'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'triggerChange', [_esDecorators.Autobind], Object.getOwnPropertyDescriptor(_class.prototype, 'triggerChange'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'triggerNewVocabulary', [_esDecorators.Autobind], Object.getOwnPropertyDescriptor(_class.prototype, 'triggerNewVocabulary'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleDissociateVocabulary', [_esDecorators.Autobind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleDissociateVocabulary'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'loadDatasetVocabularies', [_esDecorators.Autobind], Object.getOwnPropertyDescriptor(_class.prototype, 'loadDatasetVocabularies'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'loadAllVocabularies', [_esDecorators.Autobind], Object.getOwnPropertyDescriptor(_class.prototype, 'loadAllVocabularies'), _class.prototype)), _class);
+}(_react2.default.Component), (_applyDecoratedDescriptor(_class.prototype, 'triggerNewVocabulary', [_esDecorators.Autobind], Object.getOwnPropertyDescriptor(_class.prototype, 'triggerNewVocabulary'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'triggerSubmitNewVocabulary', [_esDecorators.Autobind], Object.getOwnPropertyDescriptor(_class.prototype, 'triggerSubmitNewVocabulary'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'triggerCancelNewVocabulary', [_esDecorators.Autobind], Object.getOwnPropertyDescriptor(_class.prototype, 'triggerCancelNewVocabulary'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'changeVocabularyName', [_esDecorators.Autobind], Object.getOwnPropertyDescriptor(_class.prototype, 'changeVocabularyName'), _class.prototype)), _class);
 
 
 VocabulariesForm.propTypes = {
   application: _react2.default.PropTypes.string,
   authorization: _react2.default.PropTypes.string,
-  language: _react2.default.PropTypes.string,
-  dataset: _react2.default.PropTypes.string.isRequired
+  language: _react2.default.PropTypes.string
 };
 
 exports.default = VocabulariesForm;

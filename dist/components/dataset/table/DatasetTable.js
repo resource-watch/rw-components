@@ -78,8 +78,6 @@ var DatasetTable = function (_React$Component) {
     /**
      * HELPERS
      * - getDatasets
-     * - validate
-     * - isValid
     */
 
   }, {
@@ -116,7 +114,7 @@ var DatasetTable = function (_React$Component) {
           columns: [{ label: 'name', value: 'name' }, { label: 'status', value: 'status', td: _StatusTD2.default }, { label: 'provider', value: 'provider' }],
           actions: {
             show: true,
-            list: [{ name: 'Edit', path: '/datasets/:id/edit', show: true, component: _EditAction2.default }, { name: 'Remove', path: '/datasets/:id/remove', component: _DeleteAction2.default, componentProps: { authorization: this.props.authorization } }, { name: 'Metadata', path: '/datasets/:id/metadata', component: _MetadataAction2.default }, { name: 'Vocabularies', path: '/datasets/:id/vocabularies', component: _VocabularyAction2.default }, { name: 'Widgets', path: '/datasets/:id/widgets', component: _WidgetAction2.default }]
+            list: [{ name: 'Edit', path: '/datasets/:id/edit', show: true, component: _EditAction2.default }, { name: 'Remove', path: '/datasets/:id/remove', component: _DeleteAction2.default, componentProps: { authorization: this.props.authorization } }, { name: 'Metadata', path: '/datasets/:id/metadata', component: _MetadataAction2.default }, { name: 'Vocabularies', path: '/datasets/:id/dataset_vocabularies', component: _VocabularyAction2.default }, { name: 'Widgets', path: '/datasets/:id/widgets', component: _WidgetAction2.default }]
           },
           data: this.state.datasets,
           pageSize: 20,

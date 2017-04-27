@@ -14,8 +14,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactSelect = require('react-select');
 
-var _reactSelect2 = _interopRequireDefault(_reactSelect);
-
 var _FormElement2 = require('./FormElement');
 
 var _FormElement3 = _interopRequireDefault(_FormElement2);
@@ -70,15 +68,25 @@ var SelectInput = function (_FormElement) {
     value: function render() {
       var _props = this.props,
           options = _props.options,
-          properties = _props.properties;
+          properties = _props.properties,
+          creatable = _props.creatable;
 
 
-      return _react2.default.createElement(_reactSelect2.default, _extends({}, properties, {
-        options: options,
-        id: 'select-' + properties.name,
-        value: this.state.value,
-        onChange: this.triggerChange
-      }));
+      if (creatable) {
+        return _react2.default.createElement(_reactSelect.Select, _extends({}, properties, {
+          options: options,
+          id: 'select-' + properties.name,
+          value: this.state.value,
+          onChange: this.triggerChange
+        }));
+      } else {
+        return _react2.default.createElement(_reactSelect.Creatable, _extends({}, properties, {
+          options: options,
+          id: 'select-' + properties.name,
+          value: this.state.value,
+          onChange: this.triggerChange
+        }));
+      }
     }
   }]);
 
@@ -88,6 +96,7 @@ var SelectInput = function (_FormElement) {
 SelectInput.propTypes = {
   properties: _react2.default.PropTypes.object.isRequired,
   options: _react2.default.PropTypes.array.isRequired,
+  creatable: _react2.default.PropTypes.bool,
   onChange: _react2.default.PropTypes.func
 };
 

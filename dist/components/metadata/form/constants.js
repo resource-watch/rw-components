@@ -12,11 +12,6 @@ var STATE_DEFAULT = exports.STATE_DEFAULT = {
   loading: false,
   form: {
     authorization: '',
-    name: '',
-    description: '',
-    status: 1
-  },
-  metadata: {
     source: '',
     description: '',
     name: '',

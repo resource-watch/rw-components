@@ -115,7 +115,8 @@ var MetadataForm = (_class = function (_React$Component) {
 
             _this2.setState({
               datasetName: response.data.attributes.name,
-              metadata: metadata && metadata.length ? metadata[0].attributes : _constants.STATE_DEFAULT.metadata,
+              form: metadata && metadata.length ? _this2.setFormFromParams(metadata[0].attributes) : _this2.state.form,
+              metadata: metadata,
               // Stop the loading
               loading: false
             });
@@ -151,12 +152,20 @@ var MetadataForm = (_class = function (_React$Component) {
           // Start the submitting
           _this3.setState({ submitting: true });
 
+          // Check if the metadata alerady exists
+          var isPresent = !!_this3.state.metadata.find(function (m) {
+            var hasLang = m.attributes.language === _this3.state.form.language;
+            var hasApp = m.attributes.application === _this3.state.form.application;
+
+            return hasLang && hasApp;
+          });
+
           (0, _request.post)({
-            type: _this3.state.datasetID && _this3.state.metadata.status ? 'PATCH' : 'POST',
+            type: _this3.state.datasetID && isPresent ? 'PATCH' : 'POST',
             url: 'https://api.resourcewatch.org/v1/dataset/' + _this3.state.datasetID + '/metadata',
             body: _extends({
               application: _this3.state.form.application
-            }, (0, _omit2.default)(_this3.state.metadata, ['authorization'])),
+            }, (0, _omit2.default)(_this3.state.form, ['authorization'])),
             headers: [{
               key: 'Content-Type',
               value: 'application/json'
@@ -181,19 +190,38 @@ var MetadataForm = (_class = function (_React$Component) {
   }, {
     key: 'onChange',
     value: function onChange(obj) {
-      var metadata = Object.assign({}, this.state.metadata, obj.metadata);
-      this.setState({ metadata: metadata });
-      console.info(metadata);
+      var form = Object.assign({}, this.state.form, obj.form);
+      this.setState({ form: form });
+      console.info(form);
     }
   }, {
     key: 'onBack',
     value: function onBack(step) {
       this.setState({ step: step });
     }
+
+    // HELPERS
+
+  }, {
+    key: 'setFormFromParams',
+    value: function setFormFromParams(params) {
+      var _this4 = this;
+
+      var form = Object.keys(this.state.form);
+      var newForm = {};
+
+      form.forEach(function (f) {
+        if (params[f] || _this4.state.form[f]) {
+          newForm[f] = params[f] || _this4.state.form[f];
+        }
+      });
+
+      return newForm;
+    }
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       return _react2.default.createElement(
         'div',
@@ -209,16 +237,16 @@ var MetadataForm = (_class = function (_React$Component) {
           this.state.loading && 'loading',
           !this.state.loading && _react2.default.createElement(_Step2.default, {
             onChange: function onChange(value) {
-              return _this4.onChange(value);
+              return _this5.onChange(value);
             },
-            metadata: this.state.metadata
+            form: this.state.form
           }),
           !this.state.loading && _react2.default.createElement(_Navigation2.default, {
             step: this.state.step,
             stepLength: this.state.stepLength,
             submitting: this.state.submitting,
             onBack: function onBack(step) {
-              return _this4.onBack(step);
+              return _this5.onBack(step);
             }
           })
         )

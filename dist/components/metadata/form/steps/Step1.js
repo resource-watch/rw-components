@@ -58,18 +58,18 @@ var Step1 = function (_React$Component) {
   _createClass(Step1, [{
     key: 'changeMetadata',
     value: function changeMetadata(obj) {
-      var metadata = this.props.metadata;
+      var form = this.props.form;
 
       var newMetadata = void 0;
 
       if (obj.info) {
-        var info = _extends({}, metadata.info, obj.info);
-        newMetadata = _extends({}, metadata, { info: info });
+        var info = _extends({}, form.info, obj.info);
+        newMetadata = _extends({}, form, { info: info });
       } else {
-        newMetadata = _extends({}, metadata, obj);
+        newMetadata = _extends({}, form, obj);
       }
 
-      this.props.onChange({ metadata: newMetadata });
+      this.props.onChange({ form: newMetadata });
     }
   }, {
     key: 'render',
@@ -102,7 +102,7 @@ var Step1 = function (_React$Component) {
                 label: 'Title',
                 type: 'text',
                 required: true,
-                default: this.props.metadata.name
+                default: this.props.form.name
               }
             },
             _Input2.default
@@ -122,7 +122,7 @@ var Step1 = function (_React$Component) {
                 label: 'Description',
                 rows: '6',
                 required: true,
-                default: this.props.metadata.description
+                default: this.props.form.description
               }
             },
             _TextArea2.default
@@ -144,7 +144,7 @@ var Step1 = function (_React$Component) {
                 type: 'text',
                 disabled: true,
                 required: true,
-                default: this.props.metadata.language
+                default: this.props.form.language
               }
             },
             _SelectInput2.default
@@ -162,7 +162,7 @@ var Step1 = function (_React$Component) {
                 name: 'wri_funded',
                 label: 'WRI funded',
                 title: 'Is this dataset funded by WRI?',
-                default: this.props.metadata.info.wri_funded
+                checked: this.props.form.info.wri_funded
               }
             },
             _Checkbox2.default
@@ -189,7 +189,7 @@ var Step1 = function (_React$Component) {
                 name: 'contact_person_name',
                 label: 'Contact Person Name',
                 type: 'text',
-                default: this.props.metadata.info.contact_person_name
+                default: this.props.form.info.contact_person_name
               }
             },
             _Input2.default
@@ -208,7 +208,7 @@ var Step1 = function (_React$Component) {
                 name: 'contact_person_email',
                 label: 'Contact Person Email',
                 type: 'text',
-                default: this.props.metadata.info.contact_person_email
+                default: this.props.form.info.contact_person_email
               }
             },
             _Input2.default
@@ -237,7 +237,7 @@ var Step1 = function (_React$Component) {
                 label: 'Function',
                 type: 'text',
                 rows: '6',
-                default: this.props.metadata.info.function
+                default: this.props.form.info.function
               }
             },
             _TextArea2.default
@@ -257,7 +257,7 @@ var Step1 = function (_React$Component) {
                 label: 'Cautions',
                 type: 'text',
                 rows: '6',
-                default: this.props.metadata.info.cautions
+                default: this.props.form.info.cautions
               }
             },
             _TextArea2.default
@@ -277,7 +277,7 @@ var Step1 = function (_React$Component) {
                 label: 'Citation',
                 type: 'text',
                 rows: '6',
-                default: this.props.metadata.info.citation
+                default: this.props.form.info.citation
               }
             },
             _TextArea2.default
@@ -297,7 +297,7 @@ var Step1 = function (_React$Component) {
                 label: 'Geographic Coverage',
                 type: 'text',
                 rows: '6',
-                default: this.props.metadata.info.geographic_coverage
+                default: this.props.form.info.geographic_coverage
               }
             },
             _TextArea2.default
@@ -317,7 +317,7 @@ var Step1 = function (_React$Component) {
                 label: 'Spatial Resolution',
                 type: 'text',
                 rows: '6',
-                default: this.props.metadata.info.spatial_resolution
+                default: this.props.form.info.spatial_resolution
               }
             },
             _TextArea2.default
@@ -336,7 +336,7 @@ var Step1 = function (_React$Component) {
                 name: 'date_of_content',
                 label: 'Date of Content',
                 type: 'text',
-                default: this.props.metadata.info.date_of_content
+                default: this.props.form.info.date_of_content
               }
             },
             _Input2.default
@@ -355,7 +355,7 @@ var Step1 = function (_React$Component) {
                 name: 'frequency_of_updates',
                 label: 'Frequency of Updates',
                 type: 'text',
-                default: this.props.metadata.info.frequency_of_updates
+                default: this.props.form.info.frequency_of_updates
               }
             },
             _Input2.default
@@ -373,7 +373,7 @@ var Step1 = function (_React$Component) {
                 name: 'scientific_paper',
                 label: 'Scientific Paper',
                 type: 'text',
-                default: this.props.metadata.info.scientific_paper
+                default: this.props.form.info.scientific_paper
               }
             },
             _Input2.default
@@ -392,7 +392,7 @@ var Step1 = function (_React$Component) {
                 name: 'license',
                 label: 'License',
                 type: 'text',
-                default: this.props.metadata.info.license
+                default: this.props.form.info.license
               }
             },
             _Input2.default
@@ -411,7 +411,7 @@ var Step1 = function (_React$Component) {
                 name: 'license_link',
                 label: 'License link',
                 type: 'text',
-                default: this.props.metadata.info.license_link
+                default: this.props.form.info.license_link
               }
             },
             _Input2.default
@@ -429,7 +429,7 @@ var Step1 = function (_React$Component) {
                 name: 'source_organization',
                 label: 'Source Organization',
                 type: 'text',
-                default: this.props.metadata.info.source_organization
+                default: this.props.form.info.source_organization
               }
             },
             _Input2.default
@@ -448,7 +448,7 @@ var Step1 = function (_React$Component) {
                 name: 'source_organization_link',
                 label: 'Source Organization Link',
                 type: 'text',
-                default: this.props.metadata.info.source_organization_link
+                default: this.props.form.info.source_organization_link
               }
             },
             _Input2.default
@@ -475,7 +475,7 @@ var Step1 = function (_React$Component) {
                 name: 'translated_title',
                 label: 'Translated Title',
                 type: 'text',
-                default: this.props.metadata.info.translated_title
+                default: this.props.form.info.translated_title
               }
             },
             _Input2.default
@@ -495,7 +495,7 @@ var Step1 = function (_React$Component) {
                 label: 'Translated Function',
                 type: 'text',
                 rows: '6',
-                default: this.props.metadata.info.translated_function
+                default: this.props.form.info.translated_function
               }
             },
             _TextArea2.default
@@ -515,7 +515,7 @@ var Step1 = function (_React$Component) {
                 label: 'Translated Description',
                 type: 'text',
                 rows: '6',
-                default: this.props.metadata.info.translated_description
+                default: this.props.form.info.translated_description
               }
             },
             _TextArea2.default
@@ -543,7 +543,7 @@ var Step1 = function (_React$Component) {
                 name: 'learn_more_link',
                 label: 'Learn More link',
                 type: 'text',
-                default: this.props.metadata.info.learn_more_link
+                default: this.props.form.info.learn_more_link
               }
             },
             _Input2.default
@@ -562,7 +562,7 @@ var Step1 = function (_React$Component) {
                 name: 'data_download_link',
                 label: 'Data Download link',
                 type: 'text',
-                default: this.props.metadata.info.data_download_link
+                default: this.props.form.info.data_download_link
               }
             },
             _Input2.default
@@ -581,7 +581,7 @@ var Step1 = function (_React$Component) {
                 name: 'data_visualization_link',
                 label: 'Data Visualization link',
                 type: 'text',
-                default: this.props.metadata.info.data_visualization_link
+                default: this.props.form.info.data_visualization_link
               }
             },
             _Input2.default
@@ -595,7 +595,7 @@ var Step1 = function (_React$Component) {
 }(_react2.default.Component);
 
 Step1.propTypes = {
-  metadata: _react2.default.PropTypes.object,
+  form: _react2.default.PropTypes.object,
   onChange: _react2.default.PropTypes.func
 };
 

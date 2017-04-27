@@ -94,6 +94,15 @@ Object.defineProperty(exports, 'DatasetTable', {
   }
 });
 
+var _DatasetVocabulariesForm = require('./components/dataset/vocabularies/DatasetVocabulariesForm');
+
+Object.defineProperty(exports, 'DatasetVocabulariesForm', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_DatasetVocabulariesForm).default;
+  }
+});
+
 var _LayerForm = require('./components/layer/form/LayerForm');
 
 Object.defineProperty(exports, 'LayerForm', {
@@ -184,21 +193,30 @@ Object.defineProperty(exports, 'MetadataForm', {
   }
 });
 
-var _VocabulariesForm = require('./components/vocabularies/form/VocabulariesForm');
-
-Object.defineProperty(exports, 'VocabulariesForm', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_VocabulariesForm).default;
-  }
-});
-
 var _VocabularyItem = require('./components/vocabularies/form/VocabularyItem');
 
 Object.defineProperty(exports, 'VocabularyItem', {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_VocabularyItem).default;
+  }
+});
+
+var _VocabulariesTable = require('./components/vocabularies/table/VocabulariesTable');
+
+Object.defineProperty(exports, 'VocabulariesTable', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_VocabulariesTable).default;
+  }
+});
+
+var _VocabulariesForm = require('./components/vocabularies/form/VocabulariesForm');
+
+Object.defineProperty(exports, 'VocabulariesForm', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_VocabulariesForm).default;
   }
 });
 

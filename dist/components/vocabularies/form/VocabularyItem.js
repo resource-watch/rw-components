@@ -182,6 +182,7 @@ var VocabularyItem = (_class = function (_React$Component) {
                 label: 'tags',
                 multi: true,
                 required: true,
+                creatable: true,
                 default: selectedTags.map(function (tag) {
                   return { label: tag, value: tag };
                 }),
