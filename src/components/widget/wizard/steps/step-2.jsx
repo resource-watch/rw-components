@@ -2,31 +2,26 @@ import React from 'react';
 
 import Step from '../../form/steps/Step1';
 import Title from '../../../ui/Title';
-import WidgetList from '../../../widget/WidgetList';
+import WidgetPreview from '../../preview/WidgetPreview';
 
-class Step2 extends Step {
+class Step5 extends Step {
   render() {
-    const { wizard } = this.props;
     return (
       <fieldset className="c-field-container">
         <Title className="-primary -big">
-          Select a widget or create a new one
+          Preview
         </Title>
-        <WidgetList
-          ref={(c) => { if (c) this.children.push(c); }}
-          dataset={wizard.dataset}
-          selected={wizard.widget}
-          application={['rw']}
-          onChange={value => this.props.onChange({ widget: value })}
+        <WidgetPreview
+          dataset={this.props.dataset}
+          wizard={this.props.wizard}
         />
       </fieldset>
     );
   }
 }
 
-Step2.propTypes = {
-  wizard: React.PropTypes.object,
-  onChange: React.PropTypes.func
+Step5.propTypes = {
+  wizard: React.PropTypes.object
 };
 
-export default Step2;
+export default Step5;

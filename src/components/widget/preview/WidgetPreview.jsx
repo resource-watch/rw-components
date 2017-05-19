@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Jiminy from 'jiminy';
-import { chartConfig } from './constants';
 import getQueryByFilters from '../../../utils/getQueryByFilters';
 import getParsedConfig from '../../../utils/getWidgetConfig';
 
@@ -19,8 +17,8 @@ class WidgetPreview extends React.Component {
     this.state = {
       loading: true,
 
-      // Options
-      chartOptions: [],
+      // Jiminy
+      jiminy: {},
       xOptions: [],
       yOptions: [],
 
@@ -37,7 +35,7 @@ class WidgetPreview extends React.Component {
     };
 
     // DatasetService
-    this.datasetService = new DatasetService(props.wizard.dataset.id, {
+    this.datasetService = new DatasetService(props.dataset.id, {
       apiURL: 'https://api.resourcewatch.org/v1'
     });
 
@@ -46,13 +44,11 @@ class WidgetPreview extends React.Component {
   }
 
   componentWillMount() {
-    this.datasetService.fetchFilteredData(this.props.wizard.query)
-      .then((data) => {
+    this.datasetService.fetchJiminy(this.props.wizard.query)
+      .then((jiminy) => {
         this.setState({
           loading: false,
-          data
-        }, () => {
-          this.getChartOptions();
+          jiminy
         });
       })
       .catch((err) => {
@@ -64,33 +60,23 @@ class WidgetPreview extends React.Component {
 
   /**
    * HELPERS
-   * - getChartOptions
    * - getChartData
    * - getAxisOptions
   */
-  getChartOptions() {
-    /* Finally, you instantiate Jiminy with both the objects */
-    this.jiminy = new Jiminy(this.state.data, chartConfig);
-
-    /* You can get recommendations: what chartOptions you can build with the data: */
-    this.setState({
-      chartOptions: this.jiminy.recommendation(this.state.selected.columns)
-    });
-  }
 
   getChartData() {
     const { selected } = this.state;
-    const { wizard } = this.props;
+    const { wizard, dataset } = this.props;
     const columns = [];
 
-    if (selected.xAxis) columns.push({ key: 'x', value: selected.xAxis });
-    if (selected.yAxis) columns.push({ key: 'y', value: selected.yAxis });
+    if (selected.xAxis) columns.push({ key: 'x', value: selected.xAxis, as: true });
+    if (selected.yAxis) columns.push({ key: 'y', value: selected.yAxis, as: true });
 
-    const sql = getQueryByFilters(wizard.dataset.tableName, wizard.filters, columns);
+    const sql = getQueryByFilters(dataset.tableName, wizard.filters, columns);
 
     const parsedConfig = {
       data: [{
-        url: `https://api.resourcewatch.org/v1/query/${wizard.dataset.id}?sql=${sql}`,
+        url: `https://api.resourcewatch.org/v1/query/${dataset.id}?sql=${sql}`,
         name: 'table',
         format: {
           type: 'json',
@@ -103,11 +89,17 @@ class WidgetPreview extends React.Component {
   }
 
   getAxisOptions() {
-    const { selected } = this.state;
-    this.setState({
-      xOptions: (selected.type) ? this.jiminy.columns(selected.type, selected.yAxis) : [],
-      yOptions: (selected.type) ? this.jiminy.columns(selected.type, selected.xAxis) : []
-    }, () => {
+    const { selected, jiminy } = this.state;
+
+    let xOptions = [];
+    let yOptions = [];
+
+    if (selected.type) {
+      xOptions = (selected.yAxis) ? jiminy.byType[selected.type].columns[selected.yAxis] : jiminy.byType[selected.type].general;
+      yOptions = (selected.xAxis) ? jiminy.byType[selected.type].columns[selected.xAxis] : jiminy.byType[selected.type].general;
+    }
+
+    this.setState({ xOptions, yOptions }, () => {
       this.getChartData();
     });
   }
@@ -129,16 +121,16 @@ class WidgetPreview extends React.Component {
 
 
   render() {
-    const { selected, loading, chartOptions, xOptions, yOptions, parsedConfig } = this.state;
+    const { selected, loading, jiminy, xOptions, yOptions, parsedConfig } = this.state;
     return (
       <div className="c-widgets-preview">
 
         <Spinner className="-light" isLoading={loading} />
 
         <fieldset className="c-field-container">
-          {!!chartOptions.length &&
+          {!!jiminy.general && !!jiminy.general.length &&
             <Field
-              options={chartOptions.map(graphType =>
+              options={jiminy.general.map(graphType =>
                 ({ label: graphType, value: graphType })
               )}
               properties={{
@@ -199,7 +191,8 @@ class WidgetPreview extends React.Component {
 }
 
 WidgetPreview.propTypes = {
-  wizard: React.PropTypes.object.isRequired
+  wizard: React.PropTypes.object.isRequired,
+  dataset: React.PropTypes.object.isRequired
 };
 
 export default WidgetPreview;

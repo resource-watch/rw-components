@@ -50,6 +50,18 @@ export default class DatasetService {
     });
   }
 
+  /**
+   * Get Jiminy chart suggestions
+   * @returns {Promise}
+   */
+  fetchJiminy(query) {
+    return new Promise((resolve) => {
+      fetch(`${this.opts.apiURL}/jiminy/?sql=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(jsonData => resolve(jsonData.data));
+    });
+  }
+
 
   /**
    *  Get max and min or values depending on field type
@@ -74,10 +86,7 @@ export default class DatasetService {
   getFilters() {
     return new Promise((resolve) => {
       this.getFields().then((fieldsData) => {
-        const filteredFields = fieldsData.fields.filter((field) => {
-          return field.columnType === 'number' || field.columnType === 'date' ||
-            field.columnType === 'string';
-        });
+        const filteredFields = fieldsData.fields.filter(field => field.columnType === 'number' || field.columnType === 'date' || field.columnType === 'string');
         const promises = _.map(filteredFields, (field) => {
           if (field.columnType === 'number' || field.columnType === 'date') {
             return this.getMinAndMax(field.columnName, fieldsData.tableName);

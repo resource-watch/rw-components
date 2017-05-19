@@ -20,13 +20,24 @@ export default function getQueryByFilters(tableName, arrFilters = [], arrColumns
       return `${min}${(min && max) ? ' AND ' : ''}${max}`;
     }
 
-    const values = `'${filter.properties.values.join("','")}'`;
+    const values = `'${filter.properties.values.join("', '")}'`;
 
     // Check that it's a string column
     return `${filter.columnName} IN (${values})`;
   })).join(' AND ');
 
-  const columns = (arrColumns.length) ? arrColumns.map(column => `${column.value} as ${column.key}`).join(', ') : '*';
+
+  // Get column names
+  let columns = '*';
+  if (arrColumns.length) {
+    columns = arrColumns.map((column) => {
+      if (column.as) {
+        return `${column.value} as ${column.key}`;
+      }
+      return `${column.value}`;
+    }).join(', ');
+  }
+
   const where = (filtersQuery.length) ? `WHERE ${filtersQuery}` : '';
 
   return `SELECT ${columns} FROM ${tableName} ${where}`;

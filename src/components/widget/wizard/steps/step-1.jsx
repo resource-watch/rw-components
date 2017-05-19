@@ -2,29 +2,41 @@ import React from 'react';
 
 import Step from '../../form/steps/Step1';
 import Title from '../../../ui/Title';
-import DatasetList from '../../../dataset/DatasetList';
+import DatasetFilter from '../../../dataset/DatasetFilter';
 
-class Step1 extends Step {
+class Step4 extends Step {
+
+  constructor(props) {
+    super(props);
+
+    // BINDINGS
+    this.triggerChange = this.triggerChange.bind(this);
+  }
+
+  triggerChange(obj) {
+    this.props.onChange(obj);
+  }
+
   render() {
+    const { dataset, wizard } = this.props;
     return (
       <fieldset className="c-field-container">
         <Title className="-primary -big">
-          Select a dataset
+          Filter your dataset
         </Title>
-        <DatasetList
-          ref={(c) => { if (c) this.children.push(c); }}
-          application={['rw']}
-          selected={this.props.wizard.dataset}
-          onChange={value => this.props.onChange({ dataset: value })}
+        <DatasetFilter
+          dataset={dataset}
+          wizard={wizard}
+          onChange={this.triggerChange}
         />
       </fieldset>
     );
   }
 }
 
-Step1.propTypes = {
+Step4.propTypes = {
   wizard: React.PropTypes.object,
   onChange: React.PropTypes.func
 };
 
-export default Step1;
+export default Step4;
