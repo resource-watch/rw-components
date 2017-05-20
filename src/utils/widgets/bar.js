@@ -1,12 +1,54 @@
 const bar = {
-  width: 400,
-  height: 200,
-  padding: { top: 10, left: 30, bottom: 30, right: 10 },
-  data: [
+  axes: [
     {
-      name: 'table'
+      type: 'x',
+      scale: 'x',
+      ticks: 5,
+      tickSize: 3,
+      format: 's',
+      properties: {
+        axis: { stroke: { value: '#9BA2AA' } },
+        labels: {
+          angle: { value: -90 },
+          align: { value: 'right' },
+          baseline: { value: 'middle' }
+        }
+      }
+    },
+    {
+      type: 'y',
+      scale: 'y',
+      ticks: 5,
+      tickSize: 5,
+      format: 's',
+      properties: { axis: { stroke: { value: '#9BA2AA' } } }
     }
   ],
+  data: [
+    {
+      url: "https://api.resourcewatch.org/v1/query/d02df2f6-d80c-4274-bb6f-f062061655c4?sql=SELECT iso3 as x, total as y FROM estimated_co2_emission_filtered WHERE iso3 IN ('ALB', 'ASM', 'ARE', 'ARG', 'ARM', 'ATA', 'AGO', 'ATG', 'AUS', 'AUT', 'AZE', 'AFG', 'BDI', 'BEL')",
+      name: 'table',
+      format: { type: 'json', property: 'data' }
+    }
+  ],
+  marks: [
+    {
+      from: { data: 'table' },
+      type: 'rect',
+      properties: {
+        enter: {
+          x: { field: 'x', scale: 'x' },
+          y: { field: 'y', scale: 'y' },
+          y2: { scale: 'y', value: 0 },
+          width: { band: true, scale: 'x', offset: -1 }
+        },
+        hover: { fill: { scale: 'color' } },
+        update: { fill: { scale: 'color' } }
+      }
+    }
+  ],
+  width: 1010,
+  height: 350,
   scales: [
     {
       name: 'x',
@@ -16,36 +58,18 @@ const bar = {
     },
     {
       name: 'y',
+      nice: true,
       type: 'linear',
       range: 'height',
-      domain: { data: 'table', field: 'y' },
-      nice: true
-    }
-  ],
-  axes: [
-    { type: 'x', scale: 'x' },
-    { type: 'y', scale: 'y' }
-  ],
-  marks: [
+      domain: { data: 'table', field: 'y' }
+    },
     {
-      type: 'rect',
-      from: { data: 'table' },
-      properties: {
-        enter: {
-          x: { scale: 'x', field: 'x' },
-          width: { scale: 'x', band: true, offset: -1 },
-          y: { scale: 'y', field: 'y' },
-          y2: { scale: 'y', value: 0 }
-        },
-        update: {
-          fill: { value: 'steelblue' }
-        },
-        hover: {
-          fill: { value: 'red' }
-        }
-      }
+      name: 'color',
+      type: 'ordinal',
+      range: 'colorRange1'
     }
-  ]
+  ],
+  padding: 'strict'
 };
 
 export default bar;

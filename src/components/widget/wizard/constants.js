@@ -7,6 +7,7 @@ export const STATE_DEFAULT = {
   // Wizard
   wizard: {
     query: '',
+    // query: "SELECT cartodb_id, rank, iso3, total, country FROM d02df2f6-d80c-4274-bb6f-f062061655c4 WHERE iso3 IN ('AGO', 'ARG', 'ALB', 'ARE', 'ARM', 'ASM', 'AFG')",
 
     // STEP 4
     filters: [{}],

@@ -2,6 +2,7 @@ import React from 'react';
 import vega from 'vega';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
+import theme from '../../utils/widgets/vega-theme';
 
 class VegaChart extends React.Component {
 
@@ -40,16 +41,16 @@ class VegaChart extends React.Component {
   }
 
   parseVega() {
-    const padding = this.props.data.padding || { top: 20, right: 20, bottom: 20, left: 20 };
     const size = {
-      width: this.width - padding.left - padding.right,
-      height: this.height - padding.top - padding.bottom
+      width: this.width
+      // height: this.height
     };
 
     const data = Object.assign({}, this.props.data, size);
+    console.log(JSON.stringify(data));
 
     if (this.mounted && this.props.toggleLoading) this.props.toggleLoading(true);
-    vega.parse.spec(data, {}, (err, chart) => {
+    vega.parse.spec(data, theme, (err, chart) => {
       if (this.mounted && this.props.toggleLoading) this.props.toggleLoading(false);
       if (!err && this.mounted) {
         this.vis = chart({
