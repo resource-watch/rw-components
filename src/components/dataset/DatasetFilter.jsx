@@ -1,4 +1,6 @@
 import React from 'react';
+import classnames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 
 import DatasetService from '../../services/DatasetService';
 import getQueryByFilters from '../../utils/getQueryByFilters';
@@ -8,14 +10,21 @@ import Button from '../ui/Button';
 
 class DatasetFilter extends React.Component {
 
+  static getQueryColumns(columns) {
+    return columns.map(c => ({
+      key: c.columnName,
+      value: c.columnName
+    }));
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
       loading: true,
-      columns: [],
-      filters: [{}], // We need to create an empty object to render the first one
-      query: getQueryByFilters(props.dataset.tableName)
+      columns: props.wizard.columns || [],
+      filters: props.wizard.filters || [{}], // We need to create an empty object to render the first one
+      query: props.wizard.query || ''
     };
 
     // DatasetService
@@ -31,87 +40,33 @@ class DatasetFilter extends React.Component {
   }
 
   componentWillMount() {
-    this.datasetService.getFilters()
-      .then((data) => {
-        this.setState({
-          loading: false,
-          columns: data
-        }, () => {
-          if (this.props.onChange) {
-            this.props.onChange({
-              query: this.state.query,
-              columns: this.state.columns
-            });
-          }
+    if (this.state.columns && this.state.columns.length) {
+      this.setState({ loading: false });
+    } else {
+      this.datasetService.getFilters()
+        .then((columns) => {
+          const { filters } = this.state;
+
+          this.setState({
+            columns,
+            loading: false,
+            query: getQueryByFilters(this.props.dataset.id, filters, DatasetFilter.getQueryColumns(columns))
+          }, () => {
+            if (this.props.onChange) {
+              this.props.onChange({
+                query: this.state.query,
+                columns: this.state.columns
+              });
+            }
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          this.setState({ loading: false });
         });
-      })
-      .catch((err) => {
-        console.error(err);
-        this.setState({ loading: false });
-      });
+    }
   }
 
-  /**
-   * UI EVENTS
-   * - triggerChangeFilters
-   * - triggerNewFilter
-   * - triggerDeleteFilters
-   * - triggerFetchFilteredData
-  */
-  triggerChangeFilters(obj, i) {
-    const filters = [].concat(this.state.filters);
-    filters[i] = obj;
-    const query = getQueryByFilters(this.props.dataset.tableName, filters);
-
-    this.setState({ filters, query }, () => {
-      if (this.props.onChange) {
-        this.props.onChange({
-          query: this.state.query,
-          filters: this.state.filters
-        });
-      }
-    });
-  }
-
-  triggerNewFilter() {
-    const filters = [].concat(this.state.filters);
-    filters.push({});
-    const query = getQueryByFilters(this.props.dataset.tableName, filters);
-
-    this.setState({ filters, query }, () => {
-      if (this.props.onChange) {
-        this.props.onChange({
-          query: this.state.query,
-          filters: this.state.filters
-        });
-      }
-    });
-  }
-
-  triggerDeleteFilters(index) {
-    const filters = [].concat(this.state.filters);
-    filters.splice(index, 1);
-    const query = getQueryByFilters(this.props.dataset.tableName, filters);
-
-    this.setState({ filters, query }, () => {
-      if (this.props.onChange) {
-        this.props.onChange({
-          query: this.state.query,
-          filters: this.state.filters
-        });
-      }
-    });
-  }
-
-  triggerFetchFilteredData() {
-    this.datasetService.fetchFilteredData(this.state.query)
-      .then((data) => {
-        console.info(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
 
   /**
    * HELPERS
@@ -133,6 +88,80 @@ class DatasetFilter extends React.Component {
     }
 
     return parsedColumns;
+  }
+
+  validateFilters() {
+    const { filters } = this.state;
+    const lastFilter = filters[filters.length - 1];
+
+    return lastFilter && lastFilter.filters && !isEmpty(lastFilter.filters);
+  }
+
+
+  /**
+   * UI EVENTS
+   * - triggerChangeFilters
+   * - triggerNewFilter
+   * - triggerDeleteFilters
+   * - triggerFetchFilteredData
+  */
+  triggerChangeFilters(obj, i) {
+    const filters = [].concat(this.state.filters);
+    filters[i] = obj;
+    const query = getQueryByFilters(this.props.dataset.id, filters, DatasetFilter.getQueryColumns(this.state.columns));
+
+    this.setState({ filters, query }, () => {
+      if (this.props.onChange) {
+        this.props.onChange({
+          query: this.state.query,
+          filters: this.state.filters
+        });
+      }
+    });
+  }
+
+  triggerNewFilter() {
+    const filters = [].concat(this.state.filters);
+
+    // Check if the last item of the array is filled
+    if (this.validateFilters()) {
+      filters.push({});
+      const query = getQueryByFilters(this.props.dataset.id, filters, DatasetFilter.getQueryColumns(this.state.columns));
+
+      this.setState({ filters, query }, () => {
+        if (this.props.onChange) {
+          this.props.onChange({
+            query: this.state.query,
+            filters: this.state.filters
+          });
+        }
+      });
+    }
+  }
+
+  triggerDeleteFilters(index) {
+    const filters = [].concat(this.state.filters);
+    filters.splice(index, 1);
+    const query = getQueryByFilters(this.props.dataset.id, filters, DatasetFilter.getQueryColumns(this.state.columns));
+
+    this.setState({ filters, query }, () => {
+      if (this.props.onChange) {
+        this.props.onChange({
+          query: this.state.query,
+          filters: this.state.filters
+        });
+      }
+    });
+  }
+
+  triggerFetchFilteredData() {
+    this.datasetService.fetchFilteredData(this.state.query)
+      .then((data) => {
+        console.info(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
 
@@ -167,14 +196,17 @@ class DatasetFilter extends React.Component {
             <Button
               properties={{
                 type: 'button',
-                className: '-primary'
+                className: classnames('-primary', {
+                  '-disabled': !this.validateFilters()
+                }),
+                disabled: !this.validateFilters()
               }}
               onClick={this.triggerNewFilter}
             >
               Add new
             </Button>
           </li>
-          <li>
+          {/* <li>
             <Button
               properties={{
                 type: 'button',
@@ -184,9 +216,9 @@ class DatasetFilter extends React.Component {
             >
               Preview
             </Button>
-          </li>
+          </li> */}
         </ul>
-        <div className="actions">
+        <div className="c-code">
           <pre><code className="language-sql">{query}</code></pre>
         </div>
       </div>
@@ -196,6 +228,7 @@ class DatasetFilter extends React.Component {
 
 DatasetFilter.propTypes = {
   dataset: React.PropTypes.object.isRequired,
+  wizard: React.PropTypes.object,
   onChange: React.PropTypes.func
 };
 

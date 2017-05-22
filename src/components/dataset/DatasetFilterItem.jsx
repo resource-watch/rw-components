@@ -15,6 +15,29 @@ const defaults = {
   filters: {}
 };
 
+export const FORM_ELEMENTS = {
+  elements: {
+  },
+  validate(step) {
+    const elements = this.elements[`step${step}`] || this.elements;
+    const elementsArray = Object.keys(elements);
+    if (elementsArray.length) {
+      elementsArray.forEach((k) => {
+        elements[k].validate();
+      });
+    }
+  },
+  isValid(step) {
+    const elements = this.elements[`step${step}`] || this.elements;
+    const valid = Object.keys(elements)
+      .map(k => elements[k].isValid())
+      .filter(v => v !== null)
+      .every(element => element);
+
+    return valid;
+  }
+};
+
 class DatasetFilterItem extends React.Component {
 
   constructor(props) {
@@ -76,14 +99,13 @@ class DatasetFilterItem extends React.Component {
 
     return (
       <div className="c-datasets-filter-item">
-        <div className="column">
+        <div className="columnName">
           <Field
-            options={columns.map((column) => {
-              return {
-                label: column.columnName,
-                value: column.columnName
-              };
-            })}
+            ref={(c) => { if (c) FORM_ELEMENTS.elements.column = c; }}
+            options={columns.map(column => ({
+              label: column.columnName,
+              value: column.columnName
+            }))}
             properties={{
               name: 'column',
               label: 'Column',
@@ -98,6 +120,7 @@ class DatasetFilterItem extends React.Component {
         {(selected.columnType === 'number' || selected.columnType === 'date') &&
           <div className="filters">
             <Field
+              ref={(c) => { if (c) FORM_ELEMENTS.elements.min = c; }}
               validations={[{
                 type: 'min',
                 condition: selected.properties.min
@@ -128,6 +151,7 @@ class DatasetFilterItem extends React.Component {
             </Field>
 
             <Field
+              ref={(c) => { if (c) FORM_ELEMENTS.elements.max = c; }}
               validations={[{
                 type: 'min',
                 condition: (filters.properties && filters.properties.min) ?
@@ -162,6 +186,7 @@ class DatasetFilterItem extends React.Component {
         {selected.columnType === 'string' &&
           <div className="filters">
             <Field
+              ref={(c) => { if (c) FORM_ELEMENTS.elements.values = c; }}
               options={selected.properties.values.map((value) => {
                 return {
                   label: value,

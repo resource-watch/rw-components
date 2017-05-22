@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Jiminy from 'jiminy';
-import { chartConfig } from './constants';
 import getQueryByFilters from '../../../utils/getQueryByFilters';
 import getParsedConfig from '../../../utils/getWidgetConfig';
 
@@ -11,7 +9,16 @@ import Spinner from '../../ui/Spinner';
 import VegaChart from '../VegaChart';
 import DatasetService from '../../../services/DatasetService';
 
+
 class WidgetPreview extends React.Component {
+
+  static getAllowedColumns(columns) {
+    const allowedColumns = ['bar', 'scatter', 'line'];
+
+    return columns.map(graphType =>
+      ({ label: graphType, value: graphType, disabled: !allowedColumns.includes(graphType) })
+    );
+  }
 
   constructor(props) {
     super(props);
@@ -19,25 +26,24 @@ class WidgetPreview extends React.Component {
     this.state = {
       loading: true,
 
-      // Options
-      chartOptions: [],
+      // Jiminy
+      jiminy: {},
       xOptions: [],
       yOptions: [],
 
       // Config
-      parsedConfig: {},
+      widgetConfig: {},
 
       // Selected
       selected: {
         type: '',
         xAxis: '',
-        yAxis: '',
-        chartConfig: {}
+        yAxis: ''
       }
     };
 
     // DatasetService
-    this.datasetService = new DatasetService(props.wizard.dataset.id, {
+    this.datasetService = new DatasetService(props.dataset.id, {
       apiURL: 'https://api.resourcewatch.org/v1'
     });
 
@@ -46,13 +52,11 @@ class WidgetPreview extends React.Component {
   }
 
   componentWillMount() {
-    this.datasetService.fetchFilteredData(this.props.wizard.query)
-      .then((data) => {
+    this.datasetService.fetchJiminy(this.props.wizard.query)
+      .then((jiminy) => {
         this.setState({
           loading: false,
-          data
-        }, () => {
-          this.getChartOptions();
+          jiminy
         });
       })
       .catch((err) => {
@@ -64,33 +68,23 @@ class WidgetPreview extends React.Component {
 
   /**
    * HELPERS
-   * - getChartOptions
    * - getChartData
    * - getAxisOptions
   */
-  getChartOptions() {
-    /* Finally, you instantiate Jiminy with both the objects */
-    this.jiminy = new Jiminy(this.state.data, chartConfig);
-
-    /* You can get recommendations: what chartOptions you can build with the data: */
-    this.setState({
-      chartOptions: this.jiminy.recommendation(this.state.selected.columns)
-    });
-  }
 
   getChartData() {
     const { selected } = this.state;
-    const { wizard } = this.props;
+    const { wizard, dataset } = this.props;
     const columns = [];
 
-    if (selected.xAxis) columns.push({ key: 'x', value: selected.xAxis });
-    if (selected.yAxis) columns.push({ key: 'y', value: selected.yAxis });
+    if (selected.xAxis) columns.push({ key: 'x', value: selected.xAxis, as: true });
+    if (selected.yAxis) columns.push({ key: 'y', value: selected.yAxis, as: true });
 
-    const sql = getQueryByFilters(wizard.dataset.tableName, wizard.filters, columns);
+    const sql = getQueryByFilters(dataset.tableName, wizard.filters, columns, [{ name: 'x', type: 'ASC' }]);
 
-    const parsedConfig = {
+    const dataWidgetConfig = {
       data: [{
-        url: `https://api.resourcewatch.org/v1/query/${wizard.dataset.id}?sql=${sql}`,
+        url: `https://api.resourcewatch.org/v1/query/${dataset.id}?sql=${sql}`,
         name: 'table',
         format: {
           type: 'json',
@@ -99,14 +93,29 @@ class WidgetPreview extends React.Component {
       }]
     };
 
-    this.setState({ parsedConfig });
+    this.setState({
+      widgetConfig: getParsedConfig(selected.type, dataWidgetConfig)
+    }, () => {
+      this.props.onChange({
+        widgetConfig: this.state.widgetConfig
+      });
+    });
   }
 
   getAxisOptions() {
-    const { selected } = this.state;
+    const { selected, jiminy } = this.state;
+
+    let xOptions = [];
+    let yOptions = [];
+
+    if (selected.type) {
+      xOptions = (selected.yAxis) ? jiminy.byType[selected.type].columns[selected.yAxis] : jiminy.byType[selected.type].general;
+      yOptions = (selected.xAxis) ? jiminy.byType[selected.type].columns[selected.xAxis] : jiminy.byType[selected.type].general;
+    }
+
     this.setState({
-      xOptions: (selected.type) ? this.jiminy.columns(selected.type, selected.yAxis) : [],
-      yOptions: (selected.type) ? this.jiminy.columns(selected.type, selected.xAxis) : []
+      xOptions,
+      yOptions
     }, () => {
       this.getChartData();
     });
@@ -129,18 +138,16 @@ class WidgetPreview extends React.Component {
 
 
   render() {
-    const { selected, loading, chartOptions, xOptions, yOptions, parsedConfig } = this.state;
+    const { selected, loading, jiminy, xOptions, yOptions, widgetConfig } = this.state;
     return (
       <div className="c-widgets-preview">
 
         <Spinner className="-light" isLoading={loading} />
 
         <fieldset className="c-field-container">
-          {!!chartOptions.length &&
+          {!!jiminy.general && !!jiminy.general.length &&
             <Field
-              options={chartOptions.map(graphType =>
-                ({ label: graphType, value: graphType })
-              )}
+              options={WidgetPreview.getAllowedColumns(jiminy.general)}
               properties={{
                 name: 'type',
                 label: 'Chart type',
@@ -189,7 +196,8 @@ class WidgetPreview extends React.Component {
 
           {selected.type &&
             <VegaChart
-              data={getParsedConfig(selected.type, parsedConfig)}
+              data={widgetConfig}
+              toggleLoading={bool => console.info(bool)}
             />
           }
         </fieldset>
@@ -199,7 +207,9 @@ class WidgetPreview extends React.Component {
 }
 
 WidgetPreview.propTypes = {
-  wizard: React.PropTypes.object.isRequired
+  wizard: React.PropTypes.object.isRequired,
+  dataset: React.PropTypes.object.isRequired,
+  onChange: React.PropTypes.func.isRequired
 };
 
 export default WidgetPreview;
