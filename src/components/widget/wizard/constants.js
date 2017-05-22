@@ -82,7 +82,7 @@ export const STATE_DEFAULT = {
     authors: '',
     widgetConfig: {},
     status: 1,
-    default: true,
+    default: false,
     published: true
   }
 };
@@ -97,7 +97,6 @@ export const FORM_ELEMENTS = {
     const elements = this.elements[`step${step}`] || this.elements;
     const elementsArray = Object.keys(elements);
     if (elementsArray.length) {
-      console.log(elementsArray);
       elementsArray.forEach((k) => {
         elements[k].validate();
       });

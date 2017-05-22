@@ -1,4 +1,5 @@
 import React from 'react';
+import omit from 'lodash/omit';
 
 import { STATE_DEFAULT, FORM_ELEMENTS } from './constants';
 import { get, post } from '../../../utils/request';
@@ -27,31 +28,40 @@ class WidgetWizard extends React.Component {
   }
 
   componentWillMount() {
+    let promises = [];
     if (this.props.dataset) {
+      promises.push(this.getDataset());
       // Start the loading
       this.setState({ loading: true });
 
-      get({
-        url: `https://api.resourcewatch.org/v1/dataset/${this.props.dataset}`,
-        headers: [{
-          key: 'Content-Type',
-          value: 'application/json'
-        }],
-        onSuccess: (response) => {
+      if (this.props.widget) {
+        promises.push(this.getWidget());
+      }
+
+      Promise.all(promises)
+        .then((response) => {
+          const dataset = {
+            id: response[0].data.id,
+            ...response[0].data.attributes
+          };
+
+          const widget = (response[1]) ? {
+            id: response[1].data.id,
+            ...response[1].data.attributes
+          } : null;
+
           this.setState({
-            dataset: {
-              id: response.data.id,
-              ...response.data.attributes
-            },
+            dataset,
+            widget: widget || null,
+            form: this.setFormFromParams(omit(widget, ['status', 'published', 'verified'])),
             // Stop the loading
             loading: false
           });
-        },
-        onError: (error) => {
+        })
+        .catch((err) => {
           this.setState({ loading: false });
-          console.error(error);
-        }
-      });
+          console.error(err);
+        });
     }
   }
 
@@ -124,6 +134,42 @@ class WidgetWizard extends React.Component {
     this.setState({ step });
   }
 
+  getDataset() {
+    return new Promise((resolve, reject) => {
+      get({
+        url: `https://api.resourcewatch.org/v1/dataset/${this.props.dataset}`,
+        headers: [{
+          key: 'Content-Type',
+          value: 'application/json'
+        }],
+        onSuccess: (response) => {
+          resolve(response);
+        },
+        onError: (error) => {
+          reject(error);
+        }
+      });
+    });
+  }
+
+  getWidget() {
+    return new Promise((resolve, reject) => {
+      get({
+        url: `https://api.resourcewatch.org/v1/dataset/${this.props.dataset}/widget/${this.props.widget}`,
+        headers: [{
+          key: 'Content-Type',
+          value: 'application/json'
+        }],
+        onSuccess: (response) => {
+          resolve(response);
+        },
+        onError: (error) => {
+          reject(error);
+        }
+      });
+    });
+  }
+
   setFormFromParams(params) {
     const form = Object.keys(this.state.form);
     const newForm = {};
@@ -190,6 +236,7 @@ class WidgetWizard extends React.Component {
 
 WidgetWizard.propTypes = {
   dataset: React.PropTypes.string.isRequired,
+  widget: React.PropTypes.string,
   application: React.PropTypes.array,
   authorization: React.PropTypes.string
 };
