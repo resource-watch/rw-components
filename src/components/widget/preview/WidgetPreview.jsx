@@ -72,7 +72,7 @@ class WidgetPreview extends React.Component {
     if (selected.xAxis) columns.push({ key: 'x', value: selected.xAxis, as: true });
     if (selected.yAxis) columns.push({ key: 'y', value: selected.yAxis, as: true });
 
-    const sql = getQueryByFilters(dataset.tableName, wizard.filters, columns);
+    const sql = getQueryByFilters(dataset.tableName, wizard.filters, columns, [{ name: 'x', type: 'ASC' }]);
 
     const parsedConfig = {
       data: [{
@@ -182,6 +182,7 @@ class WidgetPreview extends React.Component {
           {selected.type &&
             <VegaChart
               data={getParsedConfig(selected.type, parsedConfig)}
+              toggleLoading={bool => console.info(bool)}
             />
           }
         </fieldset>

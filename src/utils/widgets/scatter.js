@@ -1,7 +1,7 @@
 const scatter = {
   name: 'Vega Visualization',
-  height: 350,
-  padding: 'auto',
+  height: 450,
+  padding: 'strict',
   marks: [
     {
       properties: {
@@ -38,9 +38,7 @@ const scatter = {
   ],
   data: [
     {
-      url: "https://api.resourcewatch.org/v1/query/d02df2f6-d80c-4274-bb6f-f062061655c4?sql=SELECT rank as x, total as y FROM estimated_co2_emission_filtered WHERE iso3 IN ('AGO', 'ARG', 'ALB', 'ARE', 'ARM', 'ASM', 'AFG')",
-      name: 'table',
-      format: { type: 'json', property: 'data' }
+      name: 'table'
     }
   ],
   scales: [
@@ -48,13 +46,15 @@ const scatter = {
       name: 'x',
       range: 'width',
       domain: { data: 'table', field: 'x' },
-      type: 'linear'
+      type: 'linear',
+      "zero": false
     },
     {
       name: 'y',
       range: 'height',
       domain: { data: 'table', field: 'y' },
-      type: 'linear'
+      type: 'linear',
+      "zero": false
     },
     {
       name: 'group',

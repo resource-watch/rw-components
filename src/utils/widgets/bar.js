@@ -26,9 +26,7 @@ const bar = {
   ],
   data: [
     {
-      url: "https://api.resourcewatch.org/v1/query/d02df2f6-d80c-4274-bb6f-f062061655c4?sql=SELECT iso3 as x, total as y FROM estimated_co2_emission_filtered WHERE iso3 IN ('ALB', 'ASM', 'ARE', 'ARG', 'ARM', 'ATA', 'AGO', 'ATG', 'AUS', 'AUT', 'AZE', 'AFG', 'BDI', 'BEL')",
-      name: 'table',
-      format: { type: 'json', property: 'data' }
+      name: 'table'
     }
   ],
   marks: [
@@ -48,7 +46,7 @@ const bar = {
     }
   ],
   width: 1010,
-  height: 350,
+  height: 450,
   scales: [
     {
       name: 'x',

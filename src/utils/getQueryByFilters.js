@@ -1,10 +1,11 @@
 import compact from 'lodash/compact';
+
 /**
  * It returns a string query using filters Data
  * @param  {Array} filters
  * @return {String}
  */
-export default function getQueryByFilters(tableName, arrFilters = [], arrColumns = []) {
+export default function getQueryByFilters(tableName, arrFilters = [], arrColumns = [], arrOrder = []) {
   const filtersQuery = compact(arrFilters.map((element) => {
     const filter = element.filters;
     // Check that there is a filter present
@@ -38,7 +39,14 @@ export default function getQueryByFilters(tableName, arrFilters = [], arrColumns
     }).join(', ');
   }
 
+  let orderBy = '';
+  if (arrOrder.length) {
+    const orders = arrOrder.map(order => order.name).join(' ');
+
+    orderBy = `ORDER BY ${orders}`;
+  }
+
   const where = (filtersQuery.length) ? `WHERE ${filtersQuery}` : '';
 
-  return `SELECT ${columns} FROM ${tableName} ${where}`;
+  return `SELECT ${columns} FROM ${tableName} ${where} ${orderBy}`;
 }
