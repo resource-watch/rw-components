@@ -88,7 +88,7 @@ class WidgetWizard extends React.Component {
               console.info(response);
             },
             onError: (error) => {
-              this.setState({ loading: false });
+              this.setState({ submitting: false, loading: false });
               console.error(error);
             }
           });
@@ -107,7 +107,6 @@ class WidgetWizard extends React.Component {
    * - setFormFromParams
   */
   setStep(step) {
-    console.log(step);
     this.setState({ step });
   }
 

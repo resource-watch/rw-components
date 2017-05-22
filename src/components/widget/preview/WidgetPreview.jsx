@@ -9,7 +9,16 @@ import Spinner from '../../ui/Spinner';
 import VegaChart from '../VegaChart';
 import DatasetService from '../../../services/DatasetService';
 
+
 class WidgetPreview extends React.Component {
+
+  static getAllowedColumns(columns) {
+    const allowedColumns = ['bar', 'scatter', 'line'];
+
+    return columns.map(graphType =>
+      ({ label: graphType, value: graphType, disabled: !allowedColumns.includes(graphType) })
+    );
+  }
 
   constructor(props) {
     super(props);
@@ -99,7 +108,10 @@ class WidgetPreview extends React.Component {
       yOptions = (selected.xAxis) ? jiminy.byType[selected.type].columns[selected.xAxis] : jiminy.byType[selected.type].general;
     }
 
-    this.setState({ xOptions, yOptions }, () => {
+    this.setState({
+      xOptions,
+      yOptions
+    }, () => {
       this.getChartData();
     });
   }
@@ -130,9 +142,7 @@ class WidgetPreview extends React.Component {
         <fieldset className="c-field-container">
           {!!jiminy.general && !!jiminy.general.length &&
             <Field
-              options={jiminy.general.map(graphType =>
-                ({ label: graphType, value: graphType })
-              )}
+              options={WidgetPreview.getAllowedColumns(jiminy.general)}
               properties={{
                 name: 'type',
                 label: 'Chart type',
