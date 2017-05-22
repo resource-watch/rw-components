@@ -6,15 +6,23 @@ import { get, post } from '../../../utils/request';
 
 import Step1 from './steps/step-1';
 import Step2 from './steps/step-2';
+import Step3 from './steps/step-3';
 import Navigation from '../../form/Navigation';
 
 class WidgetWizard extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = STATE_DEFAULT;
+    this.state = {
+      ...STATE_DEFAULT,
+      form: {
+        ...STATE_DEFAULT.form,
+        application: props.application
+      }
+    };
 
     this.onSubmit = this.onSubmit.bind(this);
+    this.onFormChange = this.onFormChange.bind(this);
     this.onWizardChange = this.onWizardChange.bind(this);
   }
 
@@ -49,9 +57,16 @@ class WidgetWizard extends React.Component {
 
   /**
    * UI EVENTS
-   * - onSubmit
+   * - onFormChange
    * - onWizardChange
+   * - onSubmit
   */
+
+  onFormChange(obj) {
+    const form = Object.assign({}, this.state.form, obj);
+    this.setState({ form }, () => console.info(this.state.form));
+  }
+
   onWizardChange(obj) {
     const wizard = Object.assign({}, this.state.wizard, obj);
     this.setState({ wizard }, () => console.info(this.state.wizard));
@@ -73,10 +88,8 @@ class WidgetWizard extends React.Component {
 
           post({
             type: (this.state.dataset && this.state.widget) ? 'PATCH' : 'POST',
-            url: `https://api.resourcewatch.org/v1/dataset/${this.state.dataset}/widget/${this.state.widget || ''}`,
-            body: {
-              widget: this.state.form
-            },
+            url: `https://api.resourcewatch.org/v1/dataset/${this.state.dataset.id}/widget/${this.state.widget || ''}`,
+            body: this.state.form,
             headers: [{
               key: 'Content-Type',
               value: 'application/json'
@@ -86,6 +99,7 @@ class WidgetWizard extends React.Component {
             }],
             onSuccess: (response) => {
               console.info(response);
+              alert('upload widget correctly');
             },
             onError: (error) => {
               this.setState({ submitting: false, loading: false });
@@ -127,16 +141,16 @@ class WidgetWizard extends React.Component {
    * RENDER
   */
   render() {
-    const { dataset, wizard, step, stepLength, submitting, loading } = this.state;
+    const { dataset, form, wizard, step, stepLength, submitting, loading } = this.state;
 
     return (
       <form className="c-form" onSubmit={this.onSubmit} noValidate>
         {step === 1 && !!dataset &&
           <Step1
             dataset={dataset}
-            wizard={wizard}
+            form={form}
             onChange={(value) => {
-              this.onWizardChange(value);
+              this.onFormChange(value);
             }}
           />
         }
@@ -147,6 +161,16 @@ class WidgetWizard extends React.Component {
             wizard={wizard}
             onChange={(value) => {
               this.onWizardChange(value);
+            }}
+          />
+        }
+
+        {step === 3 && !!dataset &&
+          <Step3
+            dataset={dataset}
+            wizard={wizard}
+            onChange={(value) => {
+              this.onFormChange(value);
             }}
           />
         }

@@ -47,7 +47,6 @@ class VegaChart extends React.Component {
     };
 
     const data = Object.assign({}, this.props.data, size);
-    console.log(JSON.stringify(data));
 
     if (this.mounted && this.props.toggleLoading) this.props.toggleLoading(true);
     vega.parse.spec(data, theme, (err, chart) => {

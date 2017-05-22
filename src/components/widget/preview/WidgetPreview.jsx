@@ -32,14 +32,13 @@ class WidgetPreview extends React.Component {
       yOptions: [],
 
       // Config
-      parsedConfig: {},
+      widgetConfig: {},
 
       // Selected
       selected: {
         type: '',
         xAxis: '',
-        yAxis: '',
-        chartConfig: {}
+        yAxis: ''
       }
     };
 
@@ -83,7 +82,7 @@ class WidgetPreview extends React.Component {
 
     const sql = getQueryByFilters(dataset.tableName, wizard.filters, columns, [{ name: 'x', type: 'ASC' }]);
 
-    const parsedConfig = {
+    const dataWidgetConfig = {
       data: [{
         url: `https://api.resourcewatch.org/v1/query/${dataset.id}?sql=${sql}`,
         name: 'table',
@@ -94,7 +93,13 @@ class WidgetPreview extends React.Component {
       }]
     };
 
-    this.setState({ parsedConfig });
+    this.setState({
+      widgetConfig: getParsedConfig(selected.type, dataWidgetConfig)
+    }, () => {
+      this.props.onChange({
+        widgetConfig: this.state.widgetConfig
+      });
+    });
   }
 
   getAxisOptions() {
@@ -133,7 +138,7 @@ class WidgetPreview extends React.Component {
 
 
   render() {
-    const { selected, loading, jiminy, xOptions, yOptions, parsedConfig } = this.state;
+    const { selected, loading, jiminy, xOptions, yOptions, widgetConfig } = this.state;
     return (
       <div className="c-widgets-preview">
 
@@ -191,7 +196,7 @@ class WidgetPreview extends React.Component {
 
           {selected.type &&
             <VegaChart
-              data={getParsedConfig(selected.type, parsedConfig)}
+              data={widgetConfig}
               toggleLoading={bool => console.info(bool)}
             />
           }
@@ -203,7 +208,8 @@ class WidgetPreview extends React.Component {
 
 WidgetPreview.propTypes = {
   wizard: React.PropTypes.object.isRequired,
-  dataset: React.PropTypes.object.isRequired
+  dataset: React.PropTypes.object.isRequired,
+  onChange: React.PropTypes.func.isRequired
 };
 
 export default WidgetPreview;

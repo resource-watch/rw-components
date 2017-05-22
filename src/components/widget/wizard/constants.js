@@ -1,15 +1,17 @@
 export const STATE_DEFAULT = {
   step: 1,
-  stepLength: 2,
+  stepLength: 3,
   submitting: false,
   loading: false,
+
+  authorization: '',
 
   // Wizard
   wizard: {
     query: '',
     // query: "SELECT cartodb_id, rank, iso3, total, country FROM d02df2f6-d80c-4274-bb6f-f062061655c4 WHERE iso3 IN ('AGO', 'ARG', 'ALB', 'ARE', 'ARM', 'ASM', 'AFG')",
 
-    // STEP 4
+    // STEP 2
     filters: [{}],
       // {
       //   selected: {},
@@ -68,15 +70,28 @@ export const STATE_DEFAULT = {
       //   }
       // }
 
-    // STEP 5
+    // STEP 3
     chart: '' // bar, pie, line
+  },
+
+  form: {
+    name: '',
+    description: '',
+    source: '',
+    sourceUrl: '',
+    authors: '',
+    widgetConfig: {},
+    status: 1,
+    default: true,
+    published: true
   }
 };
 
 export const FORM_ELEMENTS = {
   elements: {
     step1: {},
-    step2: {}
+    step2: {},
+    step3: {}
   },
   validate(step) {
     const elements = this.elements[`step${step}`] || this.elements;

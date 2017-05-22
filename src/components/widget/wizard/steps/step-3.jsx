@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Title from '../../../ui/Title';
-import DatasetFilter from '../../../dataset/DatasetFilter';
+import WidgetPreview from '../../preview/WidgetPreview';
 
-class Step2 extends React.Component {
+class Step3 extends React.Component {
 
   constructor(props) {
     super(props);
@@ -17,15 +17,14 @@ class Step2 extends React.Component {
   }
 
   render() {
-    const { dataset, wizard } = this.props;
     return (
       <fieldset className="c-field-container">
         <Title className="-primary -big">
-          Filter your dataset
+          Preview
         </Title>
-        <DatasetFilter
-          dataset={dataset}
-          wizard={wizard}
+        <WidgetPreview
+          dataset={this.props.dataset}
+          wizard={this.props.wizard}
           onChange={this.triggerChange}
         />
       </fieldset>
@@ -33,10 +32,10 @@ class Step2 extends React.Component {
   }
 }
 
-Step2.propTypes = {
+Step3.propTypes = {
   dataset: React.PropTypes.object,
   wizard: React.PropTypes.object,
   onChange: React.PropTypes.func
 };
 
-export default Step2;
+export default Step3;
