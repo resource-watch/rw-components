@@ -1,51 +1,73 @@
 const bar = {
-  "width": 400,
-  "height": 200,
-  "padding": {"top": 10, "left": 30, "bottom": 30, "right": 10},
-  "data": [
+  axes: [
     {
-      "name": "table"
-    }
-  ],
-  "scales": [
-    {
-      "name": "x",
-      "type": "ordinal",
-      "range": "width",
-      "domain": {"data": "table", "field": "x"}
-    },
-    {
-      "name": "y",
-      "type": "linear",
-      "range": "height",
-      "domain": {"data": "table", "field": "y"},
-      "nice": true
-    }
-  ],
-  "axes": [
-    {"type": "x", "scale": "x"},
-    {"type": "y", "scale": "y"}
-  ],
-  "marks": [
-    {
-      "type": "rect",
-      "from": {"data": "table"},
-      "properties": {
-        "enter": {
-          "x": {"scale": "x", "field": "x"},
-          "width": {"scale": "x", "band": true, "offset": -1},
-          "y": {"scale": "y", "field": "y"},
-          "y2": {"scale": "y", "value": 0}
-        },
-        "update": {
-          "fill": {"value": "steelblue"}
-        },
-        "hover": {
-          "fill": {"value": "red"}
+      type: 'x',
+      scale: 'x',
+      ticks: 5,
+      tickSize: 3,
+      format: 's',
+      properties: {
+        axis: { stroke: { value: '#9BA2AA' } },
+        labels: {
+          angle: { value: -90 },
+          align: { value: 'right' },
+          baseline: { value: 'middle' }
         }
       }
+    },
+    {
+      type: 'y',
+      scale: 'y',
+      ticks: 5,
+      tickSize: 5,
+      format: 's',
+      properties: { axis: { stroke: { value: '#9BA2AA' } } }
     }
-  ]
+  ],
+  data: [
+    {
+      name: 'table'
+    }
+  ],
+  marks: [
+    {
+      from: { data: 'table' },
+      type: 'rect',
+      properties: {
+        enter: {
+          x: { field: 'x', scale: 'x' },
+          y: { field: 'y', scale: 'y' },
+          y2: { scale: 'y', value: 0 },
+          width: { band: true, scale: 'x', offset: -1 }
+        },
+        hover: { fill: { scale: 'color' } },
+        update: { fill: { scale: 'color' } }
+      }
+    }
+  ],
+  width: 1010,
+  height: 450,
+  scales: [
+    {
+      name: 'x',
+      type: 'ordinal',
+      range: 'width',
+      domain: { data: 'table', field: 'x' }
+    },
+    {
+      name: 'y',
+      nice: true,
+      type: 'linear',
+      range: 'height',
+      domain: { data: 'table', field: 'y' }
+    },
+    {
+      name: 'color',
+      type: 'ordinal',
+      range: 'colorRange1'
+    }
+  ],
+  padding: 'strict'
 };
 
 export default bar;
