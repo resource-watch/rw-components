@@ -50,6 +50,8 @@ var Navigation = function (_React$Component) {
     value: function onStepChange(e) {
       e.preventDefault();
 
+      console.log(this.props.step);
+
       // Send the step to the form
       if (this.props.onStepChange) this.props.onStepChange(this.props.step - 1);
     }

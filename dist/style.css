@@ -1018,6 +1018,14 @@ body {
       .c-button-container > ul > li:first-child {
         margin: 0; }
 
+.c-code {
+  display: block; }
+  .c-code pre, .c-code code {
+    display: block;
+    white-space: normal; }
+  .c-code code {
+    padding: 16px; }
+
 .c-icon {
   width: 20px;
   height: 20px;
@@ -2184,21 +2192,27 @@ body {
 
 .c-datasets-filter {
   width: 100%;
-  padding: 8px;
   cursor: pointer; }
+  .c-datasets-filter .list > * {
+    margin: 16px 0 0; }
+    .c-datasets-filter .list > *:first-child {
+      margin: 0; }
   .c-datasets-filter .actions {
-    margin: 8px 0 0;
-    padding: 8px; }
+    display: flex;
+    justify-content: flex-end;
+    margin: 16px 0 60px; }
 
 .c-datasets-filter-item {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  padding: 8px;
-  cursor: pointer; }
+  padding: 16px;
+  cursor: pointer;
+  background: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25); }
   .c-datasets-filter-item > button:last-child {
-    margin-top: 26px; }
+    margin-top: 21px; }
   .c-datasets-filter-item > * {
     margin: 0 20px 0 0; }
     .c-datasets-filter-item > *:last-child {
@@ -2257,12 +2271,14 @@ body {
 
 .c-chart {
   width: 100%;
-  height: 250px; }
+  min-height: 250px; }
   .c-chart .chart {
     width: 100%;
     height: 100%;
     background-position: center;
     background-size: cover; }
+    .c-chart .chart .vega {
+      height: 450px; }
 
 .c-vocabulary-item {
   background: #FFF;

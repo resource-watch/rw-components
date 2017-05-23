@@ -19,6 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function getQueryByFilters(tableName) {
   var arrFilters = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   var arrColumns = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+  var arrOrder = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
 
   var filtersQuery = (0, _compact2.default)(arrFilters.map(function (element) {
     var filter = element.filters;
@@ -35,16 +36,33 @@ function getQueryByFilters(tableName) {
       return '' + min + (min && max ? ' AND ' : '') + max;
     }
 
-    var values = '\'' + filter.properties.values.join("','") + '\'';
+    var values = '\'' + filter.properties.values.join("', '") + '\'';
 
     // Check that it's a string column
     return filter.columnName + ' IN (' + values + ')';
   })).join(' AND ');
 
-  var columns = arrColumns.length ? arrColumns.map(function (column) {
-    return column.value + ' as ' + column.key;
-  }).join(', ') : '*';
+  // Get column names
+  var columns = '*';
+  if (arrColumns.length) {
+    columns = arrColumns.map(function (column) {
+      if (column.as) {
+        return column.value + ' as ' + column.key;
+      }
+      return '' + column.value;
+    }).join(', ');
+  }
+
+  var orderBy = '';
+  if (arrOrder.length) {
+    var orders = arrOrder.map(function (order) {
+      return order.name;
+    }).join(' ');
+
+    orderBy = 'ORDER BY ' + orders;
+  }
+
   var where = filtersQuery.length ? 'WHERE ' + filtersQuery : '';
 
-  return 'SELECT ' + columns + ' FROM ' + tableName + ' ' + where;
+  return 'SELECT ' + columns + ' FROM ' + tableName + ' ' + where + ' ' + orderBy;
 }

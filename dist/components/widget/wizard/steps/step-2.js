@@ -10,17 +10,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Step2 = require('../../form/steps/Step1');
-
-var _Step3 = _interopRequireDefault(_Step2);
-
 var _Title = require('../../../ui/Title');
 
 var _Title2 = _interopRequireDefault(_Title);
 
-var _WidgetList = require('../../../widget/WidgetList');
+var _DatasetFilter = require('../../../dataset/DatasetFilter');
 
-var _WidgetList2 = _interopRequireDefault(_WidgetList);
+var _DatasetFilter2 = _interopRequireDefault(_DatasetFilter);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30,21 +26,30 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Step2 = function (_Step) {
-  _inherits(Step2, _Step);
+var Step2 = function (_React$Component) {
+  _inherits(Step2, _React$Component);
 
-  function Step2() {
+  function Step2(props) {
     _classCallCheck(this, Step2);
 
-    return _possibleConstructorReturn(this, (Step2.__proto__ || Object.getPrototypeOf(Step2)).apply(this, arguments));
+    // BINDINGS
+    var _this = _possibleConstructorReturn(this, (Step2.__proto__ || Object.getPrototypeOf(Step2)).call(this, props));
+
+    _this.triggerChange = _this.triggerChange.bind(_this);
+    return _this;
   }
 
   _createClass(Step2, [{
+    key: 'triggerChange',
+    value: function triggerChange(obj) {
+      this.props.onChange(obj);
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
-      var wizard = this.props.wizard;
+      var _props = this.props,
+          dataset = _props.dataset,
+          wizard = _props.wizard;
 
       return _react2.default.createElement(
         'fieldset',
@@ -52,27 +57,22 @@ var Step2 = function (_Step) {
         _react2.default.createElement(
           _Title2.default,
           { className: '-primary -big' },
-          'Select a widget or create a new one'
+          'Filter your dataset'
         ),
-        _react2.default.createElement(_WidgetList2.default, {
-          ref: function ref(c) {
-            if (c) _this2.children.push(c);
-          },
-          dataset: wizard.dataset,
-          selected: wizard.widget,
-          application: ['rw'],
-          onChange: function onChange(value) {
-            return _this2.props.onChange({ widget: value });
-          }
+        _react2.default.createElement(_DatasetFilter2.default, {
+          dataset: dataset,
+          wizard: wizard,
+          onChange: this.triggerChange
         })
       );
     }
   }]);
 
   return Step2;
-}(_Step3.default);
+}(_react2.default.Component);
 
 Step2.propTypes = {
+  dataset: _react2.default.PropTypes.object,
   wizard: _react2.default.PropTypes.object,
   onChange: _react2.default.PropTypes.func
 };

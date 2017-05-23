@@ -10,17 +10,23 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Step2 = require('../../form/steps/Step1');
+var _constants = require('../constants');
 
-var _Step3 = _interopRequireDefault(_Step2);
+var _Field = require('../../../form/Field');
 
-var _Title = require('../../../ui/Title');
+var _Field2 = _interopRequireDefault(_Field);
 
-var _Title2 = _interopRequireDefault(_Title);
+var _Input = require('../../../form/Input');
 
-var _DatasetList = require('../../../dataset/DatasetList');
+var _Input2 = _interopRequireDefault(_Input);
 
-var _DatasetList2 = _interopRequireDefault(_DatasetList);
+var _TextArea = require('../../../form/TextArea');
+
+var _TextArea2 = _interopRequireDefault(_TextArea);
+
+var _Checkbox = require('../../../form/Checkbox');
+
+var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30,8 +36,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Step1 = function (_Step) {
-  _inherits(Step1, _Step);
+var Step1 = function (_React$Component) {
+  _inherits(Step1, _React$Component);
 
   function Step1() {
     _classCallCheck(this, Step1);
@@ -48,29 +54,146 @@ var Step1 = function (_Step) {
         'fieldset',
         { className: 'c-field-container' },
         _react2.default.createElement(
-          _Title2.default,
-          { className: '-primary -big' },
-          'Select a dataset'
-        ),
-        _react2.default.createElement(_DatasetList2.default, {
-          ref: function ref(c) {
-            if (c) _this2.children.push(c);
+          _Field2.default,
+          {
+            ref: function ref(c) {
+              if (c) _constants.FORM_ELEMENTS.elements.step1.name = c;
+            },
+            onChange: function onChange(value) {
+              return _this2.props.onChange({ name: value });
+            },
+            validations: ['required'],
+            properties: {
+              name: 'name',
+              label: 'Title',
+              type: 'text',
+              required: true,
+              default: this.props.form.name
+            }
           },
-          application: ['rw'],
-          selected: this.props.wizard.dataset,
-          onChange: function onChange(value) {
-            return _this2.props.onChange({ dataset: value });
-          }
-        })
+          _Input2.default
+        ),
+        _react2.default.createElement(
+          _Field2.default,
+          {
+            ref: function ref(c) {
+              if (c) _constants.FORM_ELEMENTS.elements.step1.queryUrl = c;
+            },
+            onChange: function onChange(value) {
+              return _this2.props.onChange({ queryUrl: value });
+            },
+            properties: {
+              name: 'queryUrl',
+              label: 'Query url',
+              type: 'text',
+              default: this.props.form.queryUrl
+            }
+          },
+          _Input2.default
+        ),
+        _react2.default.createElement(
+          _Field2.default,
+          {
+            ref: function ref(c) {
+              if (c) _constants.FORM_ELEMENTS.elements.step1.description = c;
+            },
+            onChange: function onChange(value) {
+              return _this2.props.onChange({ description: value });
+            },
+            properties: {
+              name: 'description',
+              label: 'Description',
+              type: 'textarea',
+              rows: '6',
+              default: this.props.form.description
+            }
+          },
+          _TextArea2.default
+        ),
+        _react2.default.createElement(
+          _Field2.default,
+          {
+            ref: function ref(c) {
+              if (c) _constants.FORM_ELEMENTS.elements.step1.authors = c;
+            },
+            onChange: function onChange(value) {
+              return _this2.props.onChange({ authors: value });
+            },
+            properties: {
+              name: 'authors',
+              label: 'Authors',
+              type: 'text',
+              default: this.props.form.authors
+            }
+          },
+          _Input2.default
+        ),
+        _react2.default.createElement(
+          _Field2.default,
+          {
+            ref: function ref(c) {
+              if (c) _constants.FORM_ELEMENTS.elements.step1.source = c;
+            },
+            onChange: function onChange(value) {
+              return _this2.props.onChange({ source: value });
+            },
+            properties: {
+              name: 'source',
+              label: 'Source',
+              type: 'text',
+              default: this.props.form.source
+            }
+          },
+          _Input2.default
+        ),
+        _react2.default.createElement(
+          _Field2.default,
+          {
+            ref: function ref(c) {
+              if (c) _constants.FORM_ELEMENTS.elements.step1.sourceUrl = c;
+            },
+            onChange: function onChange(value) {
+              return _this2.props.onChange({ sourceUrl: value });
+            },
+            validations: ['url'],
+            properties: {
+              name: 'sourceUrl',
+              label: 'Source url',
+              type: 'text',
+              default: this.props.form.sourceUrl
+            }
+          },
+          _Input2.default
+        ),
+        _react2.default.createElement(
+          _Field2.default,
+          {
+            ref: function ref(c) {
+              if (c) _constants.FORM_ELEMENTS.elements.step1.default = c;
+            },
+            onChange: function onChange(value) {
+              return _this2.props.onChange({ default: value.checked });
+            },
+            validations: ['required'],
+            properties: {
+              name: 'default',
+              label: 'Default',
+              value: 'default',
+              title: 'Do you want to set this widget as the default one. (Only one default widget per dataset is allowed at a time)',
+              checked: this.props.form.default
+            }
+          },
+          _Checkbox2.default
+        )
       );
     }
   }]);
 
   return Step1;
-}(_Step3.default);
+}(_react2.default.Component);
 
 Step1.propTypes = {
-  wizard: _react2.default.PropTypes.object,
+  form: _react2.default.PropTypes.object,
   onChange: _react2.default.PropTypes.func
 };
 

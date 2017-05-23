@@ -4,107 +4,120 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var STATE_DEFAULT = exports.STATE_DEFAULT = {
-  step: 4,
-  stepLength: 5,
+  step: 1,
+  stepLength: 3,
   submitting: false,
   loading: false,
 
+  authorization: '',
+
   // Wizard
   wizard: {
-    authorization: '',
-    // STEP 1
-    dataset: {
-      id: 'd02df2f6-d80c-4274-bb6f-f062061655c4', // Required
-      tableName: 'estimated_co2_emission_filtered'
-    },
+    query: '',
+    // query: "SELECT cartodb_id, rank, iso3, total, country FROM d02df2f6-d80c-4274-bb6f-f062061655c4 WHERE iso3 IN ('AGO', 'ARG', 'ALB', 'ARE', 'ARM', 'ASM', 'AFG')",
+
     // STEP 2
-    widget: '', // Optional
+    filters: [{}],
+    // {
+    //   selected: {},
+    //   filters: {
+    //     columnName: 'iso3',
+    //     columnType: 'string',
+    //     properties: {
+    //       values: [
+    //         'ARG',
+    //         'BRA',
+    //         'COL',
+    //         'PER',
+    //         'VEN'
+    //       ]
+    //     }
+    //   }
+    // }
+
+    columns: [],
+    // {
+    //   columnName: 'cartodb_id',
+    //   columnType: 'number',
+    //   properties: {
+    //     min: 1,
+    //     max: 209
+    //   }
+    // },
+    // {
+    //   columnName: 'rank',
+    //   columnType: 'number',
+    //   properties: {
+    //     min: 1,
+    //     max: 209
+    //   }
+    // },
+    // {
+    //   columnName: 'iso3',
+    //   columnType: 'string',
+    //   properties: {
+    //     values: []
+    //   }
+    // },
+    // {
+    //   columnName: 'total',
+    //   columnType: 'number',
+    //   properties: {
+    //     min: 0,
+    //     max: 5.4430915E9
+    //   }
+    // },
+    // {
+    //   columnName: 'country',
+    //   columnType: 'string',
+    //   properties: {
+    //     values: []
+    //   }
+    // }
 
     // STEP 3
-    metadata: {
-      technical_title: '',
-      title: '',
-      subtitle: '',
-      source: '',
-      functions: '',
-      geographic_coverage: '',
-      spatial_resolution: '',
-      date_of_content: '',
-      frequency_of_updates: '',
-      cautions: '',
-      license: '',
-      license_link: '',
-      overview: '',
-      why: '',
-      citation: '',
-      other: ''
-    },
+    chart: '' // bar, pie, line
+  },
 
-    query: 'SELECT * FROM estimated_co2_emission_filtered WHERE iso3 IN (\'ARG\',\'BRA\',\'COL\',\'PER\',\'VEN\')',
+  form: {
+    name: '',
+    description: '',
+    source: '',
+    sourceUrl: '',
+    authors: '',
+    widgetConfig: {},
+    status: 1,
+    default: true,
+    published: true
+  }
+};
 
-    // STEP 4
-    filters: [{
-      selected: {},
-      filters: {
-        columnName: 'iso3',
-        columnType: 'string',
-        properties: {
-          values: ['ARG', 'BRA', 'COL', 'PER', 'VEN']
-        }
-      }
-    }],
-
-    columns: [{
-      columnName: 'cartodb_id',
-      columnType: 'number',
-      properties: {
-        min: 1,
-        max: 209
-      }
-    }, {
-      columnName: 'rank',
-      columnType: 'number',
-      properties: {
-        min: 1,
-        max: 209
-      }
-    }, {
-      columnName: 'iso3',
-      columnType: 'string',
-      properties: {
-        values: []
-      }
-    }, {
-      columnName: 'total',
-      columnType: 'number',
-      properties: {
-        min: 0,
-        max: 5.4430915E9
-      }
-    }, {
-      columnName: 'country',
-      columnType: 'string',
-      properties: {
-        values: []
-      }
-    }],
-
-    // STEP 5
-    chart: '', // bar, pie, line
-
-    // FORM SUBMIT
-    form: {
-      authorization: '',
-      name: '',
-      queryUrl: '',
-      description: '',
-      source: '',
-      sourceUrl: '',
-      authors: '',
-      widgetConfig: {},
-      status: 1,
-      default: true,
-      published: true
+var FORM_ELEMENTS = exports.FORM_ELEMENTS = {
+  elements: {
+    step1: {},
+    step2: {},
+    step3: {}
+  },
+  validate: function validate(step) {
+    var elements = this.elements['step' + step] || this.elements;
+    var elementsArray = Object.keys(elements);
+    if (elementsArray.length) {
+      console.log(elementsArray);
+      elementsArray.forEach(function (k) {
+        elements[k].validate();
+      });
     }
+  },
+  isValid: function isValid(step) {
+    var elements = this.elements['step' + step] || this.elements;
+    var valid = Object.keys(elements).map(function (k) {
+      return elements[k].isValid();
+    }).filter(function (v) {
+      return v !== null;
+    }).every(function (element) {
+      return element;
+    });
+
+    return valid;
   }
 };

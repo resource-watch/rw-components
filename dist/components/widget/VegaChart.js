@@ -22,6 +22,10 @@ var _isEqual = require('lodash/isEqual');
 
 var _isEqual2 = _interopRequireDefault(_isEqual);
 
+var _vegaTheme = require('../../utils/widgets/vega-theme');
+
+var _vegaTheme2 = _interopRequireDefault(_vegaTheme);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -80,16 +84,15 @@ var VegaChart = function (_React$Component) {
     value: function parseVega() {
       var _this2 = this;
 
-      var padding = this.props.data.padding || { top: 20, right: 20, bottom: 20, left: 20 };
       var size = {
-        width: this.width - padding.left - padding.right,
-        height: this.height - padding.top - padding.bottom
+        width: this.width
+        // height: this.height
       };
 
       var data = Object.assign({}, this.props.data, size);
 
       if (this.mounted && this.props.toggleLoading) this.props.toggleLoading(true);
-      _vega2.default.parse.spec(data, {}, function (err, chart) {
+      _vega2.default.parse.spec(data, _vegaTheme2.default, function (err, chart) {
         if (_this2.mounted && _this2.props.toggleLoading) _this2.props.toggleLoading(false);
         if (!err && _this2.mounted) {
           _this2.vis = chart({

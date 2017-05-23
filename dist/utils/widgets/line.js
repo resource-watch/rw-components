@@ -4,46 +4,74 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var line = {
-  "width": 500,
-  "height": 200,
-  "padding": { "top": 10, "left": 30, "bottom": 30, "right": 10 },
+  "name": "lineplot",
+  "height": 450,
+  "padding": "strict",
+  "marks": [{
+    "marks": [{
+      "properties": {
+        "enter": {
+          "stroke": { "field": "group", "scale": "group" },
+          "x": { "field": "x", "scale": "x" },
+          "strokeWidth": { "value": 2 },
+          "y": { "field": "y", "scale": "y" }
+        }
+      },
+      "type": "line"
+    }],
+    "from": {
+      "data": "table",
+      "transform": [{ "groupby": ["group"], "type": "facet" }]
+    },
+    "type": "group"
+  }],
+  "axes": [{
+    "layer": "front",
+    "grid": false,
+    "type": "x",
+    "scale": "x",
+    "ticks": 10,
+    "tickSize": 3,
+    "format": "s",
+    "properties": {
+      "axis": { "stroke": { "value": "#9BA2AA" } },
+      "labels": {
+        "angle": { "value": -90 },
+        "align": { "value": "right" },
+        "baseline": { "value": "middle" }
+      }
+    }
+  }, {
+    "layer": "front",
+    "grid": false,
+    "type": "y",
+    "scale": "y",
+    "tickSize": 3,
+    "format": "s",
+    "properties": { "axis": { "stroke": { "value": "#9BA2AA" } } }
+  }],
   "data": [{
     "name": "table"
   }],
   "scales": [{
     "name": "x",
-    "type": "linear",
     "range": "width",
-    "zero": false,
-    "domain": { "data": "table", "field": "x" }
+    "domain": { "sort": true, "data": "table", "field": "x" },
+    "type": "linear",
+    "zero": false
   }, {
     "name": "y",
-    "type": "linear",
     "range": "height",
-    "nice": true,
-    "domain": { "data": "table", "field": "y" }
+    "domain": { "data": "table", "field": "y" },
+    "type": "linear",
+    "zero": false
+  }, {
+    "name": "group",
+    "range": "colorRange1",
+    "domain": { "data": "table", "field": "group" },
+    "type": "ordinal"
   }],
-  "axes": [{ "type": "x", "scale": "x", "ticks": 20 }, { "type": "y", "scale": "y" }],
-  "marks": [{
-    "type": "line",
-    "from": { "data": "table" },
-    "properties": {
-      "enter": {
-        "interpolate": { "value": "monotone" },
-        "x": { "scale": "x", "field": "x" },
-        "y": { "scale": "y", "field": "y" },
-        "y2": { "scale": "y", "value": 0 },
-        "fill": { "value": "transparent" },
-        "stroke": { "value": "steelblue" }
-      },
-      "update": {
-        "fillOpacity": { "value": 1 }
-      },
-      "hover": {
-        "fillOpacity": { "value": 0.5 }
-      }
-    }
-  }]
+  "width": 450
 };
 
 exports.default = line;

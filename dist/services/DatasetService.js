@@ -86,6 +86,25 @@ var DatasetService = function () {
     }
 
     /**
+     * Get Jiminy chart suggestions
+     * @returns {Promise}
+     */
+
+  }, {
+    key: 'fetchJiminy',
+    value: function fetchJiminy(query) {
+      var _this3 = this;
+
+      return new _bluebird2.default(function (resolve) {
+        fetch(_this3.opts.apiURL + '/jiminy/?sql=' + encodeURIComponent(query)).then(function (response) {
+          return response.json();
+        }).then(function (jsonData) {
+          return resolve(jsonData.data);
+        });
+      });
+    }
+
+    /**
      *  Get max and min or values depending on field type
      *  @returns {Promise}
      */
@@ -93,16 +112,16 @@ var DatasetService = function () {
   }, {
     key: 'getFilter',
     value: function getFilter(fieldData) {
-      var _this3 = this;
+      var _this4 = this;
 
       return new _bluebird2.default(function (resolve) {
         if (fieldData.columnType === 'number' || fieldData.columnType === 'date') {
-          _this3.getMinAndMax(fieldData.columnName, fieldData.tableName).then(function (data) {
+          _this4.getMinAndMax(fieldData.columnName, fieldData.tableName).then(function (data) {
             fieldData.properties = data;
             resolve(fieldData);
           });
         } else {
-          _this3.getValues(fieldData.columnName, fieldData.tableName).then(function (data) {
+          _this4.getValues(fieldData.columnName, fieldData.tableName).then(function (data) {
             fieldData.properties = data;
             resolve(fieldData);
           });
@@ -112,18 +131,18 @@ var DatasetService = function () {
   }, {
     key: 'getFilters',
     value: function getFilters() {
-      var _this4 = this;
+      var _this5 = this;
 
       return new _bluebird2.default(function (resolve) {
-        _this4.getFields().then(function (fieldsData) {
+        _this5.getFields().then(function (fieldsData) {
           var filteredFields = fieldsData.fields.filter(function (field) {
             return field.columnType === 'number' || field.columnType === 'date' || field.columnType === 'string';
           });
           var promises = _lodash2.default.map(filteredFields, function (field) {
             if (field.columnType === 'number' || field.columnType === 'date') {
-              return _this4.getMinAndMax(field.columnName, fieldsData.tableName);
+              return _this5.getMinAndMax(field.columnName, fieldsData.tableName);
             }
-            return _this4.getValues(field.columnName, fieldsData.tableName);
+            return _this5.getValues(field.columnName, fieldsData.tableName);
           });
           _bluebird2.default.all(promises).then(function (results) {
             var filters = _lodash2.default.map(filteredFields, function (field, index) {
@@ -148,10 +167,10 @@ var DatasetService = function () {
   }, {
     key: 'getFields',
     value: function getFields() {
-      var _this5 = this;
+      var _this6 = this;
 
       return new _bluebird2.default(function (resolve) {
-        fetch(_this5.opts.apiURL + '/fields/' + _this5.datasetId).then(function (response) {
+        fetch(_this6.opts.apiURL + '/fields/' + _this6.datasetId).then(function (response) {
           return response.json();
         }).then(function (jsonData) {
           var parsedData = {
@@ -170,7 +189,7 @@ var DatasetService = function () {
   }, {
     key: 'getMinAndMax',
     value: function getMinAndMax(columnName, tableName) {
-      var _this6 = this;
+      var _this7 = this;
 
       if (!this.tableName && !tableName) {
         throw Error('tableName was not specified.');
@@ -179,7 +198,7 @@ var DatasetService = function () {
       var query = 'SELECT Min(' + columnName + ') AS min, Max(' + columnName + ') AS max FROM ' + table;
       return new _bluebird2.default(function (resolve) {
         // TODO: remove cache param
-        fetch('https://api.resourcewatch.org/v1/query/' + _this6.datasetId + '?sql=' + query + '&cache=' + Date.now()).then(function (response) {
+        fetch('https://api.resourcewatch.org/v1/query/' + _this7.datasetId + '?sql=' + query).then(function (response) {
           return response.json();
         }).then(function (jsonData) {
           if (jsonData.data) {
@@ -193,7 +212,7 @@ var DatasetService = function () {
   }, {
     key: 'getValues',
     value: function getValues(columnName, tableName) {
-      var _this7 = this;
+      var _this8 = this;
 
       var uniqs = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
@@ -205,7 +224,7 @@ var DatasetService = function () {
       var query = 'SELECT ' + columnName + ' FROM ' + table + ' ' + uniqQueryPart + ' ORDER BY ' + columnName;
       return new _bluebird2.default(function (resolve) {
         // TODO: remove cache param
-        fetch('https://api.resourcewatch.org/v1/query/' + _this7.datasetId + '?sql=' + query + '&cache=' + Date.now()).then(function (response) {
+        fetch('https://api.resourcewatch.org/v1/query/' + _this8.datasetId + '?sql=' + query).then(function (response) {
           return response.json();
         }).then(function (jsonData) {
           var parsedData = _lodash2.default.map(jsonData.data, function (data) {

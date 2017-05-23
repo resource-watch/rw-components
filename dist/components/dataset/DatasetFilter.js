@@ -10,6 +10,14 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _isEmpty = require('lodash/isEmpty');
+
+var _isEmpty2 = _interopRequireDefault(_isEmpty);
+
 var _DatasetService = require('../../services/DatasetService');
 
 var _DatasetService2 = _interopRequireDefault(_DatasetService);
@@ -41,6 +49,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DatasetFilter = function (_React$Component) {
   _inherits(DatasetFilter, _React$Component);
 
+  _createClass(DatasetFilter, null, [{
+    key: 'getQueryColumns',
+    value: function getQueryColumns(columns) {
+      return columns.map(function (c) {
+        return {
+          key: c.columnName,
+          value: c.columnName
+        };
+      });
+    }
+  }]);
+
   function DatasetFilter(props) {
     _classCallCheck(this, DatasetFilter);
 
@@ -48,9 +68,9 @@ var DatasetFilter = function (_React$Component) {
 
     _this.state = {
       loading: true,
-      columns: [],
-      filters: [{}], // We need to create an empty object to render the first one
-      query: (0, _getQueryByFilters2.default)(props.dataset.tableName)
+      columns: props.wizard.columns || [],
+      filters: props.wizard.filters || [{}], // We need to create an empty object to render the first one
+      query: props.wizard.query || ''
     };
 
     // DatasetService
@@ -71,94 +91,30 @@ var DatasetFilter = function (_React$Component) {
     value: function componentWillMount() {
       var _this2 = this;
 
-      this.datasetService.getFilters().then(function (data) {
-        _this2.setState({
-          loading: false,
-          columns: data
-        }, function () {
-          if (_this2.props.onChange) {
-            _this2.props.onChange({
-              query: _this2.state.query,
-              columns: _this2.state.columns
-            });
-          }
+      if (this.state.columns && this.state.columns.length) {
+        this.setState({ loading: false });
+      } else {
+        this.datasetService.getFilters().then(function (columns) {
+          var filters = _this2.state.filters;
+
+
+          _this2.setState({
+            columns: columns,
+            loading: false,
+            query: (0, _getQueryByFilters2.default)(_this2.props.dataset.id, filters, DatasetFilter.getQueryColumns(columns))
+          }, function () {
+            if (_this2.props.onChange) {
+              _this2.props.onChange({
+                query: _this2.state.query,
+                columns: _this2.state.columns
+              });
+            }
+          });
+        }).catch(function (err) {
+          console.error(err);
+          _this2.setState({ loading: false });
         });
-      }).catch(function (err) {
-        console.error(err);
-        _this2.setState({ loading: false });
-      });
-    }
-
-    /**
-     * UI EVENTS
-     * - triggerChangeFilters
-     * - triggerNewFilter
-     * - triggerDeleteFilters
-     * - triggerFetchFilteredData
-    */
-
-  }, {
-    key: 'triggerChangeFilters',
-    value: function triggerChangeFilters(obj, i) {
-      var _this3 = this;
-
-      var filters = [].concat(this.state.filters);
-      filters[i] = obj;
-      var query = (0, _getQueryByFilters2.default)(this.props.dataset.tableName, filters);
-
-      this.setState({ filters: filters, query: query }, function () {
-        if (_this3.props.onChange) {
-          _this3.props.onChange({
-            query: _this3.state.query,
-            filters: _this3.state.filters
-          });
-        }
-      });
-    }
-  }, {
-    key: 'triggerNewFilter',
-    value: function triggerNewFilter() {
-      var _this4 = this;
-
-      var filters = [].concat(this.state.filters);
-      filters.push({});
-      var query = (0, _getQueryByFilters2.default)(this.props.dataset.tableName, filters);
-
-      this.setState({ filters: filters, query: query }, function () {
-        if (_this4.props.onChange) {
-          _this4.props.onChange({
-            query: _this4.state.query,
-            filters: _this4.state.filters
-          });
-        }
-      });
-    }
-  }, {
-    key: 'triggerDeleteFilters',
-    value: function triggerDeleteFilters(index) {
-      var _this5 = this;
-
-      var filters = [].concat(this.state.filters);
-      filters.splice(index, 1);
-      var query = (0, _getQueryByFilters2.default)(this.props.dataset.tableName, filters);
-
-      this.setState({ filters: filters, query: query }, function () {
-        if (_this5.props.onChange) {
-          _this5.props.onChange({
-            query: _this5.state.query,
-            filters: _this5.state.filters
-          });
-        }
-      });
-    }
-  }, {
-    key: 'triggerFetchFilteredData',
-    value: function triggerFetchFilteredData() {
-      this.datasetService.fetchFilteredData(this.state.query).then(function (data) {
-        console.info(data);
-      }).catch(function (err) {
-        console.error(err);
-      });
+      }
     }
 
     /**
@@ -187,6 +143,91 @@ var DatasetFilter = function (_React$Component) {
       }
 
       return parsedColumns;
+    }
+  }, {
+    key: 'validateFilters',
+    value: function validateFilters() {
+      var filters = this.state.filters;
+
+      var lastFilter = filters[filters.length - 1];
+
+      return lastFilter && lastFilter.filters && !(0, _isEmpty2.default)(lastFilter.filters);
+    }
+
+    /**
+     * UI EVENTS
+     * - triggerChangeFilters
+     * - triggerNewFilter
+     * - triggerDeleteFilters
+     * - triggerFetchFilteredData
+    */
+
+  }, {
+    key: 'triggerChangeFilters',
+    value: function triggerChangeFilters(obj, i) {
+      var _this3 = this;
+
+      var filters = [].concat(this.state.filters);
+      filters[i] = obj;
+      var query = (0, _getQueryByFilters2.default)(this.props.dataset.id, filters, DatasetFilter.getQueryColumns(this.state.columns));
+
+      this.setState({ filters: filters, query: query }, function () {
+        if (_this3.props.onChange) {
+          _this3.props.onChange({
+            query: _this3.state.query,
+            filters: _this3.state.filters
+          });
+        }
+      });
+    }
+  }, {
+    key: 'triggerNewFilter',
+    value: function triggerNewFilter() {
+      var _this4 = this;
+
+      var filters = [].concat(this.state.filters);
+
+      // Check if the last item of the array is filled
+      if (this.validateFilters()) {
+        filters.push({});
+        var query = (0, _getQueryByFilters2.default)(this.props.dataset.id, filters, DatasetFilter.getQueryColumns(this.state.columns));
+
+        this.setState({ filters: filters, query: query }, function () {
+          if (_this4.props.onChange) {
+            _this4.props.onChange({
+              query: _this4.state.query,
+              filters: _this4.state.filters
+            });
+          }
+        });
+      }
+    }
+  }, {
+    key: 'triggerDeleteFilters',
+    value: function triggerDeleteFilters(index) {
+      var _this5 = this;
+
+      var filters = [].concat(this.state.filters);
+      filters.splice(index, 1);
+      var query = (0, _getQueryByFilters2.default)(this.props.dataset.id, filters, DatasetFilter.getQueryColumns(this.state.columns));
+
+      this.setState({ filters: filters, query: query }, function () {
+        if (_this5.props.onChange) {
+          _this5.props.onChange({
+            query: _this5.state.query,
+            filters: _this5.state.filters
+          });
+        }
+      });
+    }
+  }, {
+    key: 'triggerFetchFilteredData',
+    value: function triggerFetchFilteredData() {
+      this.datasetService.fetchFilteredData(this.state.query).then(function (data) {
+        console.info(data);
+      }).catch(function (err) {
+        console.error(err);
+      });
     }
 
     /**
@@ -239,32 +280,20 @@ var DatasetFilter = function (_React$Component) {
               {
                 properties: {
                   type: 'button',
-                  className: '-primary'
+                  className: (0, _classnames2.default)('-primary', {
+                    '-disabled': !this.validateFilters()
+                  }),
+                  disabled: !this.validateFilters()
                 },
                 onClick: this.triggerNewFilter
               },
               'Add new'
             )
-          ),
-          _react2.default.createElement(
-            'li',
-            null,
-            _react2.default.createElement(
-              _Button2.default,
-              {
-                properties: {
-                  type: 'button',
-                  className: '-primary'
-                },
-                onClick: this.triggerFetchFilteredData
-              },
-              'Preview'
-            )
           )
         ),
         _react2.default.createElement(
           'div',
-          { className: 'actions' },
+          { className: 'c-code' },
           _react2.default.createElement(
             'pre',
             null,
@@ -284,6 +313,7 @@ var DatasetFilter = function (_React$Component) {
 
 DatasetFilter.propTypes = {
   dataset: _react2.default.PropTypes.object.isRequired,
+  wizard: _react2.default.PropTypes.object,
   onChange: _react2.default.PropTypes.func
 };
 

@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.FORM_ELEMENTS = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -45,6 +46,31 @@ var defaults = {
     properties: {}
   },
   filters: {}
+};
+
+var FORM_ELEMENTS = exports.FORM_ELEMENTS = {
+  elements: {},
+  validate: function validate(step) {
+    var elements = this.elements['step' + step] || this.elements;
+    var elementsArray = Object.keys(elements);
+    if (elementsArray.length) {
+      elementsArray.forEach(function (k) {
+        elements[k].validate();
+      });
+    }
+  },
+  isValid: function isValid(step) {
+    var elements = this.elements['step' + step] || this.elements;
+    var valid = Object.keys(elements).map(function (k) {
+      return elements[k].isValid();
+    }).filter(function (v) {
+      return v !== null;
+    }).every(function (element) {
+      return element;
+    });
+
+    return valid;
+  }
 };
 
 var DatasetFilterItem = function (_React$Component) {
@@ -134,10 +160,13 @@ var DatasetFilterItem = function (_React$Component) {
         { className: 'c-datasets-filter-item' },
         _react2.default.createElement(
           'div',
-          { className: 'column' },
+          { className: 'columnName' },
           _react2.default.createElement(
             _Field2.default,
             {
+              ref: function ref(c) {
+                if (c) FORM_ELEMENTS.elements.column = c;
+              },
               options: columns.map(function (column) {
                 return {
                   label: column.columnName,
@@ -161,6 +190,9 @@ var DatasetFilterItem = function (_React$Component) {
           _react2.default.createElement(
             _Field2.default,
             {
+              ref: function ref(c) {
+                if (c) FORM_ELEMENTS.elements.min = c;
+              },
               validations: [{
                 type: 'min',
                 condition: selected.properties.min
@@ -192,6 +224,9 @@ var DatasetFilterItem = function (_React$Component) {
           _react2.default.createElement(
             _Field2.default,
             {
+              ref: function ref(c) {
+                if (c) FORM_ELEMENTS.elements.max = c;
+              },
               validations: [{
                 type: 'min',
                 condition: filters.properties && filters.properties.min ? filters.properties.min : selected.properties.min
@@ -227,6 +262,9 @@ var DatasetFilterItem = function (_React$Component) {
           _react2.default.createElement(
             _Field2.default,
             {
+              ref: function ref(c) {
+                if (c) FORM_ELEMENTS.elements.values = c;
+              },
               options: selected.properties.values.map(function (value) {
                 return {
                   label: value,
